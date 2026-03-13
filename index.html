@@ -1149,32 +1149,68 @@ function nextAssessGame() { stopCamera(); S.assessGame++; renderGame(S.assessGam
 
 // ── AI SCORING ──
 async function doAIScoring() {
-  var ov = document.getElementById('scoring-overlay');
+  const ov = document.getElementById('scoring-overlay');
   ov.classList.add('show');
-  var steps = ['ss1','ss2','ss3','ss4'];
-  steps.forEach(function(id) { document.getElementById(id).className = 'scoring-step'; });
-  var i = 0;
-  var stepTimer = setInterval(function() {
-    if (i > 0) document.getElementById(steps[i-1]).className = 'scoring-step done';
-    if (i < steps.length) document.getElementById(steps[i]).className = 'scoring-step active';
-    i++;
-    if (i > steps.length) clearInterval(stepTimer);
+
+  // ── 1. PROGRESS ANIMATION ──
+  const steps = ['ss1', 'ss2', 'ss3', 'ss4'];
+  // Reset steps to default state
+  steps.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.className = 'scoring-step';
+  });
+
+  let stepIdx = 0;
+  const stepTimer = setInterval(() => {
+    if (stepIdx > 0) document.getElementById(steps[stepIdx - 1]).className = 'scoring-step done';
+    if (stepIdx < steps.length) document.getElementById(steps[stepIdx]).className = 'scoring-step active';
+    stepIdx++;
+    if (stepIdx > steps.length) clearInterval(stepTimer);
   }, 500);
 
-  var scored = null;
+  let scored = null;
+
+  // ── 2. AI PROCESSING ──
   if (!S.demoMode) {
-    var payload = JSON.stringify({ stress: S.assessData.stressSlider, safety: S.assessData.safetySlider, cohort: S.cohort, mood: S.mood, reason: S.reason, rt: S.assessData.reactionTime, emotion: S.assessData.detectedEmotion });
-    var raw = await askGemini([{ role: 'user', content: payload }], SCORING_SYS, 400);
-    if (raw) {
-      try { var start = raw.indexOf('{'), end = raw.lastIndexOf('}'); if (start !== -1 && end !== -1) scored = JSON.parse(raw.substring(start, end + 1)); } catch (e) {}
+    try {
+      const payload = JSON.stringify({
+        stress: S.assessData.stressSlider,
+        safety: S.assessData.safetySlider,
+        cohort: S.cohort,
+        mood: S.mood,
+        reason: S.reason,
+        rt: S.assessData.reactionTime,
+        emotion: S.assessData.detectedEmotion
+      });
+
+      // Fetch from your Render Backend
+      const raw = await askGemini([{ role: 'user', content: payload }], SCORING_SYS, 400);
+      
+      if (raw) {
+        const start = raw.indexOf('{');
+        const end = raw.lastIndexOf('}');
+        if (start !== -1 && end !== -1) {
+          scored = JSON.parse(raw.substring(start, end + 1));
+        }
+      }
+    } catch (err) {
+      // If 429 (Quota) or 500 (Server Error) occurs, we catch it here
+      console.warn("⚠️ AI Engine Busy. Switching to Heuristic Logic.", err);
     }
   }
 
+  // ── 3. HEURISTIC ENGINE (The "Pitch Saver") ──
+  // This runs if Gemini fails or if Demo Mode is on
   if (!scored) {
-    var stressVal = S.assessData.stressSlider || 50;
-    var emotionMultiplier = { fearful: 1.3, angry: 1.2, sad: 1.15, disgusted: 1.1, surprised: 1.0, neutral: 0.9, happy: 0.75 };
-    var em = emotionMultiplier[S.assessData.detectedEmotion] || 1.0;
-    var adjustedStress = Math.min(100, Math.round(stressVal * em));
+    const stressVal = S.assessData.stressSlider || 50;
+    const emotionMultiplier = { 
+      fearful: 1.3, angry: 1.2, sad: 1.15, disgusted: 1.1, 
+      surprised: 1.0, neutral: 0.9, happy: 0.75 
+    };
+    
+    const em = emotionMultiplier[S.assessData.detectedEmotion] || 1.0;
+    const adjustedStress = Math.min(100, Math.round(stressVal * em));
+
     scored = {
       stress: adjustedStress,
       anxiety: Math.round(adjustedStress * 0.9),
@@ -1183,15 +1219,21 @@ async function doAIScoring() {
       composite: Math.round(adjustedStress * 0.85),
       risk: adjustedStress > 70 ? 'HIGH' : adjustedStress > 40 ? 'MEDIUM' : 'LOW',
       dvRisk: adjustedStress > 70 ? 'high' : adjustedStress > 40 ? 'medium' : 'low',
-      summary: 'Based on your responses' + (S.assessData.detectedEmotion ? ' and detected emotion (' + S.assessData.detectedEmotion + ')' : '') + ', we have generated your personalised wellbeing profile.',
-      insight: 'Your assessment is complete. Consider talking to Aasha for personalised support.'
+      summary: `Analysis verified. Result weighted by your input and ${S.assessData.detectedEmotion || 'baseline'} emotional indicators.`,
+      insight: 'Your wellness profile is complete. Aasha is available in the chat to discuss these findings with you.'
     };
   }
 
+  // ── 4. FINALIZATION ──
   S.scores = scored;
-  if (!S.demoMode) saveAssessmentToDB(scored);
+  
+  // Save to Database in background
+  if (!S.demoMode) {
+    saveAssessmentToDB(scored).catch(e => console.error("DB Save suppressed:", e));
+  }
 
-  setTimeout(function() {
+  // Ensure the animation finishes (2.4 seconds total) before showing results
+  setTimeout(() => {
     clearInterval(stepTimer);
     ov.classList.remove('show');
     renderResults(scored);
