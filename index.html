@@ -1268,7 +1268,7 @@ function renderResults(sc) {
 async function askGemini(messages, system, maxTok) {
   if (S.demoMode) return null;
   try {
-    var r = await fetch(BACKEND_BASE_URL + '/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: messages, system: system || '', max_tokens: maxTok || 500 }) });
+    var r = await fetch(BACKEND_BASE_URL + '/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: messages, system: system || '', max_tokens: maxTok || 500000 }) });
     var d = await r.json();
     return d.reply || null;
   } catch (e) { console.error('API error:', e); return null; }
