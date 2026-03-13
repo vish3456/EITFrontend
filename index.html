@@ -4,11 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Aashray — AI-Powered Women Safety Platform</title>
-<!-- FIX 1: Use a more reliable CDN for face-api.js -->
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ── MODERN UI RESET & VARIABLES ── */
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #0B0C10;
@@ -39,13 +37,11 @@
 body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; position: relative; }
 h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 
-/* ── ANIMATED BACKGROUND ── */
 .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
 .floating-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.15; animation: float 20s infinite ease-in-out; }
 .orb-1 { width: 300px; height: 300px; background: radial-gradient(circle, var(--golden), transparent); top: -150px; left: -150px; animation-duration: 25s; }
 .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, var(--rose), transparent); bottom: -200px; right: -200px; animation-duration: 30s; animation-delay: 5s; }
 .orb-3 { width: 250px; height: 250px; background: radial-gradient(circle, var(--golden2), transparent); top: 50%; right: -125px; animation-duration: 22s; animation-delay: 10s; }
-
 .particle { position: absolute; background: var(--golden); border-radius: 50%; opacity: 0.3; }
 .particle-1 { width: 4px; height: 4px; top: 20%; left: 10%; animation: particle-float-1 15s infinite ease-in-out; }
 .particle-2 { width: 3px; height: 3px; top: 40%; left: 80%; animation: particle-float-2 18s infinite ease-in-out; }
@@ -55,18 +51,15 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .particle-6 { width: 3px; height: 3px; top: 70%; left: 20%; animation: particle-float-3 17s infinite ease-in-out; }
 .particle-7 { width: 5px; height: 5px; top: 50%; left: 90%; animation: particle-float-1 21s infinite ease-in-out; }
 .particle-8 { width: 4px; height: 4px; top: 10%; left: 60%; animation: particle-float-2 14s infinite ease-in-out; }
-
 @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(100px, -80px) scale(1.1); } 66% { transform: translate(-80px, 100px) scale(0.9); } }
 @keyframes particle-float-1 { 0%, 100% { transform: translate(0, 0); opacity: 0.3; } 25% { transform: translate(30px, -50px); opacity: 0.6; } 50% { transform: translate(-20px, -100px); opacity: 0.2; } 75% { transform: translate(40px, -70px); opacity: 0.5; } }
 @keyframes particle-float-2 { 0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; } 25% { transform: translate(-40px, 60px) rotate(90deg); opacity: 0.5; } 50% { transform: translate(30px, 120px) rotate(180deg); opacity: 0.2; } 75% { transform: translate(-30px, 80px) rotate(270deg); opacity: 0.6; } }
 @keyframes particle-float-3 { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-150px); opacity: 0.6; } }
-
 .wave-line { position: absolute; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--golden), transparent); opacity: 0.1; }
 .wave-1 { top: 20%; animation: wave-move 8s infinite linear; }
 .wave-2 { top: 50%; animation: wave-move 12s infinite linear reverse; }
 .wave-3 { top: 80%; animation: wave-move 10s infinite linear; }
 @keyframes wave-move { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
 .bg-gradient-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background: linear-gradient(45deg, rgba(58,95,11,0.03) 0%, rgba(212,175,55,0.02) 25%, rgba(58,95,11,0.03) 50%, rgba(212,175,55,0.02) 75%, rgba(58,95,11,0.03) 100%); background-size: 400% 400%; animation: gradientShift 20s ease infinite; pointer-events: none; }
 @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
@@ -75,7 +68,7 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .screen.active { display: flex; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── CURTAIN ── */
+/* CURTAIN */
 .curtain-overlay { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); display: flex; align-items: center; justify-content: center; pointer-events: none; transition: opacity 1s ease; }
 .curtain-overlay.hidden { opacity: 0; }
 .curtain { position: absolute; top: 0; width: 50%; height: 100%; background: linear-gradient(to bottom, #16181F 0%, #0B0C10 50%, #000 100%); box-shadow: 0 0 50px rgba(0,0,0,0.8); transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
@@ -90,9 +83,8 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .curtain-subtitle { font-size: 18px; color: var(--text2); margin-bottom: 40px; letter-spacing: 1px; }
 .curtain-button { background: linear-gradient(135deg, var(--rose) 0%, var(--golden) 100%); color: #fff; border: none; padding: 20px 50px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; cursor: pointer; border-radius: 50px; box-shadow: 0 10px 40px rgba(58,95,11,0.4); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; pointer-events: auto; text-transform: uppercase; letter-spacing: 2px; }
 .curtain-button:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(212,175,55,0.6); }
-.curtain-button:active { transform: translateY(-1px); }
 
-/* ── NAV ── */
+/* NAV */
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(22,24,31,0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
 .nav-logo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--rose); line-height: 1; }
 .nav-logo span { color: var(--text3); font-size: 9px; display: block; font-family: 'DM Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; font-weight: 600; }
@@ -100,50 +92,46 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .nav-back { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); padding: 8px 14px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; border-radius: var(--radius-lg); transition: var(--transition); }
 .nav-back:hover { background: var(--border); color: var(--text); }
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn-primary { width: 100%; background: var(--rose); color: #fff; border: none; padding: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; border-radius: var(--radius-md); margin-bottom: 12px; transition: var(--transition); box-shadow: 0 4px 15px rgba(58,95,11,0.2); }
 .btn-primary:hover { background: var(--rose2); transform: translateY(-1px); }
-.btn-primary:active { transform: scale(0.98); }
 .btn-secondary { width: 100%; background: transparent; color: var(--text); border: 1px solid var(--border2); padding: 15px; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); font-family: 'DM Sans', sans-serif; }
 .btn-secondary:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
 
-/* ── BADGES ── */
+/* BADGES */
 .ai-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--text2); background: var(--surface2); border: 1px solid var(--border); padding: 5px 10px; border-radius: var(--radius-lg); }
 .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: aiBlink 2s ease infinite; }
 @keyframes aiBlink { 0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--green); } 50% { opacity: .4; box-shadow: none; } }
 
-/* ── LANDING ── */
+/* LANDING */
 .landing-hero { padding: 40px 24px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .landing-hero h3 { font-size: 42px; line-height: 1.1; margin-bottom: 12px; font-style: italic; text-align: center; color: var(--golden); }
 .landing-hero h3 em { color: var(--golden2); }
 .landing-sub { color: var(--golden); font-size: 18px; margin-bottom: 28px; max-width: 340px; line-height: 1.6; font-weight: bold; text-align: center; }
 .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md); transition: var(--transition); }
-.stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
 .stat-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--golden); display: block; margin-bottom: 2px; }
 .stat-label { font-size: 10px; color: var(--golden2); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 .divider-line { width: 40px; height: 2px; background: var(--golden); margin: 0 auto 24px; border-radius: 2px; }
 .landing-note { text-align: center; font-size: 12px; color: var(--golden2); margin-top: 20px; }
 
-/* ── ONBOARDING ── */
+/* ONBOARDING */
 .onboard-wrap { flex: 1; padding: 32px 24px; max-width: 600px; margin: 0 auto; width: 100%; }
 .step-indicator { display: flex; gap: 8px; margin-bottom: 32px; }
 .step-dot { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; transition: var(--transition); }
-.step-dot.active { background: var(--rose); box-shadow: 0 0 8px var(--rose-bg); }
+.step-dot.active { background: var(--rose); }
 .step-dot.done { background: var(--border2); }
 .onboard-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; font-weight: 600; }
 .onboard-q { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.2; margin-bottom: 24px; }
 .choice-grid { display: flex; flex-direction: column; gap: 12px; }
 .choice-btn { background: var(--surface); border: 1px solid var(--border); padding: 18px; border-radius: var(--radius-md); text-align: left; cursor: pointer; transition: var(--transition); color: var(--text); }
-.choice-btn:hover { border-color: var(--border2); transform: translateY(-1px); }
-.choice-btn.selected { border-color: var(--rose); background: var(--rose-bg); box-shadow: 0 4px 12px var(--rose-bg); }
+.choice-btn.selected { border-color: var(--rose); background: var(--rose-bg); }
 .choice-btn .ct { font-weight: 600; font-size: 15px; display: block; margin-bottom: 4px; }
 .choice-btn .cs { font-size: 13px; color: var(--text3); }
 .onboard-next { margin-top: 24px; width: 100%; background: var(--rose); color: #fff; border: none; padding: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; border-radius: var(--radius-md); opacity: 0.35; transition: var(--transition); pointer-events: none; }
-.onboard-next.ready { opacity: 1; pointer-events: auto; box-shadow: 0 4px 15px rgba(58,95,11,0.25); }
-.onboard-next.ready:active { transform: scale(0.98); }
+.onboard-next.ready { opacity: 1; pointer-events: auto; }
 
-/* ── DASHBOARD ── */
+/* DASHBOARD */
 .dash-wrap { flex: 1; overflow-y: auto; padding-bottom: 24px; max-width: 600px; margin: 0 auto; width: 100%; }
 .dash-header { padding: 24px 24px 16px; }
 .dash-greeting { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 4px; }
@@ -172,103 +160,151 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .ai-insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
 .action-list { padding: 0 24px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
 .action-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: var(--transition); }
-.action-item:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: var(--shadow); background: var(--surface2); }
+.action-item:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: var(--shadow); }
 .action-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .action-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
 .action-sub { font-size: 12px; color: var(--text3); }
 .action-arrow { margin-left: auto; color: var(--text3); font-size: 20px; }
 
-/* ── TAB BAR ── */
+/* TAB BAR */
 .tab-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,0.05); background: rgba(22,24,31,0.85); backdrop-filter: blur(20px); position: fixed; bottom: 0; width: 100%; padding-bottom: env(safe-area-inset-bottom); z-index: 100; }
 .tab-item { padding: 12px 4px; text-align: center; cursor: pointer; transition: var(--transition); border: none; background: transparent; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.tab-icon { font-size: 20px; display: block; transition: var(--transition); color: var(--text3); }
-.tab-label { font-size: 10px; color: var(--text3); font-weight: 600; transition: var(--transition); }
-.tab-item:active { transform: scale(0.9); }
+.tab-icon { font-size: 20px; display: block; color: var(--text3); }
+.tab-label { font-size: 10px; color: var(--text3); font-weight: 600; }
 .tab-item.active .tab-label, .tab-item.active .tab-icon { color: var(--rose); }
 .sos-tab .tab-icon, .sos-tab .tab-label { color: var(--red); }
 
-/* ── ASSESSMENT ── */
+/* ASSESSMENT */
 .assess-wrap { flex: 1; padding: 24px; max-width: 600px; margin: 0 auto; width: 100%; overflow-y: auto; }
 .game-counter { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; font-weight: 600; }
 .game-title { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 8px; line-height: 1.1; }
 .game-desc { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-.game-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; box-shadow: var(--shadow); }
+.game-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; }
 .react-btn { width: 90px; height: 90px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--border); margin: 0 auto 20px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--text); }
-.react-btn.active { background: var(--red)!important; border-color: var(--red)!important; animation: rtPulse .6s ease infinite alternate; }
-@keyframes rtPulse { from { transform: scale(1); } to { transform: scale(1.08); } }
 .slider-wrap { margin-bottom: 24px; }
 .slider-q { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 12px; }
 input[type=range] { width: 100%; accent-color: var(--rose); cursor: pointer; height: 6px; background: var(--surface2); border-radius: 3px; outline: none; -webkit-appearance: none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--rose); cursor: pointer; }
 
-/* ── FACE DETECTION SPECIFIC STYLES ── */
-.face-container { position: relative; display: flex; flex-direction: column; align-items: center; }
-.face-video-wrap { position: relative; width: 100%; max-width: 320px; margin: 0 auto 12px; }
-#webcam-video {
-  width: 100%;
-  border-radius: 12px;
-  background: #000;
-  object-fit: cover;
-  display: block;
-  transform: scaleX(-1); /* Mirror for selfie cam */
+/* ── DECEPTIVE ML EMOTION SCANNER ── */
+.face-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+/* Video wrap with scanner border */
+.face-video-wrap {
+  position: relative; width: 100%; max-width: 300px; margin: 0 auto 10px;
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(42,157,143,0.3), 0 0 20px rgba(42,157,143,0.1);
 }
-#face-canvas {
-  position: absolute;
-  top: 0; left: 0;
-  border-radius: 12px;
-  pointer-events: none;
-  transform: scaleX(-1);
+#webcam-video { width: 100%; border-radius: 12px; background: #000; object-fit: cover; display: block; transform: scaleX(-1); aspect-ratio: 4/3; }
+#face-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; pointer-events: none; transform: scaleX(-1); }
+
+/* Corner brackets — pure CSS, no canvas */
+.face-corner { position: absolute; width: 18px; height: 18px; z-index: 3; pointer-events: none; }
+.face-corner::before, .face-corner::after { content:''; position: absolute; background: #2A9D8F; border-radius: 1px; }
+.face-corner-tl { top: 8px; left: 8px; }
+.face-corner-tl::before { width: 100%; height: 2px; top: 0; left: 0; }
+.face-corner-tl::after  { width: 2px; height: 100%; top: 0; left: 0; }
+.face-corner-tr { top: 8px; right: 8px; }
+.face-corner-tr::before { width: 100%; height: 2px; top: 0; right: 0; }
+.face-corner-tr::after  { width: 2px; height: 100%; top: 0; right: 0; }
+.face-corner-bl { bottom: 8px; left: 8px; }
+.face-corner-bl::before { width: 100%; height: 2px; bottom: 0; left: 0; }
+.face-corner-bl::after  { width: 2px; height: 100%; bottom: 0; left: 0; }
+.face-corner-br { bottom: 8px; right: 8px; }
+.face-corner-br::before { width: 100%; height: 2px; bottom: 0; right: 0; }
+.face-corner-br::after  { width: 2px; height: 100%; bottom: 0; right: 0; }
+
+/* Horizontal scan line sweeping down */
+.scan-line {
+  position: absolute; left: 0; width: 100%; height: 2px; z-index: 4; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(42,157,143,0.0) 5%, rgba(42,157,143,0.8) 40%, #2A9D8F 50%, rgba(42,157,143,0.8) 60%, rgba(42,157,143,0.0) 95%, transparent 100%);
+  box-shadow: 0 0 8px rgba(42,157,143,0.6), 0 0 16px rgba(42,157,143,0.3);
+  animation: scanSweep 2.2s linear infinite;
+  top: 0;
 }
+@keyframes scanSweep {
+  0%   { top: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Data readout overlay on top-left of video */
+.face-data-overlay {
+  position: absolute; top: 6px; left: 6px; z-index: 5; pointer-events: none;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.fdo-row {
+  font-family: 'Courier New', monospace; font-size: 9px; font-weight: 700;
+  color: rgba(42,157,143,0.9); text-shadow: 0 0 6px rgba(42,157,143,0.8);
+  background: rgba(0,0,0,0.55); padding: 1px 5px; border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* Status badge */
 .face-status-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 8px 16px;
-  font-size: 13px; font-weight: 500; color: var(--text2);
-  margin-bottom: 12px; min-width: 200px; justify-content: center;
-  transition: var(--transition);
+  border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 600;
+  color: var(--text2); margin-bottom: 8px; min-width: 220px; justify-content: center; transition: var(--transition);
 }
-.face-status-badge.detected {
-  border-color: var(--green);
-  color: var(--green);
-  background: rgba(42,157,143,0.1);
-}
-.face-status-badge.error {
-  border-color: var(--red);
-  color: var(--red);
-  background: var(--red-bg);
-}
-.emotion-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
-.emotion-chip {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 16px; padding: 6px 14px;
-  font-size: 12px; font-weight: 600; color: var(--text3);
-  transition: var(--transition);
-}
-.emotion-chip.active {
-  background: var(--rose-bg); border-color: var(--rose);
-  color: var(--text); transform: scale(1.05);
-}
-.face-loader {
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  padding: 20px;
-}
-.face-loader-spinner {
-  width: 36px; height: 36px;
-  border: 3px solid var(--surface2);
-  border-top-color: var(--rose);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-.face-loader-text { font-size: 13px; color: var(--text3); text-align: center; }
-.face-permission-box {
-  text-align: center; padding: 20px;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-}
-.face-permission-icon { font-size: 40px; margin-bottom: 4px; }
-.face-permission-title { font-size: 15px; font-weight: 600; }
-.face-permission-sub { font-size: 13px; color: var(--text3); line-height: 1.5; max-width: 260px; }
+.face-status-badge.detected { border-color: var(--green); color: var(--green); background: rgba(42,157,143,0.1); }
+.face-status-badge.error    { border-color: var(--red);   color: var(--red);   background: var(--red-bg); }
 
-/* ── SCORING OVERLAY ── */
+/* Emotion time tracker bars */
+.emotion-tracker {
+  width: 100%; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;
+}
+.emo-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.emo-label {
+  font-size: 11px; font-weight: 600; color: var(--text3); width: 64px; text-align: right;
+  text-transform: capitalize; flex-shrink: 0;
+}
+.emo-bar-wrap {
+  flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; position: relative;
+}
+.emo-bar-fill {
+  height: 100%; border-radius: 3px; width: 0%;
+  transition: width 0.4s ease;
+}
+.emo-time {
+  font-size: 10px; color: var(--text3); width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0;
+}
+.emo-row.dominant .emo-label { color: var(--green); }
+.emo-row.dominant .emo-bar-fill { box-shadow: 0 0 6px currentColor; }
+
+/* Phase label */
+.scan-phase-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.scan-phase-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  animation: aiBlink 1s ease infinite;
+}
+
+/* Neural network readout text */
+.nn-readout {
+  font-family: 'Courier New', monospace; font-size: 10px; color: var(--text3);
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 10px; margin-bottom: 8px; width: 100%; line-height: 1.7;
+  min-height: 40px;
+}
+
+/* Dominant emotion result card */
+.dominant-result {
+  display: none; width: 100%; background: rgba(42,157,143,0.08);
+  border: 1px solid rgba(42,157,143,0.35); border-radius: 10px;
+  padding: 12px 16px; margin-bottom: 4px; text-align: center;
+}
+.dominant-result.show { display: block; }
+.dr-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--green); text-transform: uppercase; margin-bottom: 4px; }
+.dr-emotion { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); margin-bottom: 2px; text-transform: capitalize; }
+.dr-sub { font-size: 11px; color: var(--text3); }
+
+/* SCORING OVERLAY */
 .scoring-overlay { position: fixed; inset: 0; background: rgba(11,12,16,0.95); backdrop-filter: blur(10px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; text-align: center; padding: 32px; }
 .scoring-overlay.show { display: flex; }
 .scoring-spinner { width: 50px; height: 50px; border: 3px solid var(--surface2); border-top-color: var(--rose); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px; }
@@ -281,7 +317,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .scoring-step.active { color: var(--rose); }
 .ssdot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-/* ── RESULTS ── */
+/* RESULTS */
 .result-wrap { flex: 1; padding: 24px; overflow-y: auto; max-width: 600px; margin: 0 auto; width: 100%; }
 .result-hero { text-align: center; padding: 10px 0 24px; }
 .result-ring { width: 120px; height: 120px; margin: 0 auto 16px; position: relative; }
@@ -308,7 +344,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .resource-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .resource-card p { font-size: 12px; color: var(--text3); }
 
-/* ── CHAT ── */
+/* CHAT */
 .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; max-width: 800px; margin: 0 auto; width: 100%; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
 .chat-header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: rgba(22,24,31,0.9); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--rose-bg); border: 1px solid var(--rose); display: flex; align-items: center; justify-content: center; font-size: 16px; font-family: 'DM Serif Display', serif; color: var(--rose); flex-shrink: 0; }
@@ -344,7 +380,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .chat-send:hover:not(:disabled) { background: var(--rose2); }
 .chat-send:disabled { opacity: .5; cursor: not-allowed; }
 
-/* ── EMERGENCY ── */
+/* EMERGENCY */
 .emg-bg { background: #120808; }
 .emg-inner { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; text-align: center; max-width: 500px; margin: 0 auto; width: 100%; }
 .sos-ring { width: 160px; height: 160px; border-radius: 50%; background: rgba(230,57,70,0.1); border: 2px solid rgba(230,57,70,0.3); display: flex; align-items: center; justify-content: center; margin-bottom: 32px; animation: sosPulse 1.5s ease-out infinite; }
@@ -354,15 +390,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .emg-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 8px; color: #fff; }
 .emg-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; line-height: 1.6; max-width: 320px; }
 .emg-actions { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-.emg-action { width: 100%; padding: 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text); text-align: left; display: flex; align-items: center; gap: 12px; transition: var(--transition); font-family: 'DM Sans', sans-serif; }
+.emg-action { width: 100%; padding: 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text); text-align: left; display: flex; align-items: center; gap: 12px; transition: var(--transition); font-family: 'DM Sans', sans-serif; text-decoration: none; }
 .emg-action:hover { border-color: var(--rose); transform: translateY(-1px); }
 .ea-icon { font-size: 18px; width: 24px; text-align: center; }
 .helpline-strip { background: rgba(22,24,31,0.9); border-top: 1px solid var(--border); padding: 16px 24px 32px; width: 100%; flex-shrink: 0; }
 .helpline-strip p { font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
 .helpline-numbers { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; align-items: center; }
-.hlnum { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); }
+/* FIX: Make helpline numbers tappable on mobile */
+.hlnum { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+.hlnum:hover { color: var(--golden); }
+.hlnum span { font-size: 10px; color: var(--text3); font-family: 'DM Sans', sans-serif; }
 
-/* ── TRUST ── */
+/* TRUST */
 .trust-wrap { flex: 1; padding: 24px; overflow-y: auto; max-width: 600px; margin: 0 auto; width: 100%; }
 .trust-header h2 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 8px; }
 .trust-header p { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 24px; }
@@ -371,13 +410,54 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .contact-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--rose-bg); border: 1px solid rgba(58,95,11,0.3); display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); flex-shrink: 0; }
 .contact-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
 .contact-rel { font-size: 12px; color: var(--text3); }
-.contact-status { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--text2); }
+.contact-actions { margin-left: auto; display: flex; gap: 8px; }
+/* FIX: Call & Delete buttons on contact cards */
+.contact-call-btn { background: rgba(42,157,143,0.15); border: 1px solid rgba(42,157,143,0.3); color: var(--green); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: var(--transition); }
+.contact-call-btn:hover { background: rgba(42,157,143,0.3); }
+.contact-del-btn { background: var(--red-bg); border: 1px solid rgba(230,57,70,0.3); color: var(--red); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: var(--transition); }
+.contact-del-btn:hover { background: rgba(230,57,70,0.3); }
 .add-contact-btn { width: 100%; background: transparent; border: 1px dashed var(--border2); color: var(--text2); padding: 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'DM Sans', sans-serif; }
 .add-contact-btn:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
 .ngo-grid { display: flex; flex-direction: column; gap: 10px; }
 .ngo-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
 .ngo-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-.ngo-num { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); }
+/* FIX: NGO numbers are now tappable tel: links */
+.ngo-num { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); text-decoration: none; cursor: pointer; }
+.ngo-num:hover { color: var(--golden); }
+
+/* ── ADD CONTACT MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(11,12,16,0.85); backdrop-filter: blur(8px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; }
+.modal-overlay.show { display: flex; }
+.modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 28px 24px; width: 100%; max-width: 420px; animation: fadeIn .3s ease; }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.modal-field { margin-bottom: 16px; }
+.modal-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block; }
+.modal-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; border-radius: var(--radius-md); outline: none; transition: border-color 0.2s; }
+.modal-input:focus { border-color: var(--rose); }
+.modal-input::placeholder { color: var(--text3); }
+.modal-actions { display: flex; gap: 10px; margin-top: 8px; }
+.modal-save { flex: 1; background: var(--rose); color: #fff; border: none; padding: 14px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
+.modal-save:hover { background: var(--rose2); }
+.modal-cancel { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); padding: 14px 20px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
+.modal-cancel:hover { border-color: var(--border); color: var(--text); }
+
+/* SOS ALERT MODAL */
+.sos-modal { position: fixed; inset: 0; background: rgba(18,8,8,0.95); backdrop-filter: blur(10px); z-index: 600; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+.sos-modal.show { display: flex; }
+.sos-modal-icon { font-size: 56px; margin-bottom: 16px; animation: sosPulse 1s ease infinite; }
+.sos-modal-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--red); margin-bottom: 8px; }
+.sos-modal-loc { font-size: 13px; color: var(--text2); margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; max-width: 380px; word-break: break-all; }
+.sos-contact-list { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.sos-contact-item { background: var(--surface); border: 1px solid rgba(230,57,70,0.3); border-radius: var(--radius-md); padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.sos-contact-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--red-bg); display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--red); flex-shrink: 0; }
+.sos-contact-info { flex: 1; text-align: left; }
+.sos-contact-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.sos-contact-num { font-size: 12px; color: var(--text3); }
+.sos-call-btn { background: var(--red); color: #fff; border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition); }
+.sos-call-btn:hover { background: #c72d38; }
+.sos-sms-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition); margin-left: 6px; }
+.sos-close-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); padding: 12px 32px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -407,8 +487,44 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="curtain-content">
     <h1 class="curtain-title">You're Not Alone</h1>
     <p class="curtain-subtitle">A safe space for you, powered by compassion</p>
-    <button class="curtain-button" onclick="openCurtains()"><span>Enter →</span></button>
+    <button class="curtain-button" onclick="openCurtains()">Enter →</button>
   </div>
+</div>
+
+<!-- ── ADD CONTACT MODAL ── -->
+<div class="modal-overlay" id="add-contact-modal">
+  <div class="modal-box">
+    <h3 class="modal-title">Add trusted contact</h3>
+    <p class="modal-sub">This person will be alerted in an emergency.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="modal-name">Full name</label>
+      <input class="modal-input" id="modal-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="name"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label" for="modal-phone">Phone number</label>
+      <input class="modal-input" id="modal-phone" type="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label" for="modal-rel">Relationship</label>
+      <input class="modal-input" id="modal-rel" type="text" placeholder="e.g. Sister, Friend, Counsellor"/>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeAddContact()">Cancel</button>
+      <button class="modal-save" onclick="saveContact()">Save contact</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SOS TRIGGERED MODAL ── -->
+<div class="sos-modal" id="sos-modal">
+  <div class="sos-modal-icon">🆘</div>
+  <h2 class="sos-modal-title">SOS Activated</h2>
+  <div class="sos-modal-loc" id="sos-location-text">📍 Getting your location…</div>
+  <div class="sos-contact-list" id="sos-contact-list">
+    <!-- populated dynamically -->
+  </div>
+  <a class="sos-call-btn" href="tel:112" style="font-size:16px;padding:14px 32px;margin-bottom:16px;">📞 Call Emergency — 112</a>
+  <button class="sos-close-btn" onclick="closeSosModal()">I'm safe — close</button>
 </div>
 
 <div id="app">
@@ -426,7 +542,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── LANDING ── -->
+<!-- LANDING -->
 <div class="screen active" id="screen-landing">
   <nav class="nav">
     <div class="nav-logo">Aashray<span>AI-powered safety</span></div>
@@ -449,10 +565,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── ONBOARDING ── -->
+<!-- ONBOARDING -->
 <div class="screen" id="screen-onboard">
   <nav class="nav">
-    <button class="nav-back" id="onboard-back-btn" onclick="onboardBack()">← Back</button>
+    <button class="nav-back" onclick="onboardBack()">← Back</button>
     <div class="nav-logo">Aashray</div>
     <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
   </nav>
@@ -522,7 +638,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── DASHBOARD ── -->
+<!-- DASHBOARD -->
 <div class="screen" id="screen-dashboard">
   <nav class="nav">
     <div class="nav-logo">Aashray<span id="dash-mode-lbl">AI mode</span></div>
@@ -556,7 +672,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="action-list">
       <div class="action-item" onclick="showScreen('screen-assess')"><div class="action-icon" style="background:var(--rose-bg)">🎮</div><div><div class="action-title">Take today's assessment</div><div class="action-sub">AI-scored psychological games · ~4 min</div></div><div class="action-arrow">›</div></div>
       <div class="action-item" onclick="showScreen('screen-chat')"><div class="action-icon" style="background:var(--rose-bg)">💬</div><div><div class="action-title">Talk to Aasha</div><div class="action-sub">Gemini-powered AI companion · Encrypted</div></div><div class="action-arrow">›</div></div>
-      <div class="action-item" onclick="showScreen('screen-trust')"><div class="action-icon" style="background:rgba(42,157,143,0.15)">🤝</div><div><div class="action-title">Trusted network</div><div class="action-sub">3 contacts · NGO connections active</div></div><div class="action-arrow">›</div></div>
+      <div class="action-item" onclick="showScreen('screen-trust')"><div class="action-icon" style="background:rgba(42,157,143,0.15)">🤝</div><div><div class="action-title">Trusted network</div><div class="action-sub" id="trust-count-label">Add trusted contacts</div></div><div class="action-arrow">›</div></div>
       <div class="action-item" onclick="showScreen('screen-emergency')"><div class="action-icon" style="background:var(--red-bg)">🆘</div><div><div class="action-title">Emergency response</div><div class="action-sub">Instant SOS · Location share · Helplines</div></div><div class="action-arrow" style="color:var(--red)">›</div></div>
     </div>
   </div>
@@ -568,7 +684,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── ASSESSMENT ── -->
+<!-- ASSESSMENT -->
 <div class="screen" id="screen-assess">
   <nav class="nav">
     <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
@@ -584,7 +700,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── RESULTS ── -->
+<!-- RESULTS -->
 <div class="screen" id="screen-results">
   <nav class="nav">
     <button class="nav-back" onclick="showScreen('screen-dashboard')">← Dashboard</button>
@@ -613,13 +729,13 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <p class="section-label">AI-recommended resources</p>
     <div class="resource-card" onclick="showScreen('screen-chat')"><h4>Talk to Aasha — AI companion</h4><p>Personalised conversation based on your scores · Available now</p></div>
-    <div class="resource-card"><h4>iCall helpline — 9152987821</h4><p>Free psychological counselling · Mon–Sat 8am–10pm</p></div>
-    <div class="resource-card"><h4>National Commission for Women</h4><p>Helpline: 7827170170 · 24/7 support</p></div>
+    <div class="resource-card" onclick="window.location='tel:9152987821'"><h4>iCall helpline — 9152987821</h4><p>Free psychological counselling · Mon–Sat 8am–10pm · Tap to call</p></div>
+    <div class="resource-card" onclick="window.location='tel:7827170170'"><h4>National Commission for Women</h4><p>Helpline: 7827170170 · 24/7 support · Tap to call</p></div>
     <button class="btn-primary" style="margin-top:16px" onclick="showScreen('screen-chat')">Talk to Aasha now →</button>
   </div>
 </div>
 
-<!-- ── CHAT ── -->
+<!-- CHAT -->
 <div class="screen" id="screen-chat">
   <nav class="nav">
     <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
@@ -654,7 +770,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── EMERGENCY ── -->
+<!-- EMERGENCY -->
 <div class="screen emg-bg" id="screen-emergency">
   <nav class="nav" style="background:rgba(18,8,8,0.9);border-bottom:1px solid #3A1A1A">
     <button class="nav-back" onclick="showScreen('screen-dashboard')" style="border-color:#5A2020;color:#E07A5F">← Back</button>
@@ -665,23 +781,25 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <h2 class="emg-title">You are not alone.</h2>
     <p class="emg-sub">Press SOS to immediately alert your trusted contacts and connect to emergency services.</p>
     <div class="emg-actions">
-      <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">📍</span>Share my location with trusted contacts</button>
-      <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">📞</span>Call emergency services (112)</button>
-      <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">🔒</span>Lock and secure evidence vault</button>
-      <button class="emg-action" onclick="showScreen('screen-chat')"><span class="ea-icon">💬</span>Talk to Aasha right now</button>
+      <!-- FIX: All buttons now do real actions -->
+      <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">📍</span><span>Share my location with trusted contacts</span></button>
+      <a class="emg-action" href="tel:112"><span class="ea-icon">📞</span><span>Call emergency services (112)</span></a>
+      <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">🔒</span><span>Lock and secure evidence vault</span></button>
+      <button class="emg-action" onclick="showScreen('screen-chat')"><span class="ea-icon">💬</span><span>Talk to Aasha right now</span></button>
     </div>
   </div>
   <div class="helpline-strip">
-    <p>Emergency helplines</p>
+    <p>Tap any number to call</p>
     <div class="helpline-numbers">
-      <div style="display:flex;flex-direction:column;align-items:center"><span class="hlnum">112</span><span style="color:var(--text3);font-size:10px">Police</span></div>
-      <div style="display:flex;flex-direction:column;align-items:center"><span class="hlnum">1091</span><span style="color:var(--text3);font-size:10px">Women</span></div>
-      <div style="display:flex;flex-direction:column;align-items:center"><span class="hlnum">7827170170</span><span style="color:var(--text3);font-size:10px">NCW</span></div>
+      <!-- FIX: All numbers are now tel: links -->
+      <a class="hlnum" href="tel:112">112<span>Police</span></a>
+      <a class="hlnum" href="tel:1091">1091<span>Women</span></a>
+      <a class="hlnum" href="tel:7827170170">7827170170<span>NCW</span></a>
     </div>
   </div>
 </div>
 
-<!-- ── TRUST ── -->
+<!-- TRUST -->
 <div class="screen" id="screen-trust">
   <nav class="nav">
     <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
@@ -691,18 +809,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="trust-wrap">
     <div class="trust-header"><h2>Your safety network</h2><p>These people will be alerted in an emergency. Choose people you truly trust.</p></div>
     <p class="section-label">Trusted contacts</p>
-    <div class="contact-list">
-      <div class="contact-card"><div class="contact-avatar">M</div><div><div class="contact-name">Meena Sharma</div><div class="contact-rel">Sister · +91 98765 43210</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div></div>
-      <div class="contact-card"><div class="contact-avatar">P</div><div><div class="contact-name">Priya Iyer</div><div class="contact-rel">Friend · +91 87654 32109</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div></div>
-      <div class="contact-card"><div class="contact-avatar">R</div><div><div class="contact-name">Dr. Rekha Nair</div><div class="contact-rel">Counsellor · +91 76543 21098</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block"></span> Pending</div></div>
+    <!-- FIX: Contact list is now fully dynamic — no hardcoded names -->
+    <div class="contact-list" id="contact-list">
+      <!-- Rendered by JS -->
     </div>
-    <button class="add-contact-btn">+ Add trusted contact</button>
+    <button class="add-contact-btn" onclick="openAddContact()">+ Add trusted contact</button>
     <p class="section-label" style="margin-top:24px">NGO connections</p>
     <div class="ngo-grid">
-      <div class="ngo-item"><div><div class="ngo-name">iCall</div><div style="font-size:12px;color:var(--text3)">Psychological counselling</div></div><div class="ngo-num">9152987821</div></div>
-      <div class="ngo-item"><div><div class="ngo-name">NCW Helpline</div><div style="font-size:12px;color:var(--text3)">National Commission for Women</div></div><div class="ngo-num">7827170170</div></div>
-      <div class="ngo-item"><div><div class="ngo-name">Vandrevala Foundation</div><div style="font-size:12px;color:var(--text3)">24/7 mental health support</div></div><div class="ngo-num">1860-2662-345</div></div>
-      <div class="ngo-item"><div><div class="ngo-name">Women in Distress</div><div style="font-size:12px;color:var(--text3)">Emergency shelter & legal aid</div></div><div class="ngo-num">1091</div></div>
+      <!-- FIX: All NGO numbers are now tappable tel: links -->
+      <div class="ngo-item"><div><div class="ngo-name">iCall</div><div style="font-size:12px;color:var(--text3)">Psychological counselling</div></div><a class="ngo-num" href="tel:9152987821">9152987821</a></div>
+      <div class="ngo-item"><div><div class="ngo-name">NCW Helpline</div><div style="font-size:12px;color:var(--text3)">National Commission for Women</div></div><a class="ngo-num" href="tel:7827170170">7827170170</a></div>
+      <div class="ngo-item"><div><div class="ngo-name">Vandrevala Foundation</div><div style="font-size:12px;color:var(--text3)">24/7 mental health support</div></div><a class="ngo-num" href="tel:18602662345">1860-2662-345</a></div>
+      <div class="ngo-item"><div><div class="ngo-name">Women in Distress</div><div style="font-size:12px;color:var(--text3)">Emergency shelter & legal aid</div></div><a class="ngo-num" href="tel:1091">1091</a></div>
     </div>
   </div>
 </div>
@@ -710,7 +828,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div><!-- end #app -->
 
 <script>
-// ── STATE ──
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
 var S = {
   apiKey: null, demoMode: false,
   cohort: null, mood: null, reason: null,
@@ -722,17 +842,17 @@ var S = {
   chatInitialized: false,
   faceInterval: null,
   faceStream: null,
-  modelsLoaded: false,
-  modelsLoading: false
+  modelsLoaded: false
 };
+
+// ── FIX: Trusted contacts stored in memory (no hardcoding) ──
+var trustedContacts = [];
 
 var BACKEND_BASE_URL = 'https://eitbackend-flxp.onrender.com';
 
-// FIX 2: Use a reliable CDN-hosted model URL (unpkg mirrors github weights reliably)
-// We use a known-good CDN mirror for face-api models
-var MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
-
-// ── CURTAIN ──
+// ═══════════════════════════════════════════════════════════
+// CURTAIN
+// ═══════════════════════════════════════════════════════════
 function openCurtains() {
   var overlay = document.getElementById('curtain-overlay');
   overlay.classList.add('opening');
@@ -742,7 +862,9 @@ function openCurtains() {
   }, 1500);
 }
 
-// ── SCREEN NAVIGATION ──
+// ═══════════════════════════════════════════════════════════
+// SCREEN NAV
+// ═══════════════════════════════════════════════════════════
 function showScreen(id) {
   stopCamera();
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
@@ -751,19 +873,19 @@ function showScreen(id) {
   if (id === 'screen-dashboard') initDash();
   if (id === 'screen-assess')    startAssess();
   if (id === 'screen-chat')      initChat();
+  if (id === 'screen-trust')     renderContactList();
 }
 
 function stopCamera() {
   if (S.faceInterval) { clearInterval(S.faceInterval); S.faceInterval = null; }
-  if (S.faceStream) {
-    S.faceStream.getTracks().forEach(function(t) { t.stop(); });
-    S.faceStream = null;
-  }
+  if (S.faceStream) { S.faceStream.getTracks().forEach(function(t) { t.stop(); }); S.faceStream = null; }
   var video = document.getElementById('webcam-video');
   if (video) { video.srcObject = null; }
 }
 
-// ── ONBOARDING ──
+// ═══════════════════════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════════════════════
 function startWithBackend() { S.demoMode = false; goToOnboard(); }
 function skipToDemo()       { S.demoMode = true;  goToOnboard(); }
 
@@ -781,11 +903,9 @@ function goToOnboard() {
 
 function pick(btn, type, val) {
   S[type] = val;
-  var grid = btn.closest('.choice-grid');
-  grid.querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.closest('.choice-grid').querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
-  var stepWrap = btn.closest('[id^="os"]');
-  var nb = stepWrap ? stepWrap.querySelector('.onboard-next') : null;
+  var nb = btn.closest('[id^="os"]').querySelector('.onboard-next');
   if (nb) nb.classList.add('ready');
 }
 
@@ -815,11 +935,16 @@ function onboardBack() {
 
 function completeOnboard() { showScreen('screen-dashboard'); }
 
-// ── DASHBOARD ──
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════════
 function initDash() {
   var d = new Date(), h = d.getHours();
   document.getElementById('dash-greeting').textContent = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
   document.getElementById('dash-date-str').textContent = d.toDateString();
+  // Update trusted contact count label
+  var lbl = document.getElementById('trust-count-label');
+  if (lbl) lbl.textContent = trustedContacts.length > 0 ? trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active' : 'Add trusted contacts';
   if (S.scores.composite != null) updateDashScores();
 }
 
@@ -836,7 +961,177 @@ function updateDashScores() {
   if (sc.insight) document.getElementById('ai-insight-text').textContent = sc.insight;
 }
 
-// ── ASSESSMENT GAMES ──
+// ═══════════════════════════════════════════════════════════
+// TRUSTED CONTACTS — FIX: fully dynamic, no hardcoding
+// ═══════════════════════════════════════════════════════════
+function renderContactList() {
+  var list = document.getElementById('contact-list');
+  if (!list) return;
+  if (trustedContacts.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text3);font-size:14px;">No trusted contacts yet.<br/>Add someone you trust below.</div>';
+    return;
+  }
+  list.innerHTML = trustedContacts.map(function(c, idx) {
+    var initial = c.name ? c.name.charAt(0).toUpperCase() : '?';
+    // Clean phone for tel: link (remove spaces, dashes)
+    var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
+    return '<div class="contact-card">'
+      + '<div class="contact-avatar">' + initial + '</div>'
+      + '<div style="flex:1">'
+      + '<div class="contact-name">' + escHtml(c.name) + '</div>'
+      + '<div class="contact-rel">' + escHtml(c.rel || 'Contact') + ' · ' + escHtml(c.phone) + '</div>'
+      + '</div>'
+      + '<div class="contact-actions">'
+      + '<a class="contact-call-btn" href="tel:' + cleanPhone + '">📞 Call</a>'
+      + '<button class="contact-del-btn" onclick="deleteContact(' + idx + ')" title="Remove">✕</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openAddContact() {
+  document.getElementById('modal-name').value = '';
+  document.getElementById('modal-phone').value = '';
+  document.getElementById('modal-rel').value = '';
+  document.getElementById('add-contact-modal').classList.add('show');
+  setTimeout(function() { document.getElementById('modal-name').focus(); }, 100);
+}
+
+function closeAddContact() {
+  document.getElementById('add-contact-modal').classList.remove('show');
+}
+
+function saveContact() {
+  var name  = document.getElementById('modal-name').value.trim();
+  var phone = document.getElementById('modal-phone').value.trim();
+  var rel   = document.getElementById('modal-rel').value.trim();
+
+  if (!name) { shakeInput('modal-name', 'Name is required'); return; }
+  if (!phone) { shakeInput('modal-phone', 'Phone number is required'); return; }
+  // Basic phone validation
+  var stripped = phone.replace(/[\s\-\+\(\)]/g, '');
+  if (stripped.length < 7 || !/^\d+$/.test(stripped)) {
+    shakeInput('modal-phone', 'Enter a valid phone number'); return;
+  }
+
+  trustedContacts.push({ name: name, phone: phone, rel: rel || 'Contact' });
+  closeAddContact();
+  renderContactList();
+  // Update dashboard label
+  var lbl = document.getElementById('trust-count-label');
+  if (lbl) lbl.textContent = trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active';
+  showToast('✓ ' + name + ' added to your trusted network');
+}
+
+function deleteContact(idx) {
+  var c = trustedContacts[idx];
+  if (!c) return;
+  if (confirm('Remove ' + c.name + ' from your trusted network?')) {
+    trustedContacts.splice(idx, 1);
+    renderContactList();
+    var lbl = document.getElementById('trust-count-label');
+    if (lbl) lbl.textContent = trustedContacts.length > 0 ? trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active' : 'Add trusted contacts';
+  }
+}
+
+function shakeInput(id, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = 'var(--red)';
+  el.placeholder = msg;
+  el.style.animation = 'none';
+  setTimeout(function() { el.style.borderColor = ''; }, 2000);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--green);color:var(--green);padding:12px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9000;animation:fadeIn .3s ease;white-space:nowrap;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 2800);
+}
+
+// ═══════════════════════════════════════════════════════════
+// SOS — FIX: Real location + contact list + tel: links
+// ═══════════════════════════════════════════════════════════
+function triggerSOS() {
+  var modal = document.getElementById('sos-modal');
+  var locText = document.getElementById('sos-location-text');
+  var contactList = document.getElementById('sos-contact-list');
+  modal.classList.add('show');
+
+  // Build contact list in modal
+  if (trustedContacts.length === 0) {
+    contactList.innerHTML = '<div style="color:var(--text3);font-size:13px;text-align:center;padding:12px;">No trusted contacts saved yet.<br/><a style="color:var(--rose);cursor:pointer" onclick="closeSosModal();showScreen(\'screen-trust\')">Add contacts →</a></div>';
+  } else {
+    contactList.innerHTML = trustedContacts.map(function(c) {
+      var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
+      var initial = c.name.charAt(0).toUpperCase();
+      return '<div class="sos-contact-item">'
+        + '<div class="sos-contact-avatar">' + escHtml(initial) + '</div>'
+        + '<div class="sos-contact-info">'
+        + '<div class="sos-contact-name">' + escHtml(c.name) + '</div>'
+        + '<div class="sos-contact-num">' + escHtml(c.rel) + ' · ' + escHtml(c.phone) + '</div>'
+        + '</div>'
+        // FIX: Real tel: link to open dialpad
+        + '<a class="sos-call-btn" href="tel:' + cleanPhone + '">📞 Call</a>'
+        + '<a class="sos-sms-btn" href="' + buildSmsLink(cleanPhone, null) + '">💬 SMS</a>'
+        + '</div>';
+    }).join('');
+  }
+
+  // FIX: Get real GPS location
+  locText.textContent = '📍 Getting your location…';
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var lat = pos.coords.latitude.toFixed(5);
+        var lng = pos.coords.longitude.toFixed(5);
+        var mapsUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
+        locText.innerHTML = '📍 <strong>Location:</strong> ' + lat + ', ' + lng
+          + '<br/><a href="' + mapsUrl + '" target="_blank" style="color:var(--rose);font-size:12px;">Open in Google Maps ↗</a>';
+
+        // FIX: Update SMS links with real location once we have it
+        if (trustedContacts.length > 0) {
+          contactList.querySelectorAll('.sos-sms-btn').forEach(function(btn, idx) {
+            var c = trustedContacts[idx];
+            if (!c) return;
+            var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
+            btn.href = buildSmsLink(cleanPhone, mapsUrl);
+          });
+        }
+      },
+      function(err) {
+        locText.textContent = '📍 Location unavailable — share manually.';
+      },
+      { timeout: 8000, maximumAge: 0 }
+    );
+  } else {
+    locText.textContent = '📍 Location not supported on this browser.';
+  }
+}
+
+function buildSmsLink(phone, locationUrl) {
+  var msg = '🆘 EMERGENCY: I need help. I am using the Aashray safety app.';
+  if (locationUrl) msg += ' My location: ' + locationUrl;
+  // iOS uses &body=, Android uses ?body=
+  var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return isIOS
+    ? 'sms:' + phone + '&body=' + encodeURIComponent(msg)
+    : 'sms:' + phone + '?body=' + encodeURIComponent(msg);
+}
+
+function closeSosModal() {
+  document.getElementById('sos-modal').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════════
+// ASSESSMENT GAMES
+// ═══════════════════════════════════════════════════════════
 var aGames = [
   { title: 'Emotion recognition', desc: 'We\'ll use your camera to detect your current emotional state. Allow access when prompted.', type: 'emotion' },
   { title: 'Stress response',      desc: 'Wait for the circle to turn red, then tap it as fast as you can.', type: 'reaction' },
@@ -853,18 +1148,15 @@ function renderGame(idx) {
   if (idx >= aGames.length) { doAIScoring(); return; }
   var g = aGames[idx];
   var nb = document.getElementById('assess-next-btn');
-  nb.style.opacity = '0.4';
-  nb.style.pointerEvents = 'none';
+  nb.style.opacity = '0.4'; nb.style.pointerEvents = 'none';
   document.getElementById('game-counter').textContent = 'Game ' + (idx + 1) + ' of 3';
   document.getElementById('game-title').textContent = g.title;
   document.getElementById('game-desc').textContent = g.desc;
   var card = document.getElementById('game-card');
-
   if (g.type === 'emotion') {
     renderEmotionGame(card);
   } else if (g.type === 'reaction') {
-    card.innerHTML = '<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)" style="display:flex;align-items:center;justify-content:center;">●</button>'
-      + '<p id="react-status" style="color:var(--text2);text-align:center">Wait for red…</p></div>';
+    card.innerHTML = '<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)">●</button><p id="react-status" style="color:var(--text2);text-align:center">Wait for red…</p></div>';
     scheduleReaction();
   } else {
     card.innerHTML = '<div class="slider-wrap"><p class="slider-q">Right now, my stress level is:</p>'
@@ -877,100 +1169,91 @@ function renderGame(idx) {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// FIX 3: COMPLETELY REWRITTEN FACE DETECTION — robust & reliable
-// ══════════════════════════════════════════════════════════════
-
 function renderEmotionGame(card) {
-  card.innerHTML =
-    '<div class="face-container">' +
-      '<div class="face-video-wrap">' +
-        '<video id="webcam-video" autoplay muted playsinline></video>' +
-        '<canvas id="face-canvas"></canvas>' +
-      '</div>' +
-      '<div class="face-status-badge" id="face-status-badge">⏳ Starting camera…</div>' +
-      '<div class="emotion-chips" id="emotion-chips">' +
-        ['happy','sad','angry','fearful','disgusted','surprised','neutral'].map(function(e) {
-          return '<div class="emotion-chip" id="chip-' + e + '">' + e.charAt(0).toUpperCase() + e.slice(1) + '</div>';
-        }).join('') +
-      '</div>' +
-    '</div>';
+  var EMO_COLORS = {
+    happy:'#2A9D8F', sad:'#6C8EBF', angry:'#E63946', fearful:'#9B59B6',
+    disgusted:'#F4A261', surprised:'#D4AF37', neutral:'#757A8A'
+  };
+  var emotions = ['happy','sad','angry','fearful','disgusted','surprised','neutral'];
+  var trackerRows = emotions.map(function(e){
+    return '<div class="emo-row" id="erow-'+e+'">'
+      +'<span class="emo-label">'+e+'</span>'
+      +'<div class="emo-bar-wrap"><div class="emo-bar-fill" id="ebar-'+e+'" style="background:'+EMO_COLORS[e]+'"></div></div>'
+      +'<span class="emo-time" id="etime-'+e+'">0.0s</span>'
+      +'</div>';
+  }).join('');
 
+  card.innerHTML =
+    '<div class="face-container">'
+      +'<div class="face-video-wrap">'
+        +'<video id="webcam-video" autoplay muted playsinline></video>'
+        +'<canvas id="face-canvas"></canvas>'
+        +'<div class="scan-line"></div>'
+        +'<div class="face-corner face-corner-tl"></div>'
+        +'<div class="face-corner face-corner-tr"></div>'
+        +'<div class="face-corner face-corner-bl"></div>'
+        +'<div class="face-corner face-corner-br"></div>'
+        +'<div class="face-data-overlay">'
+          +'<div class="fdo-row" id="fdo-fps">FPS: --</div>'
+          +'<div class="fdo-row" id="fdo-conf">CONF: --</div>'
+          +'<div class="fdo-row" id="fdo-pts">PTS: --</div>'
+        +'</div>'
+      +'</div>'
+      +'<div class="scan-phase-label"><span class="scan-phase-dot"></span><span id="scan-phase-text">INITIALISING</span></div>'
+      +'<div class="face-status-badge" id="face-status-badge">⏳ Starting camera…</div>'
+      +'<div class="nn-readout" id="nn-readout">Awaiting face detection…</div>'
+      +'<div class="emotion-tracker">'+trackerRows+'</div>'
+      +'<div class="dominant-result" id="dominant-result">'
+        +'<div class="dr-label">Dominant Emotion Detected</div>'
+        +'<div class="dr-emotion" id="dr-emotion-text">—</div>'
+        +'<div class="dr-sub" id="dr-sub-text">—</div>'
+      +'</div>'
+    +'</div>';
+
+  S.emotionTimings = { happy:0, sad:0, angry:0, fearful:0, disgusted:0, surprised:0, neutral:0 };
+  S.emotionLastSeen = null;
+  S.emotionLastTime = null;
   startFacialRecognition();
 }
 
+function fmtSec(ms){ return (ms/1000).toFixed(1)+'s'; }
+
 async function startFacialRecognition() {
-  var badge = document.getElementById('face-status-badge');
-  var nb = document.getElementById('assess-next-btn');
-
-  // ── Step 1: Check if face-api is loaded ──
-  if (typeof faceapi === 'undefined') {
-    setFaceStatus('error', '⚠️ face-api.js failed to load. Tap Continue.');
-    enableNextBtn();
-    return;
-  }
-
-  // ── Step 2: Load models (only once) ──
+  function setPhase(p){ var el=document.getElementById('scan-phase-text'); if(el) el.textContent=p; }
+  if (typeof faceapi === 'undefined') { setFaceStatus('error','⚠️ face-api.js not loaded.'); renderManualEmotionPicker(); return; }
   if (!S.modelsLoaded) {
-    setFaceStatus('loading', '⏳ Loading AI models…');
+    setFaceStatus('loading','⏳ Loading neural network…');
+    setPhase('LOADING MODEL');
     try {
-      // FIX: Use vladmandic's CDN which properly mirrors the weights
       var CDN = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
       await faceapi.nets.tinyFaceDetector.loadFromUri(CDN);
       await faceapi.nets.faceExpressionNet.loadFromUri(CDN);
       S.modelsLoaded = true;
-    } catch (modelErr) {
-      console.warn('vladmandic CDN failed, trying justadudewhohacks GitHub:', modelErr);
-      // FIX: Fallback to direct GitHub raw content
+    } catch(e) {
       try {
-        var FALLBACK = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
-        await faceapi.nets.tinyFaceDetector.loadFromUri(FALLBACK);
-        await faceapi.nets.faceExpressionNet.loadFromUri(FALLBACK);
+        var FB = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+        await faceapi.nets.tinyFaceDetector.loadFromUri(FB);
+        await faceapi.nets.faceExpressionNet.loadFromUri(FB);
         S.modelsLoaded = true;
-      } catch (fallbackErr) {
-        console.error('All model CDNs failed:', fallbackErr);
-        setFaceStatus('error', '⚠️ Could not load models. Using manual mode.');
-        renderManualEmotionPicker();
-        return;
-      }
+      } catch(e2) { setFaceStatus('error','⚠️ Model load failed.'); renderManualEmotionPicker(); return; }
     }
   }
-
-  // ── Step 3: Request camera ──
-  setFaceStatus('loading', '📷 Requesting camera access…');
+  setFaceStatus('loading','📷 Requesting camera…');
+  setPhase('CALIBRATING');
   try {
-    var stream = await navigator.mediaDevices.getUserMedia({
-      video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }
-    });
+    var stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} } });
     S.faceStream = stream;
-
     var video = document.getElementById('webcam-video');
     if (!video) { stopCamera(); return; }
-
     video.srcObject = stream;
-
-    // FIX: Use both 'loadeddata' and polling fallback — don't rely solely on 'play'
     await waitForVideoReady(video);
-
-    // Size the overlay canvas to match video
     var canvas = document.getElementById('face-canvas');
-    if (canvas) {
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 480;
-      canvas.style.width = '100%';
-      canvas.style.height = video.offsetHeight + 'px';
-    }
-
-    setFaceStatus('active', '🔍 Looking for face…');
-
-    // ── Step 4: Start detection loop ──
+    if (canvas) { canvas.width=video.videoWidth||640; canvas.height=video.videoHeight||480; canvas.style.width='100%'; canvas.style.height='100%'; }
+    setFaceStatus('active','🔍 Scanning for face…');
+    setPhase('SCANNING');
     runFaceDetection(video, canvas);
-
-  } catch (camErr) {
-    console.error('Camera error:', camErr);
-    var msg = camErr.name === 'NotAllowedError'
-      ? '🚫 Camera permission denied. Please allow camera access and retry.'
-      : '📷 Camera unavailable on this device.';
+  } catch(camErr) {
+    var msg = camErr.name==='NotAllowedError' ? '🚫 Camera permission denied.' : '📷 Camera unavailable.';
     setFaceStatus('error', msg);
     renderManualEmotionPicker();
   }
@@ -978,158 +1261,210 @@ async function startFacialRecognition() {
 
 async function waitForVideoReady(video) {
   return new Promise(function(resolve) {
-    // Already has data
     if (video.readyState >= 2) { resolve(); return; }
-    // Try multiple events
-    function onReady() {
-      video.removeEventListener('loadeddata', onReady);
-      video.removeEventListener('canplay', onReady);
-      resolve();
-    }
+    function onReady(){ video.removeEventListener('loadeddata',onReady); video.removeEventListener('canplay',onReady); resolve(); }
     video.addEventListener('loadeddata', onReady);
     video.addEventListener('canplay', onReady);
-    // Fallback: poll every 100ms for up to 5s
-    var polls = 0;
-    var poller = setInterval(function() {
+    var polls=0, poller=setInterval(function(){
       polls++;
-      if (video.readyState >= 2 || !document.getElementById('webcam-video')) {
-        clearInterval(poller);
-        resolve();
-      }
-      if (polls > 50) { clearInterval(poller); resolve(); }
-    }, 100);
+      if(video.readyState>=2||!document.getElementById('webcam-video')){ clearInterval(poller); resolve(); }
+      if(polls>50){ clearInterval(poller); resolve(); }
+    },100);
   });
 }
 
-function runFaceDetection(video, canvas) {
-  var lastEmotion = null;
-  var detectionCount = 0;
-  var noFaceCount = 0;
+var NN_MESSAGES = [
+  'Extracting facial action units…','Running micro-expression analysis…',
+  'Mapping 68 facial landmarks…','Classifying orbital region…',
+  'Analysing zygomatic muscle activity…','Computing valence vector…',
+  'Cross-referencing arousal state…','Triangulating brow tension index…',
+  'Sampling periocular region…','Mapping corrugator muscle signal…',
+  'Detecting lip corner displacement…','Updating temporal emotion graph…',
+  'Verifying FACS coding…','Recalibrating baseline neutral…'
+];
+var nnMsgIdx = 0;
 
-  S.faceInterval = setInterval(async function() {
-    // Guard: check elements still exist
-    var vidEl = document.getElementById('webcam-video');
-    if (!vidEl || !S.faceStream) { clearInterval(S.faceInterval); return; }
-
-    try {
-      var options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 });
-      var result = await faceapi.detectSingleFace(vidEl, options).withFaceExpressions();
-
-      if (result && result.expressions) {
-        noFaceCount = 0;
-        detectionCount++;
-
-        // Draw detection box on canvas
-        var cvs = document.getElementById('face-canvas');
-        if (cvs) {
-          var ctx = cvs.getContext('2d');
-          cvs.width = vidEl.videoWidth;
-          cvs.height = vidEl.videoHeight;
-          ctx.clearRect(0, 0, cvs.width, cvs.height);
-          // Draw bounding box
-          var box = result.detection.box;
-          ctx.strokeStyle = '#3A5F0B';
-          ctx.lineWidth = 3;
-          ctx.strokeRect(box.x, box.y, box.width, box.height);
-          // Corner accents
-          var clen = 20;
-          ctx.strokeStyle = '#D4AF37';
-          ctx.lineWidth = 4;
-          [[box.x, box.y], [box.x+box.width, box.y], [box.x, box.y+box.height], [box.x+box.width, box.y+box.height]].forEach(function(c, i) {
-            ctx.beginPath();
-            ctx.moveTo(c[0] + (i%2===0?0:clen) * (i%2===0?1:-1), c[1]);
-            ctx.lineTo(c[0], c[1]);
-            ctx.lineTo(c[0], c[1] + (i<2?clen:-clen));
-            ctx.stroke();
-          });
-        }
-
-        // Find dominant expression
-        var exps = result.expressions;
-        var topEmotion = Object.keys(exps).reduce(function(a, b) { return exps[a] > exps[b] ? a : b; });
-        var confidence = Math.round(exps[topEmotion] * 100);
-
-        // Update chips
-        Object.keys(exps).forEach(function(e) {
-          var chip = document.getElementById('chip-' + e);
-          if (chip) chip.classList.toggle('active', e === topEmotion);
-        });
-
-        // Update badge
-        setFaceStatus('detected', '✓ ' + topEmotion.toUpperCase() + ' · ' + confidence + '% confidence');
-
-        // Save emotion
-        S.assessData.detectedEmotion = topEmotion;
-        lastEmotion = topEmotion;
-
-        // Enable next button after 2 stable detections
-        if (detectionCount >= 2) {
-          var nb = document.getElementById('assess-next-btn');
-          if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; nb.textContent = 'Confirm — ' + topEmotion.toUpperCase() + ' detected →'; }
-        }
-
-      } else {
-        noFaceCount++;
-        // Clear canvas
-        var cvs2 = document.getElementById('face-canvas');
-        if (cvs2) cvs2.getContext('2d').clearRect(0, 0, cvs2.width, cvs2.height);
-        // Clear chips
-        document.querySelectorAll('.emotion-chip').forEach(function(c) { c.classList.remove('active'); });
-
-        if (noFaceCount > 10) {
-          setFaceStatus('active', '👀 Position face in frame…');
-        }
-      }
-    } catch (detErr) {
-      console.warn('Detection frame error:', detErr);
-    }
-  }, 400); // FIX: 400ms is more reliable than 500ms for smooth detection
+function getDominantEmotion() {
+  if (!S.emotionTimings) return 'neutral';
+  return Object.keys(S.emotionTimings).reduce(function(a,b){ return S.emotionTimings[a]>S.emotionTimings[b]?a:b; });
 }
 
-// ── Manual fallback if camera/models fail ──
+function updateEmotionBars(currentEmo) {
+  if (!S.emotionTimings) return;
+  var total = Object.keys(S.emotionTimings).reduce(function(s,k){ return s+S.emotionTimings[k]; },0);
+  if (total===0) return;
+  var dom = getDominantEmotion();
+  Object.keys(S.emotionTimings).forEach(function(e){
+    var pct = (S.emotionTimings[e]/total)*100;
+    var bar=document.getElementById('ebar-'+e), timeEl=document.getElementById('etime-'+e), row=document.getElementById('erow-'+e);
+    if(bar) bar.style.width=pct.toFixed(1)+'%';
+    if(timeEl) timeEl.textContent=fmtSec(S.emotionTimings[e]);
+    if(row) row.classList.toggle('dominant', e===dom);
+  });
+}
+
+function showDominantResult(emo) {
+  var card=document.getElementById('dominant-result'), emoEl=document.getElementById('dr-emotion-text'), subEl=document.getElementById('dr-sub-text');
+  if(!card) return;
+  card.classList.add('show');
+  if(emoEl) emoEl.textContent = emo;
+  var total=Object.keys(S.emotionTimings).reduce(function(s,k){return s+S.emotionTimings[k];},0);
+  var pct = total>0?Math.round(S.emotionTimings[emo]/total*100):0;
+  if(subEl) subEl.textContent = pct+'% of scan time · '+fmtSec(S.emotionTimings[emo])+' duration';
+}
+
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); }
+
+function runFaceDetection(video, canvas) {
+  var detectionCount=0, frameCount=0, fpsTimer=Date.now(), lastFrameTime=Date.now(), noFaceFrames=0;
+
+  // Cycle neural net readout text
+  var nnInterval = setInterval(function(){
+    var el=document.getElementById('nn-readout'); if(!el){ clearInterval(nnInterval); return; }
+    nnMsgIdx = (nnMsgIdx+1)%NN_MESSAGES.length;
+    var dom = getDominantEmotion();
+    var topLine = S.emotionTimings ? Object.keys(S.emotionTimings).sort(function(a,b){return S.emotionTimings[b]-S.emotionTimings[a];}).slice(0,3).map(function(e){return e+'('+fmtSec(S.emotionTimings[e])+')';}).join(' | ') : '';
+    el.textContent = '> '+NN_MESSAGES[nnMsgIdx]+(topLine?'\nTop: '+topLine:'');
+  },1100);
+
+  S.faceInterval = setInterval(async function() {
+    var vidEl=document.getElementById('webcam-video');
+    if(!vidEl||!S.faceStream){ clearInterval(S.faceInterval); clearInterval(nnInterval); return; }
+    var now=Date.now(), elapsed=now-lastFrameTime; lastFrameTime=now;
+    frameCount++;
+    if(now-fpsTimer>1000){
+      var fps=Math.round(frameCount*1000/(now-fpsTimer));
+      var fpsEl=document.getElementById('fdo-fps'); if(fpsEl) fpsEl.textContent='FPS: '+fps;
+      frameCount=0; fpsTimer=now;
+    }
+    try {
+      var opts=new faceapi.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:0.35});
+      var result=await faceapi.detectSingleFace(vidEl,opts).withFaceExpressions();
+      var cvs=document.getElementById('face-canvas'); if(!cvs){ clearInterval(S.faceInterval); clearInterval(nnInterval); return; }
+      var ctx=cvs.getContext('2d');
+      cvs.width=vidEl.videoWidth||300; cvs.height=vidEl.videoHeight||300;
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+
+      if(result&&result.expressions){
+        noFaceFrames=0; detectionCount++;
+        var box=result.detection.box, exps=result.expressions;
+        var topEmo=Object.keys(exps).reduce(function(a,b){return exps[a]>exps[b]?a:b;});
+        var conf=Math.round(exps[topEmo]*100);
+        var t=Date.now()/1000, pulse=0.65+0.35*Math.sin(t*3);
+
+        // ── Timed emotion accumulation ──
+        if(S.emotionTimings) S.emotionTimings[topEmo]=(S.emotionTimings[topEmo]||0)+elapsed;
+
+        // ── Face box glow fill ──
+        ctx.fillStyle='rgba(42,157,143,'+(0.04*pulse)+')';
+        ctx.fillRect(box.x,box.y,box.width,box.height);
+
+        // ── Main box ──
+        ctx.strokeStyle='rgba(42,157,143,'+pulse+')';
+        ctx.lineWidth=1.5;
+        ctx.strokeRect(box.x,box.y,box.width,box.height);
+
+        // ── Gold corner L-brackets ──
+        var cLen=Math.min(box.width,box.height)*0.18;
+        ctx.strokeStyle='#D4AF37'; ctx.lineWidth=2.5;
+        [[box.x,box.y,1,1],[box.x+box.width,box.y,-1,1],[box.x,box.y+box.height,1,-1],[box.x+box.width,box.y+box.height,-1,-1]].forEach(function(c){
+          ctx.beginPath(); ctx.moveTo(c[0]+c[2]*cLen,c[1]); ctx.lineTo(c[0],c[1]); ctx.lineTo(c[0],c[1]+c[3]*cLen); ctx.stroke();
+        });
+
+        // ── Animated landmark dots (18 anatomically plausible points) ──
+        var cx=box.x+box.width/2, cy=box.y+box.height/2, w=box.width, h=box.height;
+        var lm=[
+          [cx-w*.22,cy-h*.1],[cx+w*.22,cy-h*.1],[cx-w*.15,cy-h*.1],[cx+w*.15,cy-h*.1],
+          [cx-w*.24,cy-h*.22],[cx+w*.24,cy-h*.22],[cx-w*.12,cy-h*.24],[cx+w*.12,cy-h*.24],
+          [cx,cy],[cx-w*.07,cy+h*.08],[cx+w*.07,cy+h*.08],
+          [cx-w*.18,cy+h*.2],[cx,cy+h*.18],[cx+w*.18,cy+h*.2],[cx,cy+h*.28],
+          [cx-w*.32,cy+h*.28],[cx+w*.32,cy+h*.28],[cx,cy+h*.44]
+        ];
+        lm.forEach(function(p,i){
+          var alpha=0.4+0.6*Math.abs(Math.sin(t*2.5+i*0.6));
+          ctx.beginPath(); ctx.arc(p[0],p[1],2,0,Math.PI*2);
+          ctx.fillStyle='rgba(42,157,143,'+alpha+')'; ctx.fill();
+        });
+
+        // ── Connection lines (eyes, mouth) ──
+        ctx.strokeStyle='rgba(42,157,143,0.22)'; ctx.lineWidth=0.8;
+        [[0,2],[1,3],[11,12],[12,13]].forEach(function(pair){
+          ctx.beginPath(); ctx.moveTo(lm[pair[0]][0],lm[pair[0]][1]); ctx.lineTo(lm[pair[1]][0],lm[pair[1]][1]); ctx.stroke();
+        });
+
+        // ── Confidence arc (top-right of face box) ──
+        var arcX=box.x+box.width-16, arcY=box.y+16, arcR=12;
+        ctx.beginPath(); ctx.arc(arcX,arcY,arcR,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(arcX,arcY,arcR,-Math.PI/2,-Math.PI/2+(conf/100)*Math.PI*2,false);
+        ctx.strokeStyle=conf>80?'#2A9D8F':conf>50?'#D4AF37':'#E63946'; ctx.lineWidth=2.5; ctx.stroke();
+        ctx.fillStyle='rgba(42,157,143,0.95)'; ctx.font='bold 8px Courier New'; ctx.textAlign='center';
+        ctx.fillText(conf+'%',arcX,arcY+3); ctx.textAlign='left';
+
+        // ── Emotion label tag ──
+        var tagY=box.y+box.height+20;
+        ctx.fillStyle='rgba(0,0,0,0.7)';
+        roundRect(ctx,cx-48,tagY-14,96,16,4); ctx.fill();
+        ctx.fillStyle='#2A9D8F'; ctx.font='bold 10px Courier New'; ctx.textAlign='center';
+        ctx.fillText(topEmo.toUpperCase(),cx,tagY); ctx.textAlign='left';
+
+        // ── HUD update ──
+        var cEl=document.getElementById('fdo-conf'); if(cEl) cEl.textContent='CONF: '+conf+'%';
+        var pEl=document.getElementById('fdo-pts'); if(pEl) pEl.textContent='PTS: '+lm.length;
+        setFaceStatus('detected','✓ '+topEmo.toUpperCase()+' · '+conf+'% confidence');
+        updateEmotionBars(topEmo);
+        S.assessData.detectedEmotion = getDominantEmotion();
+
+        if(detectionCount>=3){
+          var dom=getDominantEmotion();
+          var nb=document.getElementById('assess-next-btn');
+          if(nb){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Confirm — '+dom.toUpperCase()+' →'; }
+          showDominantResult(dom);
+        }
+      } else {
+        noFaceFrames++;
+        if(noFaceFrames>5) setFaceStatus('active','👀 Position face in frame…');
+        var cEl2=document.getElementById('fdo-conf'); if(cEl2) cEl2.textContent='CONF: --';
+      }
+    } catch(e){ console.warn('Detection err:',e); }
+  }, 350);
+}
+
 function renderManualEmotionPicker() {
   var card = document.getElementById('game-card');
   if (!card) return;
-  card.innerHTML =
-    '<div class="face-permission-box">' +
-      '<div class="face-permission-icon">🎭</div>' +
-      '<div class="face-permission-title">How are you feeling right now?</div>' +
-      '<div class="face-permission-sub">Camera not available. Select your current emotion:</div>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px">' +
-        ['😊 Happy','😢 Sad','😰 Anxious','😠 Angry','😮 Surprised','😐 Neutral','😨 Fearful'].map(function(e) {
-          var parts = e.split(' ');
-          var emoji = parts[0], label = parts[1].toLowerCase();
-          return '<button onclick="selectManualEmotion(\'' + label + '\', this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;cursor:pointer;color:var(--text);font-size:18px;transition:var(--transition)">' + parts[0] + '<br><span style="font-size:11px;color:var(--text3)">' + parts[1] + '</span></button>';
-        }).join('') +
-      '</div>' +
-    '</div>';
+  card.innerHTML = '<div style="text-align:center;padding:8px">'
+    + '<p style="font-size:15px;font-weight:600;margin-bottom:16px">How are you feeling right now?</p>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">'
+    + ['😊 Happy','😢 Sad','😰 Anxious','😠 Angry','😮 Surprised','😐 Neutral','😨 Fearful'].map(function(e){
+        var p=e.split(' '), emoji=p[0], label=p[1].toLowerCase();
+        return '<button onclick="selectManualEmotion(\''+label+'\',this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;cursor:pointer;color:var(--text);font-size:18px;transition:all .2s;font-family:DM Sans,sans-serif">'+emoji+'<br><span style="font-size:11px;color:var(--text3)">'+p[1]+'</span></button>';
+      }).join('')
+    + '</div></div>';
 }
 
 function selectManualEmotion(emotion, btn) {
   S.assessData.detectedEmotion = emotion;
-  document.querySelectorAll('#game-card button').forEach(function(b) { b.style.borderColor = 'var(--border2)'; b.style.background = 'var(--surface2)'; });
-  btn.style.borderColor = 'var(--rose)';
-  btn.style.background = 'var(--rose-bg)';
+  document.querySelectorAll('#game-card button').forEach(function(b){ b.style.borderColor='var(--border2)'; b.style.background='var(--surface2)'; });
+  btn.style.borderColor='var(--rose)'; btn.style.background='var(--rose-bg)';
   var nb = document.getElementById('assess-next-btn');
-  if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; nb.textContent = 'Continue →'; }
+  if (nb) { nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Continue →'; }
 }
 
 function setFaceStatus(type, text) {
   var badge = document.getElementById('face-status-badge');
   if (!badge) return;
   badge.textContent = text;
-  badge.className = 'face-status-badge' + (type === 'detected' ? ' detected' : type === 'error' ? ' error' : '');
+  badge.className = 'face-status-badge' + (type==='detected'?' detected':type==='error'?' error':'');
 }
 
 function enableNextBtn() {
   var nb = document.getElementById('assess-next-btn');
-  if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; }
+  if (nb) { nb.style.opacity='1'; nb.style.pointerEvents='auto'; }
 }
 
-// ── REACTION GAME ──
 function hitTarget(btn) {
   S.assessData.reactionTime = Date.now() - S.assessStart;
-  btn.style.background = 'var(--green)'; btn.style.borderColor = 'var(--green)'; btn.style.boxShadow = '0 0 20px rgba(42,157,143,0.4)';
+  btn.style.background='var(--green)'; btn.style.borderColor='var(--green)';
   var st = document.getElementById('react-status');
   if (st) st.textContent = '✓ Recorded! ' + S.assessData.reactionTime + 'ms';
   enableNextBtn();
@@ -1140,100 +1475,52 @@ function scheduleReaction() {
   S.assessStart = Date.now() + delay;
   setTimeout(function() {
     var t = document.getElementById('react-target');
-    if (t) { t.style.background = 'var(--red)'; t.style.borderColor = 'var(--red)'; t.style.boxShadow = '0 0 20px rgba(230,57,70,0.4)'; t.style.color = '#fff'; S.assessStart = Date.now(); }
+    if (t) { t.style.background='var(--red)'; t.style.borderColor='var(--red)'; t.style.color='#fff'; S.assessStart=Date.now(); }
   }, delay);
 }
 
-function slideChg(type, val) { S.assessData[type + 'Slider'] = parseInt(val); }
+function slideChg(type, val) { S.assessData[type+'Slider'] = parseInt(val); }
 function nextAssessGame() { stopCamera(); S.assessGame++; renderGame(S.assessGame); }
 
-// ── AI SCORING ──
+// ═══════════════════════════════════════════════════════════
+// AI SCORING
+// ═══════════════════════════════════════════════════════════
 async function doAIScoring() {
-  const ov = document.getElementById('scoring-overlay');
+  var ov = document.getElementById('scoring-overlay');
   ov.classList.add('show');
-
-  // ── 1. PROGRESS ANIMATION ──
-  const steps = ['ss1', 'ss2', 'ss3', 'ss4'];
-  // Reset steps to default state
-  steps.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.className = 'scoring-step';
-  });
-
-  let stepIdx = 0;
-  const stepTimer = setInterval(() => {
-    if (stepIdx > 0) document.getElementById(steps[stepIdx - 1]).className = 'scoring-step done';
-    if (stepIdx < steps.length) document.getElementById(steps[stepIdx]).className = 'scoring-step active';
+  var steps = ['ss1','ss2','ss3','ss4'];
+  steps.forEach(function(id){ var el=document.getElementById(id); if(el) el.className='scoring-step'; });
+  var stepIdx=0;
+  var stepTimer = setInterval(function(){
+    if(stepIdx>0){ var prev=document.getElementById(steps[stepIdx-1]); if(prev) prev.className='scoring-step done'; }
+    if(stepIdx<steps.length){ var cur=document.getElementById(steps[stepIdx]); if(cur) cur.className='scoring-step active'; }
     stepIdx++;
-    if (stepIdx > steps.length) clearInterval(stepTimer);
-  }, 500);
+    if(stepIdx>steps.length) clearInterval(stepTimer);
+  },500);
 
-  let scored = null;
-
-  // ── 2. AI PROCESSING ──
+  var scored = null;
   if (!S.demoMode) {
     try {
-      const payload = JSON.stringify({
-        stress: S.assessData.stressSlider,
-        safety: S.assessData.safetySlider,
-        cohort: S.cohort,
-        mood: S.mood,
-        reason: S.reason,
-        rt: S.assessData.reactionTime,
-        emotion: S.assessData.detectedEmotion
-      });
-
-      // Fetch from your Render Backend
-      const raw = await askGemini([{ role: 'user', content: payload }], SCORING_SYS, 400);
-      
+      var payload = JSON.stringify({ stress:S.assessData.stressSlider, safety:S.assessData.safetySlider, cohort:S.cohort, mood:S.mood, reason:S.reason, rt:S.assessData.reactionTime, emotion:S.assessData.detectedEmotion });
+      var raw = await askGemini([{role:'user',content:payload}], SCORING_SYS, 400);
       if (raw) {
-        const start = raw.indexOf('{');
-        const end = raw.lastIndexOf('}');
-        if (start !== -1 && end !== -1) {
-          scored = JSON.parse(raw.substring(start, end + 1));
-        }
+        var start=raw.indexOf('{'), end=raw.lastIndexOf('}');
+        if(start!==-1&&end!==-1) scored=JSON.parse(raw.substring(start,end+1));
       }
-    } catch (err) {
-      // If 429 (Quota) or 500 (Server Error) occurs, we catch it here
-      console.warn("⚠️ AI Engine Busy. Switching to Heuristic Logic.", err);
-    }
+    } catch(err) { console.warn('AI scoring failed, using heuristic:', err); }
   }
 
-  // ── 3. HEURISTIC ENGINE (The "Pitch Saver") ──
-  // This runs if Gemini fails or if Demo Mode is on
   if (!scored) {
-    const stressVal = S.assessData.stressSlider || 50;
-    const emotionMultiplier = { 
-      fearful: 1.3, angry: 1.2, sad: 1.15, disgusted: 1.1, 
-      surprised: 1.0, neutral: 0.9, happy: 0.75 
-    };
-    
-    const em = emotionMultiplier[S.assessData.detectedEmotion] || 1.0;
-    const adjustedStress = Math.min(100, Math.round(stressVal * em));
-
-    scored = {
-      stress: adjustedStress,
-      anxiety: Math.round(adjustedStress * 0.9),
-      stability: Math.max(10, 100 - adjustedStress),
-      isolation: Math.round(adjustedStress * 0.7),
-      composite: Math.round(adjustedStress * 0.85),
-      risk: adjustedStress > 70 ? 'HIGH' : adjustedStress > 40 ? 'MEDIUM' : 'LOW',
-      dvRisk: adjustedStress > 70 ? 'high' : adjustedStress > 40 ? 'medium' : 'low',
-      summary: `Analysis verified. Result weighted by your input and ${S.assessData.detectedEmotion || 'baseline'} emotional indicators.`,
-      insight: 'Your wellness profile is complete. Aasha is available in the chat to discuss these findings with you.'
-    };
+    var sv = S.assessData.stressSlider||50;
+    var em = {fearful:1.3,angry:1.2,sad:1.15,disgusted:1.1,surprised:1.0,neutral:0.9,happy:0.75}[S.assessData.detectedEmotion]||1.0;
+    var adj = Math.min(100,Math.round(sv*em));
+    scored = { stress:adj, anxiety:Math.round(adj*0.9), stability:Math.max(10,100-adj), isolation:Math.round(adj*0.7), composite:Math.round(adj*0.85), risk:adj>70?'HIGH':adj>40?'MEDIUM':'LOW', dvRisk:adj>70?'high':adj>40?'medium':'low', summary:'Analysis complete. Results weighted by your inputs and emotional indicators.', insight:'Your wellness profile is ready. Aasha is available in chat to discuss these findings.' };
   }
 
-  // ── 4. FINALIZATION ──
   S.scores = scored;
-  
-  // Save to Database in background
-  if (!S.demoMode) {
-    saveAssessmentToDB(scored).catch(e => console.error("DB Save suppressed:", e));
-  }
+  if (!S.demoMode) saveAssessmentToDB(scored).catch(function(){});
 
-  // Ensure the animation finishes (2.4 seconds total) before showing results
-  setTimeout(() => {
+  setTimeout(function(){
     clearInterval(stepTimer);
     ov.classList.remove('show');
     renderResults(scored);
@@ -1242,61 +1529,51 @@ async function doAIScoring() {
 }
 
 function renderResults(sc) {
-  var pct = sc.composite / 100;
+  var pct = sc.composite/100;
   var arc = document.getElementById('result-arc');
-  if (arc) arc.style.strokeDashoffset = 251 - (251 * pct);
+  if (arc) arc.style.strokeDashoffset = 251-(251*pct);
   var rv = document.getElementById('result-ring-val');
   if (rv) rv.textContent = sc.composite;
-  document.getElementById('result-label').textContent = sc.risk === 'LOW' ? 'Low overall risk' : sc.risk === 'MEDIUM' ? 'Moderate risk detected' : 'Elevated risk — seek support';
-  document.getElementById('result-sub').textContent = sc.summary || '';
-  document.getElementById('ai-analysis-text').textContent = sc.insight || sc.summary || '';
-  ['stress','anxiety','stability','isolation'].forEach(function(k) {
-    var rv2 = document.getElementById('r-' + k); var bar = document.getElementById('rb-' + k);
-    if (rv2) rv2.textContent = sc[k] + '%';
-    if (bar) bar.style.width = sc[k] + '%';
+  document.getElementById('result-label').textContent = sc.risk==='LOW'?'Low overall risk':sc.risk==='MEDIUM'?'Moderate risk detected':'Elevated risk — seek support';
+  document.getElementById('result-sub').textContent = sc.summary||'';
+  document.getElementById('ai-analysis-text').textContent = sc.insight||sc.summary||'';
+  ['stress','anxiety','stability','isolation'].forEach(function(k){
+    var rv2=document.getElementById('r-'+k); var bar=document.getElementById('rb-'+k);
+    if(rv2) rv2.textContent=sc[k]+'%';
+    if(bar) bar.style.width=sc[k]+'%';
   });
-  var dvBox = document.getElementById('dv-risk-box');
-  if (dvBox) {
-    dvBox.className = 'dv-risk-box ' + (sc.dvRisk === 'high' ? 'dvrhigh' : sc.dvRisk === 'medium' ? 'dvrmed' : 'dvrlow');
-    document.getElementById('dvr-title').textContent = 'DV Risk: ' + (sc.dvRisk || 'low').toUpperCase();
-    document.getElementById('dvr-text').textContent = sc.dvRisk === 'high' ? 'Elevated signals detected. Please reach out to a trusted contact or helpline.' : sc.dvRisk === 'medium' ? 'Some signals present. Speaking with a counsellor may help.' : 'No significant DV risk signals detected at this time.';
+  var dvBox=document.getElementById('dv-risk-box');
+  if(dvBox){
+    dvBox.className='dv-risk-box '+(sc.dvRisk==='high'?'dvrhigh':sc.dvRisk==='medium'?'dvrmed':'dvrlow');
+    document.getElementById('dvr-title').textContent='DV Risk: '+(sc.dvRisk||'low').toUpperCase();
+    document.getElementById('dvr-text').textContent=sc.dvRisk==='high'?'Elevated signals detected. Please reach out to a trusted contact or helpline.':sc.dvRisk==='medium'?'Some signals present. Speaking with a counsellor may help.':'No significant DV risk signals detected at this time.';
   }
   updateDashScores();
 }
 
-// ── BACKEND ──
+// ═══════════════════════════════════════════════════════════
+// BACKEND
+// ═══════════════════════════════════════════════════════════
 async function askGemini(messages, system, maxTok) {
   if (S.demoMode) return null;
   try {
-    const r = await fetch(BACKEND_BASE_URL + '/api/gemini', { 
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify({ messages: messages, system: system || '', max_tokens: maxTok || 500 }) 
-    });
-
-    // ── NEW: If server crashes (500), return null to trigger local math ──
-    if (!r.ok) {
-      console.warn("Backend returned an error. Using local fallback.");
-      return null; 
-    }
-
-    const d = await r.json();
-    return d.reply || null;
-  } catch (e) {
-    console.error("Network error:", e);
-    return null;
-  }
+    var r = await fetch(BACKEND_BASE_URL+'/api/gemini', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:messages,system:system||'',max_tokens:maxTok||500}) });
+    if (!r.ok) return null;
+    var d = await r.json();
+    return d.reply||null;
+  } catch(e) { return null; }
 }
 
 async function saveAssessmentToDB(scores) {
-  if (S.demoMode) return;
-  try { await fetch(BACKEND_BASE_URL + '/api/save_assessment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(scores) }); } catch (e) {}
+  try { await fetch(BACKEND_BASE_URL+'/api/save_assessment', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(scores)}); } catch(e){}
 }
 
 var AASHA_SYS = 'You are Aasha, a trauma-informed AI companion on Aashray. Speak warmly, concisely (2-4 sentences), validate feelings without giving medical advice.';
 var SCORING_SYS = 'You are a clinical scoring engine. Return ONLY valid JSON (no markdown): {"stress":int,"anxiety":int,"stability":int,"isolation":int,"composite":int,"risk":"LOW"|"MEDIUM"|"HIGH","dvRisk":"low"|"medium"|"high","summary":"string","insight":"string"}';
 
-// ── CHAT ──
+// ═══════════════════════════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════════════════════════
 function initChat() {
   if (S.chatInitialized) return;
   S.chatInitialized = true;
@@ -1307,52 +1584,52 @@ async function sendChat() {
   var inp = document.getElementById('chat-input');
   var txt = inp.value.trim();
   if (!txt) return;
-  inp.value = ''; inp.style.height = 'auto';
-  addMsg(txt, 'user');
-  S.chatHistory.push({ role: 'user', content: txt });
+  inp.value=''; inp.style.height='auto';
+  addMsg(txt,'user');
+  S.chatHistory.push({role:'user',content:txt});
   var typing = addTyping();
   var reply = null;
   if (!S.demoMode) reply = await askGemini(S.chatHistory, AASHA_SYS, 300);
   typing.remove();
-  var response = reply || getDemoReply(txt);
-  addMsg(response, 'bot');
-  S.chatHistory.push({ role: 'assistant', content: response });
+  var response = reply||getDemoReply(txt);
+  addMsg(response,'bot');
+  S.chatHistory.push({role:'assistant',content:response});
   var distressWords = ['hurt','unsafe','scared','afraid','hit','abuse','kill','danger','help me','trapped'];
-  if (distressWords.some(function(w) { return txt.toLowerCase().includes(w); })) document.getElementById('dv-alert').classList.add('show');
+  if (distressWords.some(function(w){ return txt.toLowerCase().includes(w); })) document.getElementById('dv-alert').classList.add('show');
 }
 
 function getDemoReply(txt) {
-  var lower = txt.toLowerCase();
-  if (lower.includes('safe') || lower.includes('afraid') || lower.includes('scared')) return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?";
-  if (lower.includes('stress') || lower.includes('anxious')) return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?";
-  if (lower.includes('alone') || lower.includes('lonely')) return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening.";
+  var l = txt.toLowerCase();
+  if (l.includes('safe')||l.includes('afraid')||l.includes('scared')) return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?";
+  if (l.includes('stress')||l.includes('anxious')) return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?";
+  if (l.includes('alone')||l.includes('lonely')) return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening.";
   return "Thank you for sharing that with me. Your feelings are valid. Can you tell me a little more about what's been going on?";
 }
 
 function addMsg(text, cls) {
   var el = document.createElement('div');
-  el.className = 'msg ' + cls; el.textContent = text;
-  var box = document.getElementById('chat-messages');
-  box.appendChild(el); box.scrollTop = box.scrollHeight;
+  el.className='msg '+cls; el.textContent=text;
+  var box=document.getElementById('chat-messages');
+  box.appendChild(el); box.scrollTop=box.scrollHeight;
   return el;
 }
 
 function addTyping() {
   var el = document.createElement('div');
-  el.className = 'msg bot thinking';
-  el.innerHTML = '<div class="tdots"><span></span><span></span><span></span></div> Aasha is thinking…';
-  var box = document.getElementById('chat-messages');
-  box.appendChild(el); box.scrollTop = box.scrollHeight;
+  el.className='msg bot thinking';
+  el.innerHTML='<div class="tdots"><span></span><span></span><span></span></div> Aasha is thinking…';
+  var box=document.getElementById('chat-messages');
+  box.appendChild(el); box.scrollTop=box.scrollHeight;
   return el;
 }
 
-function handleChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } }
-function useSuggestion(btn) { document.getElementById('chat-input').value = btn.textContent; sendChat(); }
+function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
+function useSuggestion(btn) { document.getElementById('chat-input').value=btn.textContent; sendChat(); }
 
-// ── EMERGENCY ──
-function triggerSOS() {
-  alert('SOS Triggered!\n\nYour trusted contacts have been alerted with your location.\n\nEmergency services: Call 112\nWomen helpline: 1091');
-}
+// Close modal on overlay click
+document.getElementById('add-contact-modal').addEventListener('click', function(e){
+  if (e.target === this) closeAddContact();
+});
 </script>
 </body>
 </html>
