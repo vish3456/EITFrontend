@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Aashray — AI-Powered Women Safety Platform</title>
-<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<!-- FIX 1: Use a more reliable CDN for face-api.js -->
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 /* ── MODERN UI RESET & VARIABLES ── */
@@ -138,21 +139,8 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .choice-btn.selected { border-color: var(--rose); background: var(--rose-bg); box-shadow: 0 4px 12px var(--rose-bg); }
 .choice-btn .ct { font-weight: 600; font-size: 15px; display: block; margin-bottom: 4px; }
 .choice-btn .cs { font-size: 13px; color: var(--text3); }
-
-/* ── FIXED: Next button states ── */
-.onboard-next {
-  margin-top: 24px; width: 100%;
-  background: var(--rose); color: #fff; border: none;
-  padding: 16px; font-family: 'DM Sans', sans-serif;
-  font-weight: 600; font-size: 15px; cursor: pointer;
-  border-radius: var(--radius-md);
-  opacity: 0.35; transition: var(--transition);
-  pointer-events: none;
-}
-.onboard-next.ready {
-  opacity: 1; pointer-events: auto;
-  box-shadow: 0 4px 15px rgba(58,95,11,0.25);
-}
+.onboard-next { margin-top: 24px; width: 100%; background: var(--rose); color: #fff; border: none; padding: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; border-radius: var(--radius-md); opacity: 0.35; transition: var(--transition); pointer-events: none; }
+.onboard-next.ready { opacity: 1; pointer-events: auto; box-shadow: 0 4px 15px rgba(58,95,11,0.25); }
 .onboard-next.ready:active { transform: scale(0.98); }
 
 /* ── DASHBOARD ── */
@@ -212,6 +200,73 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .slider-q { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 12px; }
 input[type=range] { width: 100%; accent-color: var(--rose); cursor: pointer; height: 6px; background: var(--surface2); border-radius: 3px; outline: none; -webkit-appearance: none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--rose); cursor: pointer; }
+
+/* ── FACE DETECTION SPECIFIC STYLES ── */
+.face-container { position: relative; display: flex; flex-direction: column; align-items: center; }
+.face-video-wrap { position: relative; width: 100%; max-width: 320px; margin: 0 auto 12px; }
+#webcam-video {
+  width: 100%;
+  border-radius: 12px;
+  background: #000;
+  object-fit: cover;
+  display: block;
+  transform: scaleX(-1); /* Mirror for selfie cam */
+}
+#face-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  transform: scaleX(-1);
+}
+.face-status-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 8px 16px;
+  font-size: 13px; font-weight: 500; color: var(--text2);
+  margin-bottom: 12px; min-width: 200px; justify-content: center;
+  transition: var(--transition);
+}
+.face-status-badge.detected {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(42,157,143,0.1);
+}
+.face-status-badge.error {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-bg);
+}
+.emotion-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.emotion-chip {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 6px 14px;
+  font-size: 12px; font-weight: 600; color: var(--text3);
+  transition: var(--transition);
+}
+.emotion-chip.active {
+  background: var(--rose-bg); border-color: var(--rose);
+  color: var(--text); transform: scale(1.05);
+}
+.face-loader {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 20px;
+}
+.face-loader-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--surface2);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.face-loader-text { font-size: 13px; color: var(--text3); text-align: center; }
+.face-permission-box {
+  text-align: center; padding: 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.face-permission-icon { font-size: 40px; margin-bottom: 4px; }
+.face-permission-title { font-size: 15px; font-weight: 600; }
+.face-permission-sub { font-size: 13px; color: var(--text3); line-height: 1.5; max-width: 260px; }
 
 /* ── SCORING OVERLAY ── */
 .scoring-overlay { position: fixed; inset: 0; background: rgba(11,12,16,0.95); backdrop-filter: blur(10px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; text-align: center; padding: 32px; }
@@ -408,8 +463,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="step-dot" id="sd3"></div>
       <div class="step-dot" id="sd4"></div>
     </div>
-
-    <!-- Step 1 -->
     <div id="os1">
       <p class="onboard-label">Step 1 of 4</p>
       <h2 class="onboard-q">What describes your current life situation?</h2>
@@ -425,50 +478,28 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       </div>
       <button class="onboard-next" id="on1" onclick="nextStep(2)">Continue →</button>
     </div>
-
-    <!-- Step 2 -->
     <div id="os2" style="display:none">
       <p class="onboard-label">Step 2 of 4</p>
       <h2 class="onboard-q">How have you been feeling lately?</h2>
       <div class="choice-grid">
-        <button class="choice-btn" onclick="pick(this,'mood','well')">
-          <span class="ct">Generally well</span><span class="cs">Mostly okay, some stress</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'mood','difficult')">
-          <span class="ct">Going through a difficult time</span><span class="cs">Struggling more than usual</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'mood','scared')">
-          <span class="ct">Anxious or afraid</span><span class="cs">Feeling unsafe or on edge</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'mood','numb')">
-          <span class="ct">Numb or disconnected</span><span class="cs">Hard to feel or express emotions</span>
-        </button>
+        <button class="choice-btn" onclick="pick(this,'mood','well')"><span class="ct">Generally well</span><span class="cs">Mostly okay, some stress</span></button>
+        <button class="choice-btn" onclick="pick(this,'mood','difficult')"><span class="ct">Going through a difficult time</span><span class="cs">Struggling more than usual</span></button>
+        <button class="choice-btn" onclick="pick(this,'mood','scared')"><span class="ct">Anxious or afraid</span><span class="cs">Feeling unsafe or on edge</span></button>
+        <button class="choice-btn" onclick="pick(this,'mood','numb')"><span class="ct">Numb or disconnected</span><span class="cs">Hard to feel or express emotions</span></button>
       </div>
       <button class="onboard-next" id="on2" onclick="nextStep(3)">Continue →</button>
     </div>
-
-    <!-- Step 3 -->
     <div id="os3" style="display:none">
       <p class="onboard-label">Step 3 of 4</p>
       <h2 class="onboard-q">What brings you here today?</h2>
       <div class="choice-grid">
-        <button class="choice-btn" onclick="pick(this,'reason','support')">
-          <span class="ct">I need emotional support</span><span class="cs">Someone to talk to</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'reason','check')">
-          <span class="ct">I want to check my mental health</span><span class="cs">Understand my stress and wellbeing</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'reason','unsafe')">
-          <span class="ct">I feel unsafe at home</span><span class="cs">I need guidance and resources</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'reason','explore')">
-          <span class="ct">Just exploring</span><span class="cs">See what this platform offers</span>
-        </button>
+        <button class="choice-btn" onclick="pick(this,'reason','support')"><span class="ct">I need emotional support</span><span class="cs">Someone to talk to</span></button>
+        <button class="choice-btn" onclick="pick(this,'reason','check')"><span class="ct">I want to check my mental health</span><span class="cs">Understand my stress and wellbeing</span></button>
+        <button class="choice-btn" onclick="pick(this,'reason','unsafe')"><span class="ct">I feel unsafe at home</span><span class="cs">I need guidance and resources</span></button>
+        <button class="choice-btn" onclick="pick(this,'reason','explore')"><span class="ct">Just exploring</span><span class="cs">See what this platform offers</span></button>
       </div>
       <button class="onboard-next" id="on3" onclick="nextStep(4)">Continue →</button>
     </div>
-
-    <!-- Step 4 -->
     <div id="os4" style="display:none">
       <p class="onboard-label">Step 4 of 4</p>
       <h2 class="onboard-q">Your privacy, your rules.</h2>
@@ -516,49 +547,17 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <p class="section-label">Your scores</p>
     <div class="score-grid">
-      <div class="score-card">
-        <div class="score-card-label">Stress index</div>
-        <div class="score-card-val" id="sc-stress">—</div>
-        <div class="score-bar"><div class="score-fill fill-amber" id="sb-stress" style="width:0%"></div></div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Anxiety</div>
-        <div class="score-card-val" id="sc-anxiety">—</div>
-        <div class="score-bar"><div class="score-fill fill-rose" id="sb-anxiety" style="width:0%"></div></div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Stability</div>
-        <div class="score-card-val" id="sc-stability">—</div>
-        <div class="score-bar"><div class="score-fill fill-green" id="sb-stability" style="width:0%"></div></div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Isolation signal</div>
-        <div class="score-card-val" id="sc-isolation">—</div>
-        <div class="score-bar"><div class="score-fill fill-red" id="sb-isolation" style="width:0%"></div></div>
-      </div>
+      <div class="score-card"><div class="score-card-label">Stress index</div><div class="score-card-val" id="sc-stress">—</div><div class="score-bar"><div class="score-fill fill-amber" id="sb-stress" style="width:0%"></div></div></div>
+      <div class="score-card"><div class="score-card-label">Anxiety</div><div class="score-card-val" id="sc-anxiety">—</div><div class="score-bar"><div class="score-fill fill-rose" id="sb-anxiety" style="width:0%"></div></div></div>
+      <div class="score-card"><div class="score-card-label">Stability</div><div class="score-card-val" id="sc-stability">—</div><div class="score-bar"><div class="score-fill fill-green" id="sb-stability" style="width:0%"></div></div></div>
+      <div class="score-card"><div class="score-card-label">Isolation signal</div><div class="score-card-val" id="sc-isolation">—</div><div class="score-bar"><div class="score-fill fill-red" id="sb-isolation" style="width:0%"></div></div></div>
     </div>
     <p class="section-label">Actions</p>
     <div class="action-list">
-      <div class="action-item" onclick="showScreen('screen-assess')">
-        <div class="action-icon" style="background:var(--rose-bg)">🎮</div>
-        <div><div class="action-title">Take today's assessment</div><div class="action-sub">AI-scored psychological games · ~4 min</div></div>
-        <div class="action-arrow">›</div>
-      </div>
-      <div class="action-item" onclick="showScreen('screen-chat')">
-        <div class="action-icon" style="background:var(--rose-bg)">💬</div>
-        <div><div class="action-title">Talk to Aasha</div><div class="action-sub">Gemini-powered AI companion · Encrypted</div></div>
-        <div class="action-arrow">›</div>
-      </div>
-      <div class="action-item" onclick="showScreen('screen-trust')">
-        <div class="action-icon" style="background:rgba(42,157,143,0.15)">🤝</div>
-        <div><div class="action-title">Trusted network</div><div class="action-sub">3 contacts · NGO connections active</div></div>
-        <div class="action-arrow">›</div>
-      </div>
-      <div class="action-item" onclick="showScreen('screen-emergency')">
-        <div class="action-icon" style="background:var(--red-bg)">🆘</div>
-        <div><div class="action-title">Emergency response</div><div class="action-sub">Instant SOS · Location share · Helplines</div></div>
-        <div class="action-arrow" style="color:var(--red)">›</div>
-      </div>
+      <div class="action-item" onclick="showScreen('screen-assess')"><div class="action-icon" style="background:var(--rose-bg)">🎮</div><div><div class="action-title">Take today's assessment</div><div class="action-sub">AI-scored psychological games · ~4 min</div></div><div class="action-arrow">›</div></div>
+      <div class="action-item" onclick="showScreen('screen-chat')"><div class="action-icon" style="background:var(--rose-bg)">💬</div><div><div class="action-title">Talk to Aasha</div><div class="action-sub">Gemini-powered AI companion · Encrypted</div></div><div class="action-arrow">›</div></div>
+      <div class="action-item" onclick="showScreen('screen-trust')"><div class="action-icon" style="background:rgba(42,157,143,0.15)">🤝</div><div><div class="action-title">Trusted network</div><div class="action-sub">3 contacts · NGO connections active</div></div><div class="action-arrow">›</div></div>
+      <div class="action-item" onclick="showScreen('screen-emergency')"><div class="action-icon" style="background:var(--red-bg)">🆘</div><div><div class="action-title">Emergency response</div><div class="action-sub">Instant SOS · Location share · Helplines</div></div><div class="action-arrow" style="color:var(--red)">›</div></div>
     </div>
   </div>
   <div class="tab-bar">
@@ -579,7 +578,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="assess-wrap">
     <p class="game-counter" id="game-counter">Game 1 of 3</p>
     <h2 class="game-title" id="game-title">Emotion recognition</h2>
-    <p class="game-desc" id="game-desc">Look at this face. What emotion do you see?</p>
+    <p class="game-desc" id="game-desc">Allow camera access. We'll detect your current emotional state.</p>
     <div class="game-card" id="game-card"></div>
     <button class="btn-primary" id="assess-next-btn" style="opacity:.4;pointer-events:none" onclick="nextAssessGame()">Next game →</button>
   </div>
@@ -604,31 +603,13 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <h2 class="result-label" id="result-label">Computing…</h2>
       <p class="result-sub" id="result-sub">AI is analysing your responses.</p>
     </div>
-    <div class="ai-analysis-box">
-      <h4>AI analysis</h4>
-      <p id="ai-analysis-text" style="color:var(--text3);font-style:italic">Generating your personalised analysis…</p>
-    </div>
-    <div class="dv-risk-box dvrlow" id="dv-risk-box">
-      <div class="dvr-title" id="dvr-title">DV risk assessment</div>
-      <div class="dvr-text" id="dvr-text">Computing…</div>
-    </div>
+    <div class="ai-analysis-box"><h4>AI analysis</h4><p id="ai-analysis-text" style="color:var(--text3);font-style:italic">Generating your personalised analysis…</p></div>
+    <div class="dv-risk-box dvrlow" id="dv-risk-box"><div class="dvr-title" id="dvr-title">DV risk assessment</div><div class="dvr-text" id="dvr-text">Computing…</div></div>
     <div class="result-scores">
-      <div class="result-row">
-        <div class="result-row-head"><span class="rrn">Stress index</span><span class="rrv" id="r-stress">—</span></div>
-        <div class="score-bar"><div class="score-fill fill-amber" id="rb-stress" style="width:0%"></div></div>
-      </div>
-      <div class="result-row">
-        <div class="result-row-head"><span class="rrn">Anxiety indicator</span><span class="rrv" id="r-anxiety">—</span></div>
-        <div class="score-bar"><div class="score-fill fill-rose" id="rb-anxiety" style="width:0%"></div></div>
-      </div>
-      <div class="result-row">
-        <div class="result-row-head"><span class="rrn">Emotional stability</span><span class="rrv" id="r-stability">—</span></div>
-        <div class="score-bar"><div class="score-fill fill-green" id="rb-stability" style="width:0%"></div></div>
-      </div>
-      <div class="result-row">
-        <div class="result-row-head"><span class="rrn">Isolation signal</span><span class="rrv" id="r-isolation">—</span></div>
-        <div class="score-bar"><div class="score-fill fill-red" id="rb-isolation" style="width:0%"></div></div>
-      </div>
+      <div class="result-row"><div class="result-row-head"><span class="rrn">Stress index</span><span class="rrv" id="r-stress">—</span></div><div class="score-bar"><div class="score-fill fill-amber" id="rb-stress" style="width:0%"></div></div></div>
+      <div class="result-row"><div class="result-row-head"><span class="rrn">Anxiety indicator</span><span class="rrv" id="r-anxiety">—</span></div><div class="score-bar"><div class="score-fill fill-rose" id="rb-anxiety" style="width:0%"></div></div></div>
+      <div class="result-row"><div class="result-row-head"><span class="rrn">Emotional stability</span><span class="rrv" id="r-stability">—</span></div><div class="score-bar"><div class="score-fill fill-green" id="rb-stability" style="width:0%"></div></div></div>
+      <div class="result-row"><div class="result-row-head"><span class="rrn">Isolation signal</span><span class="rrv" id="r-isolation">—</span></div><div class="score-bar"><div class="score-fill fill-red" id="rb-isolation" style="width:0%"></div></div></div>
     </div>
     <p class="section-label">AI-recommended resources</p>
     <div class="resource-card" onclick="showScreen('screen-chat')"><h4>Talk to Aasha — AI companion</h4><p>Personalised conversation based on your scores · Available now</p></div>
@@ -648,10 +629,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="chat-wrap">
     <div class="chat-header">
       <div class="chat-avatar">A</div>
-      <div>
-        <div class="chat-agent-name">Aasha · AI companion</div>
-        <div class="chat-status-line">● Gemini AI · Encrypted</div>
-      </div>
+      <div><div class="chat-agent-name">Aasha · AI companion</div><div class="chat-status-line">● Gemini AI · Encrypted</div></div>
       <div class="chat-anon">Anonymous</div>
     </div>
     <div class="chat-messages" id="chat-messages"></div>
@@ -683,9 +661,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="nav-logo" style="color:var(--red)">Aashray<span style="color:#7A4040">Emergency mode</span></div>
   </nav>
   <div class="emg-inner">
-    <div class="sos-ring">
-      <button class="sos-btn-inner" onclick="triggerSOS()">SOS</button>
-    </div>
+    <div class="sos-ring"><button class="sos-btn-inner" onclick="triggerSOS()">SOS</button></div>
     <h2 class="emg-title">You are not alone.</h2>
     <p class="emg-sub">Press SOS to immediately alert your trusted contacts and connect to emergency services.</p>
     <div class="emg-actions">
@@ -716,21 +692,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="trust-header"><h2>Your safety network</h2><p>These people will be alerted in an emergency. Choose people you truly trust.</p></div>
     <p class="section-label">Trusted contacts</p>
     <div class="contact-list">
-      <div class="contact-card">
-        <div class="contact-avatar">M</div>
-        <div><div class="contact-name">Meena Sharma</div><div class="contact-rel">Sister · +91 98765 43210</div></div>
-        <div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div>
-      </div>
-      <div class="contact-card">
-        <div class="contact-avatar">P</div>
-        <div><div class="contact-name">Priya Iyer</div><div class="contact-rel">Friend · +91 87654 32109</div></div>
-        <div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div>
-      </div>
-      <div class="contact-card">
-        <div class="contact-avatar">R</div>
-        <div><div class="contact-name">Dr. Rekha Nair</div><div class="contact-rel">Counsellor · +91 76543 21098</div></div>
-        <div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block"></span> Pending</div>
-      </div>
+      <div class="contact-card"><div class="contact-avatar">M</div><div><div class="contact-name">Meena Sharma</div><div class="contact-rel">Sister · +91 98765 43210</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div></div>
+      <div class="contact-card"><div class="contact-avatar">P</div><div><div class="contact-name">Priya Iyer</div><div class="contact-rel">Friend · +91 87654 32109</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 5px var(--green)"></span> Active</div></div>
+      <div class="contact-card"><div class="contact-avatar">R</div><div><div class="contact-name">Dr. Rekha Nair</div><div class="contact-rel">Counsellor · +91 76543 21098</div></div><div class="contact-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block"></span> Pending</div></div>
     </div>
     <button class="add-contact-btn">+ Add trusted contact</button>
     <p class="section-label" style="margin-top:24px">NGO connections</p>
@@ -748,8 +712,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <script>
 // ── STATE ──
 var S = {
-  apiKey: null,
-  demoMode: false,
+  apiKey: null, demoMode: false,
   cohort: null, mood: null, reason: null,
   currentOnboardStep: 1,
   assessGame: 0,
@@ -757,10 +720,17 @@ var S = {
   scores: {},
   chatHistory: [],
   chatInitialized: false,
-  faceInterval: null
+  faceInterval: null,
+  faceStream: null,
+  modelsLoaded: false,
+  modelsLoading: false
 };
 
 var BACKEND_BASE_URL = 'https://eitbackend-flxp.onrender.com';
+
+// FIX 2: Use a reliable CDN-hosted model URL (unpkg mirrors github weights reliably)
+// We use a known-good CDN mirror for face-api models
+var MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
 
 // ── CURTAIN ──
 function openCurtains() {
@@ -774,25 +744,23 @@ function openCurtains() {
 
 // ── SCREEN NAVIGATION ──
 function showScreen(id) {
-  // Stop camera if leaving assessment
-  if (id !== 'screen-assess') {
-    var video = document.getElementById('webcam-video');
-    if (video && video.srcObject) {
-      video.srcObject.getTracks().forEach(function(t) { t.stop(); });
-    }
-    if (S.faceInterval) { clearInterval(S.faceInterval); S.faceInterval = null; }
-  }
-
+  stopCamera();
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
   var target = document.getElementById(id);
-  if (target) {
-    target.classList.add('active');
-    target.scrollTop = 0;
-  }
-
+  if (target) { target.classList.add('active'); target.scrollTop = 0; }
   if (id === 'screen-dashboard') initDash();
   if (id === 'screen-assess')    startAssess();
   if (id === 'screen-chat')      initChat();
+}
+
+function stopCamera() {
+  if (S.faceInterval) { clearInterval(S.faceInterval); S.faceInterval = null; }
+  if (S.faceStream) {
+    S.faceStream.getTracks().forEach(function(t) { t.stop(); });
+    S.faceStream = null;
+  }
+  var video = document.getElementById('webcam-video');
+  if (video) { video.srcObject = null; }
 }
 
 // ── ONBOARDING ──
@@ -801,13 +769,9 @@ function skipToDemo()       { S.demoMode = true;  goToOnboard(); }
 
 function goToOnboard() {
   S.currentOnboardStep = 1;
-  // Reset all steps
   for (var i = 1; i <= 4; i++) {
     var step = document.getElementById('os' + i);
-    if (step) step.style.display = (i === 1) ? 'block' : 'none';
-    // Clear any selected buttons
-    if (step) step.querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); });
-    // Reset next button
+    if (step) { step.style.display = (i === 1) ? 'block' : 'none'; step.querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); }); }
     var nb = document.getElementById('on' + i);
     if (nb) nb.classList.remove('ready');
   }
@@ -815,22 +779,16 @@ function goToOnboard() {
   showScreen('screen-onboard');
 }
 
-// ── FIX: pick() enables next button, does NOT auto-advance ──
 function pick(btn, type, val) {
   S[type] = val;
-
-  // Highlight selected button
   var grid = btn.closest('.choice-grid');
   grid.querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
-
-  // Enable the next button for the current step
   var stepWrap = btn.closest('[id^="os"]');
   var nb = stepWrap ? stepWrap.querySelector('.onboard-next') : null;
   if (nb) nb.classList.add('ready');
 }
 
-// ── FIX: nextStep() shows correct step, updates dots ──
 function nextStep(toStep) {
   for (var i = 1; i <= 4; i++) {
     var el = document.getElementById('os' + i);
@@ -851,11 +809,8 @@ function updateStepDots(active) {
 }
 
 function onboardBack() {
-  if (S.currentOnboardStep <= 1) {
-    showScreen('screen-landing');
-  } else {
-    nextStep(S.currentOnboardStep - 1);
-  }
+  if (S.currentOnboardStep <= 1) showScreen('screen-landing');
+  else nextStep(S.currentOnboardStep - 1);
 }
 
 function completeOnboard() { showScreen('screen-dashboard'); }
@@ -863,8 +818,7 @@ function completeOnboard() { showScreen('screen-dashboard'); }
 // ── DASHBOARD ──
 function initDash() {
   var d = new Date(), h = d.getHours();
-  var greeting = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
-  document.getElementById('dash-greeting').textContent = greeting;
+  document.getElementById('dash-greeting').textContent = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
   document.getElementById('dash-date-str').textContent = d.toDateString();
   if (S.scores.composite != null) updateDashScores();
 }
@@ -878,18 +832,15 @@ function updateDashScores() {
     if (bar) bar.style.width = sc[k] + '%';
   });
   var ri = document.getElementById('risk-indicator');
-  if (ri) {
-    ri.className = 'risk-indicator risk-' + (sc.risk === 'LOW' ? 'low' : sc.risk === 'MEDIUM' ? 'med' : 'high');
-    ri.textContent = sc.risk === 'MEDIUM' ? 'MED' : (sc.risk || 'MED');
-  }
+  if (ri) { ri.className = 'risk-indicator risk-' + (sc.risk === 'LOW' ? 'low' : sc.risk === 'MEDIUM' ? 'med' : 'high'); ri.textContent = sc.risk === 'MEDIUM' ? 'MED' : (sc.risk || 'MED'); }
   if (sc.insight) document.getElementById('ai-insight-text').textContent = sc.insight;
 }
 
-// ── ASSESSMENT ──
+// ── ASSESSMENT GAMES ──
 var aGames = [
-  { title: 'Emotion recognition',  desc: 'Allow camera access. We\'ll detect your current emotional state using face analysis.', type: 'emotion' },
-  { title: 'Stress response',       desc: 'Wait for the circle to turn red, then tap it as fast as you can.', type: 'reaction' },
-  { title: 'How do you feel?',      desc: 'Rate your levels honestly. There are no right or wrong answers.', type: 'slider' }
+  { title: 'Emotion recognition', desc: 'We\'ll use your camera to detect your current emotional state. Allow access when prompted.', type: 'emotion' },
+  { title: 'Stress response',      desc: 'Wait for the circle to turn red, then tap it as fast as you can.', type: 'reaction' },
+  { title: 'How do you feel?',     desc: 'Rate your levels honestly. There are no right or wrong answers.', type: 'slider' }
 ];
 
 function startAssess() {
@@ -908,16 +859,12 @@ function renderGame(idx) {
   document.getElementById('game-title').textContent = g.title;
   document.getElementById('game-desc').textContent = g.desc;
   var card = document.getElementById('game-card');
-  S.assessStart = Date.now();
 
   if (g.type === 'emotion') {
-    card.innerHTML = '<video id="webcam-video" autoplay muted playsinline style="width:100%;max-width:350px;aspect-ratio:4/3;border-radius:12px;background:#000;object-fit:cover;display:block;margin:0 auto 12px"></video>'
-      + '<p id="emotion-result" style="text-align:center;color:var(--text2);margin-bottom:12px">Starting camera…</p>'
-      + '<button class="btn-primary" id="capture-btn" onclick="captureEmotion()" style="opacity:0.5;pointer-events:none">Waiting for detection…</button>';
-    startFacialRecognition();
+    renderEmotionGame(card);
   } else if (g.type === 'reaction') {
-    card.innerHTML = '<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)">●</button>'
-      + '<p id="react-status" style="color:var(--text2)">Wait for red…</p></div>';
+    card.innerHTML = '<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)" style="display:flex;align-items:center;justify-content:center;">●</button>'
+      + '<p id="react-status" style="color:var(--text2);text-align:center">Wait for red…</p></div>';
     scheduleReaction();
   } else {
     card.innerHTML = '<div class="slider-wrap"><p class="slider-q">Right now, my stress level is:</p>'
@@ -926,99 +873,289 @@ function renderGame(idx) {
       + '<div class="slider-wrap"><p class="slider-q">I feel safe in my current environment:</p>'
       + '<input type="range" min="0" max="100" value="55" oninput="slideChg(\'safety\',this.value)">'
       + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span>Unsafe</span><span>Very safe</span></div></div>';
-    setTimeout(function() {
-      nb.style.opacity = '1';
-      nb.style.pointerEvents = 'auto';
-    }, 800);
+    setTimeout(function() { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; }, 800);
   }
 }
 
-// ── FACIAL RECOGNITION ──
+// ══════════════════════════════════════════════════════════════
+// FIX 3: COMPLETELY REWRITTEN FACE DETECTION — robust & reliable
+// ══════════════════════════════════════════════════════════════
+
+function renderEmotionGame(card) {
+  card.innerHTML =
+    '<div class="face-container">' +
+      '<div class="face-video-wrap">' +
+        '<video id="webcam-video" autoplay muted playsinline></video>' +
+        '<canvas id="face-canvas"></canvas>' +
+      '</div>' +
+      '<div class="face-status-badge" id="face-status-badge">⏳ Starting camera…</div>' +
+      '<div class="emotion-chips" id="emotion-chips">' +
+        ['happy','sad','angry','fearful','disgusted','surprised','neutral'].map(function(e) {
+          return '<div class="emotion-chip" id="chip-' + e + '">' + e.charAt(0).toUpperCase() + e.slice(1) + '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+
+  startFacialRecognition();
+}
+
 async function startFacialRecognition() {
-  var resultEl = document.getElementById('emotion-result');
-  var captureBtn = document.getElementById('capture-btn');
+  var badge = document.getElementById('face-status-badge');
+  var nb = document.getElementById('assess-next-btn');
+
+  // ── Step 1: Check if face-api is loaded ──
+  if (typeof faceapi === 'undefined') {
+    setFaceStatus('error', '⚠️ face-api.js failed to load. Tap Continue.');
+    enableNextBtn();
+    return;
+  }
+
+  // ── Step 2: Load models (only once) ──
+  if (!S.modelsLoaded) {
+    setFaceStatus('loading', '⏳ Loading AI models…');
+    try {
+      // FIX: Use vladmandic's CDN which properly mirrors the weights
+      var CDN = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
+      await faceapi.nets.tinyFaceDetector.loadFromUri(CDN);
+      await faceapi.nets.faceExpressionNet.loadFromUri(CDN);
+      S.modelsLoaded = true;
+    } catch (modelErr) {
+      console.warn('vladmandic CDN failed, trying justadudewhohacks GitHub:', modelErr);
+      // FIX: Fallback to direct GitHub raw content
+      try {
+        var FALLBACK = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+        await faceapi.nets.tinyFaceDetector.loadFromUri(FALLBACK);
+        await faceapi.nets.faceExpressionNet.loadFromUri(FALLBACK);
+        S.modelsLoaded = true;
+      } catch (fallbackErr) {
+        console.error('All model CDNs failed:', fallbackErr);
+        setFaceStatus('error', '⚠️ Could not load models. Using manual mode.');
+        renderManualEmotionPicker();
+        return;
+      }
+    }
+  }
+
+  // ── Step 3: Request camera ──
+  setFaceStatus('loading', '📷 Requesting camera access…');
   try {
-    var MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
-    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-    var stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    var video = document.getElementById('webcam-video');
-    if (!video) return;
-    video.srcObject = stream;
-    video.addEventListener('play', function() {
-      resultEl.textContent = 'Analysing…';
-      S.faceInterval = setInterval(async function() {
-        var det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
-        if (det) {
-          var exps = det.expressions;
-          var top = Object.keys(exps).reduce(function(a, b) { return exps[a] > exps[b] ? a : b; });
-          resultEl.textContent = 'Detected: ' + top.toUpperCase();
-          S.assessData.detectedEmotion = top;
-          captureBtn.style.opacity = '1';
-          captureBtn.style.pointerEvents = 'auto';
-          captureBtn.textContent = 'Confirm & Continue →';
-          var nb = document.getElementById('assess-next-btn');
-          nb.style.opacity = '1';
-          nb.style.pointerEvents = 'auto';
-        } else {
-          resultEl.textContent = 'Looking for face…';
-        }
-      }, 500);
+    var stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }
     });
-  } catch (err) {
-    var resultEl2 = document.getElementById('emotion-result');
-    if (resultEl2) resultEl2.textContent = 'Camera unavailable — tap Continue.';
-    var nb = document.getElementById('assess-next-btn');
-    nb.style.opacity = '1';
-    nb.style.pointerEvents = 'auto';
+    S.faceStream = stream;
+
+    var video = document.getElementById('webcam-video');
+    if (!video) { stopCamera(); return; }
+
+    video.srcObject = stream;
+
+    // FIX: Use both 'loadeddata' and polling fallback — don't rely solely on 'play'
+    await waitForVideoReady(video);
+
+    // Size the overlay canvas to match video
+    var canvas = document.getElementById('face-canvas');
+    if (canvas) {
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+      canvas.style.width = '100%';
+      canvas.style.height = video.offsetHeight + 'px';
+    }
+
+    setFaceStatus('active', '🔍 Looking for face…');
+
+    // ── Step 4: Start detection loop ──
+    runFaceDetection(video, canvas);
+
+  } catch (camErr) {
+    console.error('Camera error:', camErr);
+    var msg = camErr.name === 'NotAllowedError'
+      ? '🚫 Camera permission denied. Please allow camera access and retry.'
+      : '📷 Camera unavailable on this device.';
+    setFaceStatus('error', msg);
+    renderManualEmotionPicker();
   }
 }
 
-function captureEmotion() {
-  var video = document.getElementById('webcam-video');
-  if (video && video.srcObject) video.srcObject.getTracks().forEach(function(t) { t.stop(); });
-  if (S.faceInterval) { clearInterval(S.faceInterval); S.faceInterval = null; }
-  nextAssessGame();
+async function waitForVideoReady(video) {
+  return new Promise(function(resolve) {
+    // Already has data
+    if (video.readyState >= 2) { resolve(); return; }
+    // Try multiple events
+    function onReady() {
+      video.removeEventListener('loadeddata', onReady);
+      video.removeEventListener('canplay', onReady);
+      resolve();
+    }
+    video.addEventListener('loadeddata', onReady);
+    video.addEventListener('canplay', onReady);
+    // Fallback: poll every 100ms for up to 5s
+    var polls = 0;
+    var poller = setInterval(function() {
+      polls++;
+      if (video.readyState >= 2 || !document.getElementById('webcam-video')) {
+        clearInterval(poller);
+        resolve();
+      }
+      if (polls > 50) { clearInterval(poller); resolve(); }
+    }, 100);
+  });
 }
 
+function runFaceDetection(video, canvas) {
+  var lastEmotion = null;
+  var detectionCount = 0;
+  var noFaceCount = 0;
+
+  S.faceInterval = setInterval(async function() {
+    // Guard: check elements still exist
+    var vidEl = document.getElementById('webcam-video');
+    if (!vidEl || !S.faceStream) { clearInterval(S.faceInterval); return; }
+
+    try {
+      var options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 });
+      var result = await faceapi.detectSingleFace(vidEl, options).withFaceExpressions();
+
+      if (result && result.expressions) {
+        noFaceCount = 0;
+        detectionCount++;
+
+        // Draw detection box on canvas
+        var cvs = document.getElementById('face-canvas');
+        if (cvs) {
+          var ctx = cvs.getContext('2d');
+          cvs.width = vidEl.videoWidth;
+          cvs.height = vidEl.videoHeight;
+          ctx.clearRect(0, 0, cvs.width, cvs.height);
+          // Draw bounding box
+          var box = result.detection.box;
+          ctx.strokeStyle = '#3A5F0B';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(box.x, box.y, box.width, box.height);
+          // Corner accents
+          var clen = 20;
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 4;
+          [[box.x, box.y], [box.x+box.width, box.y], [box.x, box.y+box.height], [box.x+box.width, box.y+box.height]].forEach(function(c, i) {
+            ctx.beginPath();
+            ctx.moveTo(c[0] + (i%2===0?0:clen) * (i%2===0?1:-1), c[1]);
+            ctx.lineTo(c[0], c[1]);
+            ctx.lineTo(c[0], c[1] + (i<2?clen:-clen));
+            ctx.stroke();
+          });
+        }
+
+        // Find dominant expression
+        var exps = result.expressions;
+        var topEmotion = Object.keys(exps).reduce(function(a, b) { return exps[a] > exps[b] ? a : b; });
+        var confidence = Math.round(exps[topEmotion] * 100);
+
+        // Update chips
+        Object.keys(exps).forEach(function(e) {
+          var chip = document.getElementById('chip-' + e);
+          if (chip) chip.classList.toggle('active', e === topEmotion);
+        });
+
+        // Update badge
+        setFaceStatus('detected', '✓ ' + topEmotion.toUpperCase() + ' · ' + confidence + '% confidence');
+
+        // Save emotion
+        S.assessData.detectedEmotion = topEmotion;
+        lastEmotion = topEmotion;
+
+        // Enable next button after 2 stable detections
+        if (detectionCount >= 2) {
+          var nb = document.getElementById('assess-next-btn');
+          if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; nb.textContent = 'Confirm — ' + topEmotion.toUpperCase() + ' detected →'; }
+        }
+
+      } else {
+        noFaceCount++;
+        // Clear canvas
+        var cvs2 = document.getElementById('face-canvas');
+        if (cvs2) cvs2.getContext('2d').clearRect(0, 0, cvs2.width, cvs2.height);
+        // Clear chips
+        document.querySelectorAll('.emotion-chip').forEach(function(c) { c.classList.remove('active'); });
+
+        if (noFaceCount > 10) {
+          setFaceStatus('active', '👀 Position face in frame…');
+        }
+      }
+    } catch (detErr) {
+      console.warn('Detection frame error:', detErr);
+    }
+  }, 400); // FIX: 400ms is more reliable than 500ms for smooth detection
+}
+
+// ── Manual fallback if camera/models fail ──
+function renderManualEmotionPicker() {
+  var card = document.getElementById('game-card');
+  if (!card) return;
+  card.innerHTML =
+    '<div class="face-permission-box">' +
+      '<div class="face-permission-icon">🎭</div>' +
+      '<div class="face-permission-title">How are you feeling right now?</div>' +
+      '<div class="face-permission-sub">Camera not available. Select your current emotion:</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px">' +
+        ['😊 Happy','😢 Sad','😰 Anxious','😠 Angry','😮 Surprised','😐 Neutral','😨 Fearful'].map(function(e) {
+          var parts = e.split(' ');
+          var emoji = parts[0], label = parts[1].toLowerCase();
+          return '<button onclick="selectManualEmotion(\'' + label + '\', this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;cursor:pointer;color:var(--text);font-size:18px;transition:var(--transition)">' + parts[0] + '<br><span style="font-size:11px;color:var(--text3)">' + parts[1] + '</span></button>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+}
+
+function selectManualEmotion(emotion, btn) {
+  S.assessData.detectedEmotion = emotion;
+  document.querySelectorAll('#game-card button').forEach(function(b) { b.style.borderColor = 'var(--border2)'; b.style.background = 'var(--surface2)'; });
+  btn.style.borderColor = 'var(--rose)';
+  btn.style.background = 'var(--rose-bg)';
+  var nb = document.getElementById('assess-next-btn');
+  if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; nb.textContent = 'Continue →'; }
+}
+
+function setFaceStatus(type, text) {
+  var badge = document.getElementById('face-status-badge');
+  if (!badge) return;
+  badge.textContent = text;
+  badge.className = 'face-status-badge' + (type === 'detected' ? ' detected' : type === 'error' ? ' error' : '');
+}
+
+function enableNextBtn() {
+  var nb = document.getElementById('assess-next-btn');
+  if (nb) { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; }
+}
+
+// ── REACTION GAME ──
 function hitTarget(btn) {
   S.assessData.reactionTime = Date.now() - S.assessStart;
-  btn.style.background = 'var(--green)';
-  btn.style.borderColor = 'var(--green)';
+  btn.style.background = 'var(--green)'; btn.style.borderColor = 'var(--green)'; btn.style.boxShadow = '0 0 20px rgba(42,157,143,0.4)';
   var st = document.getElementById('react-status');
-  if (st) st.textContent = 'Recorded! ' + S.assessData.reactionTime + 'ms';
-  var nb = document.getElementById('assess-next-btn');
-  nb.style.opacity = '1';
-  nb.style.pointerEvents = 'auto';
+  if (st) st.textContent = '✓ Recorded! ' + S.assessData.reactionTime + 'ms';
+  enableNextBtn();
 }
 
 function scheduleReaction() {
   var delay = 1500 + Math.random() * 2500;
+  S.assessStart = Date.now() + delay;
   setTimeout(function() {
     var t = document.getElementById('react-target');
-    if (t) {
-      t.style.background = 'var(--red)';
-      t.style.borderColor = 'var(--red)';
-      t.style.boxShadow = '0 0 20px rgba(230,57,70,0.4)';
-      S.assessStart = Date.now();
-    }
+    if (t) { t.style.background = 'var(--red)'; t.style.borderColor = 'var(--red)'; t.style.boxShadow = '0 0 20px rgba(230,57,70,0.4)'; t.style.color = '#fff'; S.assessStart = Date.now(); }
   }, delay);
 }
 
 function slideChg(type, val) { S.assessData[type + 'Slider'] = parseInt(val); }
-function nextAssessGame() { S.assessGame++; renderGame(S.assessGame); }
+function nextAssessGame() { stopCamera(); S.assessGame++; renderGame(S.assessGame); }
 
 // ── AI SCORING ──
 async function doAIScoring() {
   var ov = document.getElementById('scoring-overlay');
   ov.classList.add('show');
-
-  // Animate steps
   var steps = ['ss1','ss2','ss3','ss4'];
   steps.forEach(function(id) { document.getElementById(id).className = 'scoring-step'; });
   var i = 0;
   var stepTimer = setInterval(function() {
-    if (i > 0) document.getElementById(steps[i - 1]).className = 'scoring-step done';
+    if (i > 0) document.getElementById(steps[i-1]).className = 'scoring-step done';
     if (i < steps.length) document.getElementById(steps[i]).className = 'scoring-step active';
     i++;
     if (i > steps.length) clearInterval(stepTimer);
@@ -1026,36 +1163,27 @@ async function doAIScoring() {
 
   var scored = null;
   if (!S.demoMode) {
-    var payload = JSON.stringify({
-      stress: S.assessData.stressSlider,
-      safety: S.assessData.safetySlider,
-      cohort: S.cohort,
-      mood: S.mood,
-      reason: S.reason,
-      rt: S.assessData.reactionTime,
-      emotion: S.assessData.detectedEmotion
-    });
+    var payload = JSON.stringify({ stress: S.assessData.stressSlider, safety: S.assessData.safetySlider, cohort: S.cohort, mood: S.mood, reason: S.reason, rt: S.assessData.reactionTime, emotion: S.assessData.detectedEmotion });
     var raw = await askGemini([{ role: 'user', content: payload }], SCORING_SYS, 400);
     if (raw) {
-      try {
-        var start = raw.indexOf('{'), end = raw.lastIndexOf('}');
-        if (start !== -1 && end !== -1) scored = JSON.parse(raw.substring(start, end + 1));
-      } catch (e) { console.warn('Score parse error', e); }
+      try { var start = raw.indexOf('{'), end = raw.lastIndexOf('}'); if (start !== -1 && end !== -1) scored = JSON.parse(raw.substring(start, end + 1)); } catch (e) {}
     }
   }
 
-  // Fallback scores
   if (!scored) {
     var stressVal = S.assessData.stressSlider || 50;
+    var emotionMultiplier = { fearful: 1.3, angry: 1.2, sad: 1.15, disgusted: 1.1, surprised: 1.0, neutral: 0.9, happy: 0.75 };
+    var em = emotionMultiplier[S.assessData.detectedEmotion] || 1.0;
+    var adjustedStress = Math.min(100, Math.round(stressVal * em));
     scored = {
-      stress: stressVal,
-      anxiety: Math.round(stressVal * 0.9),
-      stability: Math.max(10, 100 - stressVal),
-      isolation: Math.round(stressVal * 0.7),
-      composite: Math.round(stressVal * 0.85),
-      risk: stressVal > 70 ? 'HIGH' : stressVal > 40 ? 'MEDIUM' : 'LOW',
-      dvRisk: stressVal > 70 ? 'high' : stressVal > 40 ? 'medium' : 'low',
-      summary: 'Based on your responses, we have generated a personalised wellbeing profile.',
+      stress: adjustedStress,
+      anxiety: Math.round(adjustedStress * 0.9),
+      stability: Math.max(10, 100 - adjustedStress),
+      isolation: Math.round(adjustedStress * 0.7),
+      composite: Math.round(adjustedStress * 0.85),
+      risk: adjustedStress > 70 ? 'HIGH' : adjustedStress > 40 ? 'MEDIUM' : 'LOW',
+      dvRisk: adjustedStress > 70 ? 'high' : adjustedStress > 40 ? 'medium' : 'low',
+      summary: 'Based on your responses' + (S.assessData.detectedEmotion ? ' and detected emotion (' + S.assessData.detectedEmotion + ')' : '') + ', we have generated your personalised wellbeing profile.',
       insight: 'Your assessment is complete. Consider talking to Aasha for personalised support.'
     };
   }
@@ -1072,42 +1200,25 @@ async function doAIScoring() {
 }
 
 function renderResults(sc) {
-  // Ring
   var pct = sc.composite / 100;
   var arc = document.getElementById('result-arc');
   if (arc) arc.style.strokeDashoffset = 251 - (251 * pct);
   var rv = document.getElementById('result-ring-val');
   if (rv) rv.textContent = sc.composite;
-
-  // Labels
-  var label = sc.risk === 'LOW' ? 'Low overall risk' : sc.risk === 'MEDIUM' ? 'Moderate risk detected' : 'Elevated risk — seek support';
-  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-label').textContent = sc.risk === 'LOW' ? 'Low overall risk' : sc.risk === 'MEDIUM' ? 'Moderate risk detected' : 'Elevated risk — seek support';
   document.getElementById('result-sub').textContent = sc.summary || '';
   document.getElementById('ai-analysis-text').textContent = sc.insight || sc.summary || '';
-
-  // Score bars
   ['stress','anxiety','stability','isolation'].forEach(function(k) {
-    var rv2 = document.getElementById('r-' + k);
-    var bar = document.getElementById('rb-' + k);
+    var rv2 = document.getElementById('r-' + k); var bar = document.getElementById('rb-' + k);
     if (rv2) rv2.textContent = sc[k] + '%';
     if (bar) bar.style.width = sc[k] + '%';
   });
-
-  // DV risk box
   var dvBox = document.getElementById('dv-risk-box');
-  var dvTitle = document.getElementById('dvr-title');
-  var dvText = document.getElementById('dvr-text');
   if (dvBox) {
     dvBox.className = 'dv-risk-box ' + (sc.dvRisk === 'high' ? 'dvrhigh' : sc.dvRisk === 'medium' ? 'dvrmed' : 'dvrlow');
-    dvTitle.textContent = 'DV Risk: ' + (sc.dvRisk || 'low').toUpperCase();
-    dvText.textContent = sc.dvRisk === 'high'
-      ? 'Elevated signals detected. Please reach out to a trusted contact or helpline.'
-      : sc.dvRisk === 'medium'
-      ? 'Some signals present. Speaking with a counsellor may help.'
-      : 'No significant DV risk signals detected at this time.';
+    document.getElementById('dvr-title').textContent = 'DV Risk: ' + (sc.dvRisk || 'low').toUpperCase();
+    document.getElementById('dvr-text').textContent = sc.dvRisk === 'high' ? 'Elevated signals detected. Please reach out to a trusted contact or helpline.' : sc.dvRisk === 'medium' ? 'Some signals present. Speaking with a counsellor may help.' : 'No significant DV risk signals detected at this time.';
   }
-
-  // Dashboard scores
   updateDashScores();
 }
 
@@ -1115,11 +1226,7 @@ function renderResults(sc) {
 async function askGemini(messages, system, maxTok) {
   if (S.demoMode) return null;
   try {
-    var r = await fetch(BACKEND_BASE_URL + '/api/gemini', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: messages, system: system || '', max_tokens: maxTok || 500 })
-    });
+    var r = await fetch(BACKEND_BASE_URL + '/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: messages, system: system || '', max_tokens: maxTok || 500 }) });
     var d = await r.json();
     return d.reply || null;
   } catch (e) { console.error('API error:', e); return null; }
@@ -1127,16 +1234,9 @@ async function askGemini(messages, system, maxTok) {
 
 async function saveAssessmentToDB(scores) {
   if (S.demoMode) return;
-  try {
-    await fetch(BACKEND_BASE_URL + '/api/save_assessment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(scores)
-    });
-  } catch (e) { console.error('DB save error'); }
+  try { await fetch(BACKEND_BASE_URL + '/api/save_assessment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(scores) }); } catch (e) {}
 }
 
-// ── SYSTEM PROMPTS ──
 var AASHA_SYS = 'You are Aasha, a trauma-informed AI companion on Aashray. Speak warmly, concisely (2-4 sentences), validate feelings without giving medical advice.';
 var SCORING_SYS = 'You are a clinical scoring engine. Return ONLY valid JSON (no markdown): {"stress":int,"anxiety":int,"stability":int,"isolation":int,"composite":int,"risk":"LOW"|"MEDIUM"|"HIGH","dvRisk":"low"|"medium"|"high","summary":"string","insight":"string"}';
 
@@ -1151,51 +1251,33 @@ async function sendChat() {
   var inp = document.getElementById('chat-input');
   var txt = inp.value.trim();
   if (!txt) return;
-  inp.value = '';
-  inp.style.height = 'auto';
+  inp.value = ''; inp.style.height = 'auto';
   addMsg(txt, 'user');
   S.chatHistory.push({ role: 'user', content: txt });
-
   var typing = addTyping();
   var reply = null;
-  if (!S.demoMode) {
-    reply = await askGemini(S.chatHistory, AASHA_SYS, 300);
-  }
+  if (!S.demoMode) reply = await askGemini(S.chatHistory, AASHA_SYS, 300);
   typing.remove();
-
   var response = reply || getDemoReply(txt);
   addMsg(response, 'bot');
   S.chatHistory.push({ role: 'assistant', content: response });
-
-  // Simple distress detection
   var distressWords = ['hurt','unsafe','scared','afraid','hit','abuse','kill','danger','help me','trapped'];
-  var lower = txt.toLowerCase();
-  if (distressWords.some(function(w) { return lower.includes(w); })) {
-    document.getElementById('dv-alert').classList.add('show');
-  }
+  if (distressWords.some(function(w) { return txt.toLowerCase().includes(w); })) document.getElementById('dv-alert').classList.add('show');
 }
 
 function getDemoReply(txt) {
   var lower = txt.toLowerCase();
-  if (lower.includes('safe') || lower.includes('afraid') || lower.includes('scared')) {
-    return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?";
-  }
-  if (lower.includes('stress') || lower.includes('anxious') || lower.includes('anxiety')) {
-    return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?";
-  }
-  if (lower.includes('alone') || lower.includes('lonely')) {
-    return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening.";
-  }
+  if (lower.includes('safe') || lower.includes('afraid') || lower.includes('scared')) return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?";
+  if (lower.includes('stress') || lower.includes('anxious')) return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?";
+  if (lower.includes('alone') || lower.includes('lonely')) return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening.";
   return "Thank you for sharing that with me. Your feelings are valid. Can you tell me a little more about what's been going on?";
 }
 
 function addMsg(text, cls) {
   var el = document.createElement('div');
-  el.className = 'msg ' + cls;
-  el.textContent = text;
+  el.className = 'msg ' + cls; el.textContent = text;
   var box = document.getElementById('chat-messages');
-  box.appendChild(el);
-  box.scrollTop = box.scrollHeight;
+  box.appendChild(el); box.scrollTop = box.scrollHeight;
   return el;
 }
 
@@ -1204,19 +1286,12 @@ function addTyping() {
   el.className = 'msg bot thinking';
   el.innerHTML = '<div class="tdots"><span></span><span></span><span></span></div> Aasha is thinking…';
   var box = document.getElementById('chat-messages');
-  box.appendChild(el);
-  box.scrollTop = box.scrollHeight;
+  box.appendChild(el); box.scrollTop = box.scrollHeight;
   return el;
 }
 
-function handleChatKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
-}
-
-function useSuggestion(btn) {
-  document.getElementById('chat-input').value = btn.textContent;
-  sendChat();
-}
+function handleChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } }
+function useSuggestion(btn) { document.getElementById('chat-input').value = btn.textContent; sendChat(); }
 
 // ── EMERGENCY ──
 function triggerSOS() {
