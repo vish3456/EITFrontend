@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Aashray — AI-Powered Women Safety Platform</title>
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="icon" sizes="192x192" href="favicon.png">
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -34,6 +33,19 @@
   --radius-lg: 20px;
   --shadow: 0 4px 20px rgba(0,0,0,0.3);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Legal module colors */
+  --mod-dh: #C0392B;      /* Domestic Harassment — deep red */
+  --mod-dh-bg: rgba(192,57,43,0.10);
+  --mod-dh-border: rgba(192,57,43,0.30);
+  --mod-ps: #8E44AD;      /* Physical/Sexual — violet */
+  --mod-ps-bg: rgba(142,68,173,0.10);
+  --mod-ps-border: rgba(142,68,173,0.30);
+  --mod-ec: #D4AF37;      /* Economic — gold */
+  --mod-ec-bg: rgba(212,175,55,0.10);
+  --mod-ec-border: rgba(212,175,55,0.30);
+  --mod-fd: #2A9D8F;      /* Fundamental Dignity — teal */
+  --mod-fd-bg: rgba(42,157,143,0.10);
+  --mod-fd-border: rgba(42,157,143,0.30);
 }
 
 body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; position: relative; }
@@ -83,7 +95,7 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .curtain-title { font-family: 'DM Serif Display', serif; font-size: 56px; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, var(--golden) 0%, var(--golden2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic; animation: titleGlow 3s ease infinite; }
 @keyframes titleGlow { 0%, 100% { filter: drop-shadow(0 0 20px rgba(212,175,55,0.3)); } 50% { filter: drop-shadow(0 0 40px rgba(212,175,55,0.6)); } }
 .curtain-subtitle { font-size: 18px; color: var(--text2); margin-bottom: 40px; letter-spacing: 1px; }
-.curtain-button { background: linear-gradient(135deg, var(--rose) 0%, var(--golden) 100%); color: #fff; border: none; padding: 20px 50px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; cursor: pointer; border-radius: 50px; box-shadow: 0 10px 40px rgba(58,95,11,0.4); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; pointer-events: auto; text-transform: uppercase; letter-spacing: 2px; }
+.curtain-button { background: linear-gradient(135deg, var(--rose) 0%, var(--golden) 100%); color: #fff; border: none; padding: 20px 50px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; cursor: pointer; border-radius: 50px; box-shadow: 0 10px 40px rgba(58,95,11,0.4); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: auto; text-transform: uppercase; letter-spacing: 2px; }
 .curtain-button:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(212,175,55,0.6); }
 
 /* NAV */
@@ -168,12 +180,12 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 .action-sub { font-size: 12px; color: var(--text3); }
 .action-arrow { margin-left: auto; color: var(--text3); font-size: 20px; }
 
-/* TAB BAR */
-.tab-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,0.05); background: rgba(22,24,31,0.85); backdrop-filter: blur(20px); position: fixed; bottom: 0; width: 100%; padding-bottom: env(safe-area-inset-bottom); z-index: 100; }
-.tab-item { padding: 12px 4px; text-align: center; cursor: pointer; transition: var(--transition); border: none; background: transparent; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.tab-icon { font-size: 20px; display: block; color: var(--text3); }
-.tab-label { font-size: 10px; color: var(--text3); font-weight: 600; }
-.tab-item.active .tab-label, .tab-item.active .tab-icon { color: var(--rose); }
+/* TAB BAR — 5 tabs now */
+.tab-bar { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid rgba(255,255,255,0.05); background: rgba(22,24,31,0.85); backdrop-filter: blur(20px); position: fixed; bottom: 0; width: 100%; padding-bottom: env(safe-area-inset-bottom); z-index: 100; }
+.tab-item { padding: 10px 4px; text-align: center; cursor: pointer; transition: var(--transition); border: none; background: transparent; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.tab-icon { font-size: 18px; display: block; color: var(--text3); }
+.tab-label { font-size: 9px; color: var(--text3); font-weight: 600; letter-spacing: 0.3px; }
+.tab-item.active .tab-label, .tab-item.active .tab-icon { color: var(--golden); }
 .sos-tab .tab-icon, .sos-tab .tab-label { color: var(--red); }
 
 /* ASSESSMENT */
@@ -188,119 +200,35 @@ h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: normal; }
 input[type=range] { width: 100%; accent-color: var(--rose); cursor: pointer; height: 6px; background: var(--surface2); border-radius: 3px; outline: none; -webkit-appearance: none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--rose); cursor: pointer; }
 
-/* ── DECEPTIVE ML EMOTION SCANNER ── */
+/* Face detection styles */
 .face-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; }
-
-/* Video wrap with scanner border */
-.face-video-wrap {
-  position: relative; width: 100%; max-width: 300px; margin: 0 auto 10px;
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(42,157,143,0.3), 0 0 20px rgba(42,157,143,0.1);
-}
+.face-video-wrap { position: relative; width: 100%; max-width: 300px; margin: 0 auto 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px rgba(42,157,143,0.3), 0 0 20px rgba(42,157,143,0.1); }
 #webcam-video { width: 100%; border-radius: 12px; background: #000; object-fit: cover; display: block; transform: scaleX(-1); aspect-ratio: 4/3; }
 #face-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; pointer-events: none; transform: scaleX(-1); }
-
-/* Corner brackets — pure CSS, no canvas */
 .face-corner { position: absolute; width: 18px; height: 18px; z-index: 3; pointer-events: none; }
 .face-corner::before, .face-corner::after { content:''; position: absolute; background: #2A9D8F; border-radius: 1px; }
-.face-corner-tl { top: 8px; left: 8px; }
-.face-corner-tl::before { width: 100%; height: 2px; top: 0; left: 0; }
-.face-corner-tl::after  { width: 2px; height: 100%; top: 0; left: 0; }
-.face-corner-tr { top: 8px; right: 8px; }
-.face-corner-tr::before { width: 100%; height: 2px; top: 0; right: 0; }
-.face-corner-tr::after  { width: 2px; height: 100%; top: 0; right: 0; }
-.face-corner-bl { bottom: 8px; left: 8px; }
-.face-corner-bl::before { width: 100%; height: 2px; bottom: 0; left: 0; }
-.face-corner-bl::after  { width: 2px; height: 100%; bottom: 0; left: 0; }
-.face-corner-br { bottom: 8px; right: 8px; }
-.face-corner-br::before { width: 100%; height: 2px; bottom: 0; right: 0; }
-.face-corner-br::after  { width: 2px; height: 100%; bottom: 0; right: 0; }
-
-/* Horizontal scan line sweeping down */
-.scan-line {
-  position: absolute; left: 0; width: 100%; height: 2px; z-index: 4; pointer-events: none;
-  background: linear-gradient(90deg, transparent 0%, rgba(42,157,143,0.0) 5%, rgba(42,157,143,0.8) 40%, #2A9D8F 50%, rgba(42,157,143,0.8) 60%, rgba(42,157,143,0.0) 95%, transparent 100%);
-  box-shadow: 0 0 8px rgba(42,157,143,0.6), 0 0 16px rgba(42,157,143,0.3);
-  animation: scanSweep 2.2s linear infinite;
-  top: 0;
-}
-@keyframes scanSweep {
-  0%   { top: 0%;   opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-
-/* Data readout overlay on top-left of video */
-.face-data-overlay {
-  position: absolute; top: 6px; left: 6px; z-index: 5; pointer-events: none;
-  display: flex; flex-direction: column; gap: 3px;
-}
-.fdo-row {
-  font-family: 'Courier New', monospace; font-size: 9px; font-weight: 700;
-  color: rgba(42,157,143,0.9); text-shadow: 0 0 6px rgba(42,157,143,0.8);
-  background: rgba(0,0,0,0.55); padding: 1px 5px; border-radius: 3px;
-  letter-spacing: 0.5px;
-}
-
-/* Status badge */
-.face-status-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 600;
-  color: var(--text2); margin-bottom: 8px; min-width: 220px; justify-content: center; transition: var(--transition);
-}
+.face-corner-tl { top: 8px; left: 8px; }.face-corner-tl::before { width: 100%; height: 2px; top: 0; left: 0; }.face-corner-tl::after  { width: 2px; height: 100%; top: 0; left: 0; }
+.face-corner-tr { top: 8px; right: 8px; }.face-corner-tr::before { width: 100%; height: 2px; top: 0; right: 0; }.face-corner-tr::after  { width: 2px; height: 100%; top: 0; right: 0; }
+.face-corner-bl { bottom: 8px; left: 8px; }.face-corner-bl::before { width: 100%; height: 2px; bottom: 0; left: 0; }.face-corner-bl::after  { width: 2px; height: 100%; bottom: 0; left: 0; }
+.face-corner-br { bottom: 8px; right: 8px; }.face-corner-br::before { width: 100%; height: 2px; bottom: 0; right: 0; }.face-corner-br::after  { width: 2px; height: 100%; bottom: 0; right: 0; }
+.scan-line { position: absolute; left: 0; width: 100%; height: 2px; z-index: 4; pointer-events: none; background: linear-gradient(90deg, transparent 0%, rgba(42,157,143,0.0) 5%, rgba(42,157,143,0.8) 40%, #2A9D8F 50%, rgba(42,157,143,0.8) 60%, rgba(42,157,143,0.0) 95%, transparent 100%); box-shadow: 0 0 8px rgba(42,157,143,0.6), 0 0 16px rgba(42,157,143,0.3); animation: scanSweep 2.2s linear infinite; top: 0; }
+@keyframes scanSweep { 0% { top: 0%; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+.face-data-overlay { position: absolute; top: 6px; left: 6px; z-index: 5; pointer-events: none; display: flex; flex-direction: column; gap: 3px; }
+.fdo-row { font-family: 'Courier New', monospace; font-size: 9px; font-weight: 700; color: rgba(42,157,143,0.9); text-shadow: 0 0 6px rgba(42,157,143,0.8); background: rgba(0,0,0,0.55); padding: 1px 5px; border-radius: 3px; letter-spacing: 0.5px; }
+.face-status-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 8px; min-width: 220px; justify-content: center; transition: var(--transition); }
 .face-status-badge.detected { border-color: var(--green); color: var(--green); background: rgba(42,157,143,0.1); }
-.face-status-badge.error    { border-color: var(--red);   color: var(--red);   background: var(--red-bg); }
-
-/* Emotion time tracker bars */
-.emotion-tracker {
-  width: 100%; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;
-}
-.emo-row {
-  display: flex; align-items: center; gap: 8px;
-}
-.emo-label {
-  font-size: 11px; font-weight: 600; color: var(--text3); width: 64px; text-align: right;
-  text-transform: capitalize; flex-shrink: 0;
-}
-.emo-bar-wrap {
-  flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; position: relative;
-}
-.emo-bar-fill {
-  height: 100%; border-radius: 3px; width: 0%;
-  transition: width 0.4s ease;
-}
-.emo-time {
-  font-size: 10px; color: var(--text3); width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0;
-}
+.face-status-badge.error { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+.emotion-tracker { width: 100%; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.emo-row { display: flex; align-items: center; gap: 8px; }
+.emo-label { font-size: 11px; font-weight: 600; color: var(--text3); width: 64px; text-align: right; text-transform: capitalize; flex-shrink: 0; }
+.emo-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.emo-bar-fill { height: 100%; border-radius: 3px; width: 0%; transition: width 0.4s ease; }
+.emo-time { font-size: 10px; color: var(--text3); width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
 .emo-row.dominant .emo-label { color: var(--green); }
-.emo-row.dominant .emo-bar-fill { box-shadow: 0 0 6px currentColor; }
-
-/* Phase label */
-.scan-phase-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
-}
-.scan-phase-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
-  animation: aiBlink 1s ease infinite;
-}
-
-/* Neural network readout text */
-.nn-readout {
-  font-family: 'Courier New', monospace; font-size: 10px; color: var(--text3);
-  background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
-  padding: 8px 10px; margin-bottom: 8px; width: 100%; line-height: 1.7;
-  min-height: 40px;
-}
-
-/* Dominant emotion result card */
-.dominant-result {
-  display: none; width: 100%; background: rgba(42,157,143,0.08);
-  border: 1px solid rgba(42,157,143,0.35); border-radius: 10px;
-  padding: 12px 16px; margin-bottom: 4px; text-align: center;
-}
+.scan-phase-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.scan-phase-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: aiBlink 1s ease infinite; }
+.nn-readout { font-family: 'Courier New', monospace; font-size: 10px; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; width: 100%; line-height: 1.7; min-height: 40px; }
+.dominant-result { display: none; width: 100%; background: rgba(42,157,143,0.08); border: 1px solid rgba(42,157,143,0.35); border-radius: 10px; padding: 12px 16px; margin-bottom: 4px; text-align: center; }
 .dominant-result.show { display: block; }
 .dr-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--green); text-transform: uppercase; margin-bottom: 4px; }
 .dr-emotion { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); margin-bottom: 2px; text-transform: capitalize; }
@@ -358,7 +286,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .msg.bot { background: var(--surface2); border: 1px solid var(--border); align-self: flex-start; border-radius: 16px 16px 16px 4px; }
 .msg.user { background: var(--rose); color: #fff; align-self: flex-end; border-radius: 16px 16px 4px 16px; font-weight: 500; }
-.msg.thinking { background: transparent; border: none; box-shadow: none; color: var(--text3); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; padding: 4px 16px; }
+.msg.thinking { background: transparent; border: none; color: var(--text3); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; padding: 4px 16px; }
 .tdots { display: inline-flex; gap: 4px; }
 .tdots span { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); animation: db 1.4s ease-in-out infinite; opacity: 0.6; }
 .tdots span:nth-child(2) { animation-delay: .2s; }
@@ -398,7 +326,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .helpline-strip { background: rgba(22,24,31,0.9); border-top: 1px solid var(--border); padding: 16px 24px 32px; width: 100%; flex-shrink: 0; }
 .helpline-strip p { font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
 .helpline-numbers { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; align-items: center; }
-/* FIX: Make helpline numbers tappable on mobile */
 .hlnum { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
 .hlnum:hover { color: var(--golden); }
 .hlnum span { font-size: 10px; color: var(--text3); font-family: 'DM Sans', sans-serif; }
@@ -413,21 +340,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .contact-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
 .contact-rel { font-size: 12px; color: var(--text3); }
 .contact-actions { margin-left: auto; display: flex; gap: 8px; }
-/* FIX: Call & Delete buttons on contact cards */
 .contact-call-btn { background: rgba(42,157,143,0.15); border: 1px solid rgba(42,157,143,0.3); color: var(--green); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: var(--transition); }
 .contact-call-btn:hover { background: rgba(42,157,143,0.3); }
 .contact-del-btn { background: var(--red-bg); border: 1px solid rgba(230,57,70,0.3); color: var(--red); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: var(--transition); }
-.contact-del-btn:hover { background: rgba(230,57,70,0.3); }
 .add-contact-btn { width: 100%; background: transparent; border: 1px dashed var(--border2); color: var(--text2); padding: 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'DM Sans', sans-serif; }
 .add-contact-btn:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
 .ngo-grid { display: flex; flex-direction: column; gap: 10px; }
 .ngo-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
 .ngo-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-/* FIX: NGO numbers are now tappable tel: links */
 .ngo-num { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--rose); text-decoration: none; cursor: pointer; }
 .ngo-num:hover { color: var(--golden); }
 
-/* ── ADD CONTACT MODAL ── */
+/* MODALS */
 .modal-overlay { position: fixed; inset: 0; background: rgba(11,12,16,0.85); backdrop-filter: blur(8px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; }
 .modal-overlay.show { display: flex; }
 .modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 28px 24px; width: 100%; max-width: 420px; animation: fadeIn .3s ease; }
@@ -442,9 +366,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .modal-save { flex: 1; background: var(--rose); color: #fff; border: none; padding: 14px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
 .modal-save:hover { background: var(--rose2); }
 .modal-cancel { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); padding: 14px 20px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
-.modal-cancel:hover { border-color: var(--border); color: var(--text); }
 
-/* SOS ALERT MODAL */
+/* SOS MODAL */
 .sos-modal { position: fixed; inset: 0; background: rgba(18,8,8,0.95); backdrop-filter: blur(10px); z-index: 600; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
 .sos-modal.show { display: flex; }
 .sos-modal-icon { font-size: 56px; margin-bottom: 16px; animation: sosPulse 1s ease infinite; }
@@ -457,29 +380,511 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 .sos-contact-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
 .sos-contact-num { font-size: 12px; color: var(--text3); }
 .sos-call-btn { background: var(--red); color: #fff; border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition); }
-.sos-call-btn:hover { background: #c72d38; }
-.sos-sms-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition); margin-left: 6px; }
+.sos-sms-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; }
 .sos-close-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); padding: 12px 32px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; border-radius: var(--radius-md); transition: var(--transition); }
+
+/* ═══════════════════════════════════════════════════════════
+   LEGAL HELP SCREEN — full design system
+═══════════════════════════════════════════════════════════ */
+
+.legal-wrap {
+  flex: 1; overflow-y: auto; max-width: 680px; margin: 0 auto; width: 100%;
+  padding: 0 0 32px;
+}
+
+/* Hero banner */
+.legal-hero {
+  padding: 28px 24px 20px;
+  background: linear-gradient(160deg, rgba(212,175,55,0.06) 0%, transparent 60%);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.legal-hero-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--golden); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.legal-hero-eyebrow::before { content:''; display: inline-block; width: 24px; height: 2px; background: var(--golden); border-radius: 1px; }
+.legal-hero-title {
+  font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1.1;
+  color: var(--text); margin-bottom: 10px;
+}
+.legal-hero-title em { color: var(--golden); font-style: italic; }
+.legal-hero-sub {
+  font-size: 14px; color: var(--text2); line-height: 1.65; max-width: 500px; margin-bottom: 16px;
+}
+.legal-disclaimer {
+  background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2);
+  border-radius: var(--radius-md); padding: 12px 16px;
+  font-size: 12px; color: var(--golden2); line-height: 1.6; display: flex; gap: 10px; align-items: flex-start;
+}
+.legal-disclaimer-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* Module tabs */
+.legal-tabs {
+  display: flex; gap: 6px; padding: 16px 24px 4px; overflow-x: auto;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.legal-tabs::-webkit-scrollbar { display: none; }
+.legal-tab {
+  flex-shrink: 0; padding: 8px 16px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition);
+  border: 1px solid var(--border2); background: var(--surface); color: var(--text3);
+  font-family: 'DM Sans', sans-serif; white-space: nowrap;
+}
+.legal-tab.active-dh { background: var(--mod-dh-bg); border-color: var(--mod-dh-border); color: var(--mod-dh); }
+.legal-tab.active-ps { background: var(--mod-ps-bg); border-color: var(--mod-ps-border); color: var(--mod-ps); }
+.legal-tab.active-ec { background: var(--mod-ec-bg); border-color: var(--mod-ec-border); color: var(--mod-ec); }
+.legal-tab.active-fd { background: var(--mod-fd-bg); border-color: var(--mod-fd-border); color: var(--mod-fd); }
+
+/* Module panels */
+.legal-modules { padding: 16px 24px; display: flex; flex-direction: column; gap: 16px; }
+.legal-module { display: none; animation: fadeIn .35s ease; }
+.legal-module.visible { display: block; }
+
+/* Module header */
+.mod-header {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: 20px 20px 16px;
+  position: relative; overflow: hidden;
+}
+.mod-header::before {
+  content: ''; position: absolute; right: -20px; top: -20px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: currentColor; opacity: 0.07;
+}
+.mod-header-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  opacity: 0.7; margin-bottom: 6px;
+}
+.mod-header-title {
+  font-family: 'DM Serif Display', serif; font-size: 24px; line-height: 1.1;
+  margin-bottom: 8px;
+}
+.mod-header-sub { font-size: 13px; opacity: 0.8; line-height: 1.55; }
+
+.mod-dh .mod-header { background: var(--mod-dh-bg); border: 1px solid var(--mod-dh-border); border-bottom: none; color: #e8c0bc; }
+.mod-dh .mod-header-title { color: #fbd1cd; }
+.mod-ps .mod-header { background: var(--mod-ps-bg); border: 1px solid var(--mod-ps-border); border-bottom: none; color: #d9b8eb; }
+.mod-ps .mod-header-title { color: #e8cff5; }
+.mod-ec .mod-header { background: var(--mod-ec-bg); border: 1px solid var(--mod-ec-border); border-bottom: none; color: var(--golden2); }
+.mod-ec .mod-header-title { color: var(--golden); }
+.mod-fd .mod-header { background: var(--mod-fd-bg); border: 1px solid var(--mod-fd-border); border-bottom: none; color: #9dddd7; }
+.mod-fd .mod-header-title { color: #b6ede9; }
+
+/* Law cards */
+.law-cards {
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  overflow: hidden;
+}
+.law-card {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  transition: var(--transition); cursor: pointer;
+}
+.law-card:last-child { border-bottom: none; }
+.law-card-header {
+  padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+  user-select: none;
+}
+.law-card-header:hover { background: var(--surface2); }
+.law-badge {
+  font-family: 'DM Serif Display', serif; font-size: 13px; font-weight: normal;
+  padding: 5px 10px; border-radius: var(--radius-sm); flex-shrink: 0;
+  min-width: 80px; text-align: center; letter-spacing: 0.3px;
+}
+.mod-dh .law-badge { background: var(--mod-dh-bg); border: 1px solid var(--mod-dh-border); color: #fbd1cd; }
+.mod-ps .law-badge { background: var(--mod-ps-bg); border: 1px solid var(--mod-ps-border); color: #e8cff5; }
+.mod-ec .law-badge { background: var(--mod-ec-bg); border: 1px solid var(--mod-ec-border); color: var(--golden); }
+.mod-fd .law-badge { background: var(--mod-fd-bg); border: 1px solid var(--mod-fd-border); color: #b6ede9; }
+.law-card-meta { flex: 1; }
+.law-card-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.law-card-tagline { font-size: 12px; color: var(--text3); }
+.law-expand-icon { color: var(--text3); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
+.law-card.open .law-expand-icon { transform: rotate(90deg); }
+
+/* Law card body (expandable) */
+.law-card-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.law-card.open .law-card-body { max-height: 800px; }
+.law-card-inner { padding: 0 18px 18px 18px; }
+.law-what { margin-bottom: 14px; }
+.law-what-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--text3); margin-bottom: 6px;
+}
+.law-what-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+/* Soft reassurance callout */
+.law-reassurance {
+  background: rgba(212,175,55,0.06); border-left: 3px solid var(--golden);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px; margin-bottom: 14px;
+  font-size: 13px; color: var(--golden2); line-height: 1.6; font-style: italic;
+}
+
+/* Action box — what you can ask for */
+.law-action-box {
+  border-radius: var(--radius-md); padding: 14px 16px;
+}
+.mod-dh .law-action-box { background: var(--mod-dh-bg); border: 1px solid var(--mod-dh-border); }
+.mod-ps .law-action-box { background: var(--mod-ps-bg); border: 1px solid var(--mod-ps-border); }
+.mod-ec .law-action-box { background: var(--mod-ec-bg); border: 1px solid var(--mod-ec-border); }
+.mod-fd .law-action-box { background: var(--mod-fd-bg); border: 1px solid var(--mod-fd-border); }
+.law-action-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.mod-dh .law-action-label { color: #fbd1cd; }
+.mod-ps .law-action-label { color: #e8cff5; }
+.mod-ec .law-action-label { color: var(--golden); }
+.mod-fd .law-action-label { color: #b6ede9; }
+.law-action-items { display: flex; flex-direction: column; gap: 8px; }
+.law-action-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; color: var(--text); line-height: 1.55;
+}
+.law-action-bullet {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;
+}
+.mod-dh .law-action-bullet { background: var(--mod-dh-bg); color: #fbd1cd; border: 1px solid var(--mod-dh-border); }
+.mod-ps .law-action-bullet { background: var(--mod-ps-bg); color: #e8cff5; border: 1px solid var(--mod-ps-border); }
+.mod-ec .law-action-bullet { background: var(--mod-ec-bg); color: var(--golden); border: 1px solid var(--mod-ec-border); }
+.mod-fd .law-action-bullet { background: var(--mod-fd-bg); color: #b6ede9; border: 1px solid var(--mod-fd-border); }
+
+/* Bottom CTA inside module */
+.mod-footer {
+  margin-top: 16px; display: flex; gap: 10px;
+}
+.mod-cta-btn {
+  flex: 1; padding: 13px 16px; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition);
+  font-family: 'DM Sans', sans-serif; text-align: center; border: none;
+}
+.mod-cta-chat { background: var(--rose); color: #fff; }
+.mod-cta-chat:hover { background: var(--rose2); }
+.mod-cta-helpline { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2) !important; }
+.mod-cta-helpline:hover { border-color: var(--golden) !important; color: var(--golden); }
+
+/* Know Your Rights quick bar */
+.kyr-bar {
+  margin: 0 24px 16px; background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(58,95,11,0.08));
+  border: 1px solid rgba(212,175,55,0.2); border-radius: var(--radius-md);
+  padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+}
+.kyr-icon { font-size: 28px; flex-shrink: 0; }
+.kyr-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; color: var(--golden); }
+.kyr-text p { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.kyr-badge {
+  margin-left: auto; background: var(--golden-bg); border: 1px solid rgba(212,175,55,0.3);
+  color: var(--golden); font-size: 10px; font-weight: 700; padding: 4px 10px;
+  border-radius: 20px; white-space: nowrap; letter-spacing: 1px;
+}
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════════
+   EMPOWERMENT & REDIRECTION SECTION
+═══════════════════════════════════════════════════════════ */
+
+.empower-section {
+  margin: 8px 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glassmorphism outer container */
+.empower-glass {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    rgba(212,175,55,0.07) 0%,
+    rgba(11,12,16,0.6) 40%,
+    rgba(58,95,11,0.08) 100%
+  );
+  border: 1px solid rgba(212,175,55,0.22);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.08) inset,
+    0 20px 60px rgba(0,0,0,0.5),
+    0 0 80px rgba(212,175,55,0.04);
+}
+
+/* Animated grain texture overlay */
+.empower-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 180px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Golden top border glow */
+.empower-glass::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.8), transparent);
+  box-shadow: 0 0 20px rgba(212,175,55,0.4);
+  z-index: 1;
+}
+
+.empower-inner { position: relative; z-index: 2; padding: 28px 24px 24px; }
+
+/* Section label */
+.empower-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 9px; font-weight: 700; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--golden);
+  margin-bottom: 20px; opacity: 0.8;
+}
+.empower-eyebrow-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(212,175,55,0.5), transparent);
+}
+.empower-eyebrow-line-r {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5));
+}
+
+/* Quote block */
+.empower-quote-wrap {
+  position: relative;
+  margin-bottom: 24px;
+  padding: 20px 20px 20px 28px;
+  border-left: 3px solid var(--golden);
+  background: rgba(212,175,55,0.04);
+  border-radius: 0 12px 12px 0;
+}
+.empower-quote-mark {
+  position: absolute;
+  top: -8px; left: 12px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 60px; line-height: 1;
+  color: var(--golden); opacity: 0.2;
+  pointer-events: none; user-select: none;
+  font-style: italic;
+}
+.empower-quote-text {
+  font-family: 'Noto Serif Devanagari', 'DM Serif Display', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.85;
+  color: var(--text);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  position: relative; z-index: 1;
+  /* Elegant entrance animation */
+  animation: quoteReveal 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes quoteReveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Speak button (plays TTS) */
+.empower-speak-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  color: var(--golden); background: transparent; border: none;
+  cursor: pointer; padding: 6px 0; margin-bottom: 24px;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase; opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.empower-speak-btn:hover { opacity: 1; }
+.empower-speak-btn.speaking { color: var(--green); opacity: 1; animation: speakPulse 1.2s ease infinite; }
+@keyframes speakPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+.speak-icon { font-size: 16px; }
+
+/* ── SVG Collage Art ── */
+.empower-collage {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.empower-collage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Quote refresh */
+.empower-quote-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.empower-nav-dots {
+  display: flex; gap: 6px; align-items: center;
+}
+.empower-nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(212,175,55,0.25);
+  transition: all 0.3s ease; cursor: pointer;
+}
+.empower-nav-dot.active {
+  background: var(--golden);
+  box-shadow: 0 0 8px rgba(212,175,55,0.6);
+  width: 20px; border-radius: 3px;
+}
+.empower-refresh-btn {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  color: var(--text3); background: transparent; border: none;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s; text-transform: uppercase;
+}
+.empower-refresh-btn:hover { color: var(--golden); }
+.empower-refresh-btn.spinning svg { animation: spin 0.5s linear; }
+
+/* ── THE MAIN CTA BUTTON ── */
+.empower-cta-btn {
+  width: 100%;
+  position: relative;
+  padding: 18px 24px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Layered gradient */
+  background: linear-gradient(135deg,
+    #1a3a06 0%,
+    #2d5c0a 30%,
+    #c8970a 70%,
+    #d4af37 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.3),
+    0 8px 32px rgba(58,95,11,0.35),
+    0 0 60px rgba(212,175,55,0.12);
+}
+/* Shimmer sweep */
+.empower-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.15) 50%,
+    transparent 100%
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.empower-cta-btn:hover::before { left: 150%; }
+.empower-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.5),
+    0 12px 40px rgba(58,95,11,0.5),
+    0 0 80px rgba(212,175,55,0.25);
+}
+.empower-cta-btn:active { transform: scale(0.98); }
+
+/* Glow pulse ring */
+.empower-cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: transparent;
+  border: 2px solid rgba(212,175,55,0.4);
+  animation: ctaGlowRing 2.5s ease infinite;
+  pointer-events: none;
+}
+@keyframes ctaGlowRing {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0; transform: scale(1.03); }
+}
+
+.empower-cta-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+}
+.empower-cta-en {
+  font-size: 15px; font-weight: 700;
+  color: #fff; letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+.empower-cta-hi {
+  font-family: 'Noto Serif Devanagari', 'DM Serif Display', Georgia, serif;
+  font-size: 14px; color: rgba(255,255,255,0.85);
+  letter-spacing: 0.5px;
+}
+.empower-cta-sub {
+  font-size: 10px; color: rgba(255,255,255,0.55);
+  letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;
+}
+
+/* Quick helplines strip at bottom of section */
+.empower-helplines {
+  display: flex; gap: 8px; margin-top: 14px;
+  flex-wrap: wrap;
+}
+.empower-helpline-chip {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 10px 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.empower-helpline-chip:hover {
+  background: rgba(212,175,55,0.08);
+  border-color: rgba(212,175,55,0.25);
+}
+.empower-hl-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px; color: var(--golden);
+  line-height: 1;
+}
+.empower-hl-name {
+  font-size: 9px; color: var(--text3);
+  font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; text-align: center;
+}
+
+/* Section separator before empowerment */
+.empower-separator {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 24px; margin-bottom: 16px; margin-top: 8px;
+}
+.empower-sep-line { flex: 1; height: 1px; background: var(--border); }
+.empower-sep-text {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text3); white-space: nowrap;
+}
 </style>
 </head>
 <body>
 
 <div class="bg-gradient-overlay"></div>
 <div class="bg-animation">
-  <div class="floating-orb orb-1"></div>
-  <div class="floating-orb orb-2"></div>
-  <div class="floating-orb orb-3"></div>
+  <div class="floating-orb orb-1"></div><div class="floating-orb orb-2"></div><div class="floating-orb orb-3"></div>
   <div class="particle particle-1"></div><div class="particle particle-2"></div>
   <div class="particle particle-3"></div><div class="particle particle-4"></div>
   <div class="particle particle-5"></div><div class="particle particle-6"></div>
   <div class="particle particle-7"></div><div class="particle particle-8"></div>
-  <div class="wave-line wave-1"></div>
-  <div class="wave-line wave-2"></div>
-  <div class="wave-line wave-3"></div>
+  <div class="wave-line wave-1"></div><div class="wave-line wave-2"></div><div class="wave-line wave-3"></div>
 </div>
 
 <!-- Curtain -->
@@ -493,23 +898,14 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── ADD CONTACT MODAL ── -->
+<!-- Add Contact Modal -->
 <div class="modal-overlay" id="add-contact-modal">
   <div class="modal-box">
     <h3 class="modal-title">Add trusted contact</h3>
     <p class="modal-sub">This person will be alerted in an emergency.</p>
-    <div class="modal-field">
-      <label class="modal-label" for="modal-name">Full name</label>
-      <input class="modal-input" id="modal-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="name"/>
-    </div>
-    <div class="modal-field">
-      <label class="modal-label" for="modal-phone">Phone number</label>
-      <input class="modal-input" id="modal-phone" type="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel"/>
-    </div>
-    <div class="modal-field">
-      <label class="modal-label" for="modal-rel">Relationship</label>
-      <input class="modal-input" id="modal-rel" type="text" placeholder="e.g. Sister, Friend, Counsellor"/>
-    </div>
+    <div class="modal-field"><label class="modal-label" for="modal-name">Full name</label><input class="modal-input" id="modal-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="name"/></div>
+    <div class="modal-field"><label class="modal-label" for="modal-phone">Phone number</label><input class="modal-input" id="modal-phone" type="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel"/></div>
+    <div class="modal-field"><label class="modal-label" for="modal-rel">Relationship</label><input class="modal-input" id="modal-rel" type="text" placeholder="e.g. Sister, Friend, Counsellor"/></div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeAddContact()">Cancel</button>
       <button class="modal-save" onclick="saveContact()">Save contact</button>
@@ -517,14 +913,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-<!-- ── SOS TRIGGERED MODAL ── -->
+<!-- SOS Modal -->
 <div class="sos-modal" id="sos-modal">
   <div class="sos-modal-icon">🆘</div>
   <h2 class="sos-modal-title">SOS Activated</h2>
   <div class="sos-modal-loc" id="sos-location-text">📍 Getting your location…</div>
-  <div class="sos-contact-list" id="sos-contact-list">
-    <!-- populated dynamically -->
-  </div>
+  <div class="sos-contact-list" id="sos-contact-list"></div>
   <a class="sos-call-btn" href="tel:112" style="font-size:16px;padding:14px 32px;margin-bottom:16px;">📞 Call Emergency — 112</a>
   <button class="sos-close-btn" onclick="closeSosModal()">I'm safe — close</button>
 </div>
@@ -575,30 +969,17 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
   </nav>
   <div class="onboard-wrap">
-    <div class="step-indicator">
-      <div class="step-dot active" id="sd1"></div>
-      <div class="step-dot" id="sd2"></div>
-      <div class="step-dot" id="sd3"></div>
-      <div class="step-dot" id="sd4"></div>
-    </div>
+    <div class="step-indicator"><div class="step-dot active" id="sd1"></div><div class="step-dot" id="sd2"></div><div class="step-dot" id="sd3"></div><div class="step-dot" id="sd4"></div></div>
     <div id="os1">
-      <p class="onboard-label">Step 1 of 4</p>
-      <h2 class="onboard-q">What describes your current life situation?</h2>
+      <p class="onboard-label">Step 1 of 4</p><h2 class="onboard-q">What describes your current life situation?</h2>
       <div class="choice-grid">
-        <button class="choice-btn" onclick="pick(this,'cohort','married')">
-          <span class="ct">I am married / in a partnership</span>
-          <span class="cs">Living with or closely involved with a partner or spouse</span>
-        </button>
-        <button class="choice-btn" onclick="pick(this,'cohort','unmarried')">
-          <span class="ct">I am unmarried / single</span>
-          <span class="cs">Living independently, with family, or in a relationship but not married</span>
-        </button>
+        <button class="choice-btn" onclick="pick(this,'cohort','married')"><span class="ct">I am married / in a partnership</span><span class="cs">Living with or closely involved with a partner or spouse</span></button>
+        <button class="choice-btn" onclick="pick(this,'cohort','unmarried')"><span class="ct">I am unmarried / single</span><span class="cs">Living independently, with family, or in a relationship but not married</span></button>
       </div>
       <button class="onboard-next" id="on1" onclick="nextStep(2)">Continue →</button>
     </div>
     <div id="os2" style="display:none">
-      <p class="onboard-label">Step 2 of 4</p>
-      <h2 class="onboard-q">How have you been feeling lately?</h2>
+      <p class="onboard-label">Step 2 of 4</p><h2 class="onboard-q">How have you been feeling lately?</h2>
       <div class="choice-grid">
         <button class="choice-btn" onclick="pick(this,'mood','well')"><span class="ct">Generally well</span><span class="cs">Mostly okay, some stress</span></button>
         <button class="choice-btn" onclick="pick(this,'mood','difficult')"><span class="ct">Going through a difficult time</span><span class="cs">Struggling more than usual</span></button>
@@ -608,8 +989,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <button class="onboard-next" id="on2" onclick="nextStep(3)">Continue →</button>
     </div>
     <div id="os3" style="display:none">
-      <p class="onboard-label">Step 3 of 4</p>
-      <h2 class="onboard-q">What brings you here today?</h2>
+      <p class="onboard-label">Step 3 of 4</p><h2 class="onboard-q">What brings you here today?</h2>
       <div class="choice-grid">
         <button class="choice-btn" onclick="pick(this,'reason','support')"><span class="ct">I need emotional support</span><span class="cs">Someone to talk to</span></button>
         <button class="choice-btn" onclick="pick(this,'reason','check')"><span class="ct">I want to check my mental health</span><span class="cs">Understand my stress and wellbeing</span></button>
@@ -619,21 +999,11 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <button class="onboard-next" id="on3" onclick="nextStep(4)">Continue →</button>
     </div>
     <div id="os4" style="display:none">
-      <p class="onboard-label">Step 4 of 4</p>
-      <h2 class="onboard-q">Your privacy, your rules.</h2>
+      <p class="onboard-label">Step 4 of 4</p><h2 class="onboard-q">Your privacy, your rules.</h2>
       <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
-        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer">
-          <input type="checkbox" checked style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/>
-          <span style="font-size:14px;color:var(--text);line-height:1.5">Anonymous mode — no name or identity stored</span>
-        </label>
-        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer">
-          <input type="checkbox" checked style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/>
-          <span style="font-size:14px;color:var(--text);line-height:1.5">End-to-end encryption for all conversations</span>
-        </label>
-        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer">
-          <input type="checkbox" style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/>
-          <span style="font-size:14px;color:var(--text);line-height:1.5">Allow secure evidence logging (manual activation only)</span>
-        </label>
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer"><input type="checkbox" checked style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/><span style="font-size:14px;color:var(--text);line-height:1.5">Anonymous mode — no name or identity stored</span></label>
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer"><input type="checkbox" checked style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/><span style="font-size:14px;color:var(--text);line-height:1.5">End-to-end encryption for all conversations</span></label>
+        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer"><input type="checkbox" style="margin-top:4px;accent-color:var(--rose);width:16px;height:16px;"/><span style="font-size:14px;color:var(--text);line-height:1.5">Allow secure evidence logging (manual activation only)</span></label>
       </div>
       <button class="btn-primary" onclick="completeOnboard()">Enter Aashray →</button>
     </div>
@@ -653,10 +1023,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <div class="risk-banner">
       <div class="risk-indicator risk-med" id="risk-indicator">MED</div>
-      <div class="risk-info">
-        <h3 id="risk-title">Complete assessment for AI scoring</h3>
-        <p id="risk-sub">Tap "Assess" below to begin</p>
-      </div>
+      <div class="risk-info"><h3 id="risk-title">Complete assessment for AI scoring</h3><p id="risk-sub">Tap "Assess" below to begin</p></div>
       <span class="risk-ai-tag" id="risk-ai-tag">Pending</span>
     </div>
     <div class="ai-insight">
@@ -674,6 +1041,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="action-list">
       <div class="action-item" onclick="showScreen('screen-assess')"><div class="action-icon" style="background:var(--rose-bg)">🎮</div><div><div class="action-title">Take today's assessment</div><div class="action-sub">AI-scored psychological games · ~4 min</div></div><div class="action-arrow">›</div></div>
       <div class="action-item" onclick="showScreen('screen-chat')"><div class="action-icon" style="background:var(--rose-bg)">💬</div><div><div class="action-title">Talk to Aasha</div><div class="action-sub">Gemini-powered AI companion · Encrypted</div></div><div class="action-arrow">›</div></div>
+      <div class="action-item" onclick="showScreen('screen-legal')"><div class="action-icon" style="background:var(--golden-bg)">⚖️</div><div><div class="action-title">Know your legal rights</div><div class="action-sub">Indian laws · Plain language · 4 modules</div></div><div class="action-arrow" style="color:var(--golden)">›</div></div>
       <div class="action-item" onclick="showScreen('screen-trust')"><div class="action-icon" style="background:rgba(42,157,143,0.15)">🤝</div><div><div class="action-title">Trusted network</div><div class="action-sub" id="trust-count-label">Add trusted contacts</div></div><div class="action-arrow">›</div></div>
       <div class="action-item" onclick="showScreen('screen-emergency')"><div class="action-icon" style="background:var(--red-bg)">🆘</div><div><div class="action-title">Emergency response</div><div class="action-sub">Instant SOS · Location share · Helplines</div></div><div class="action-arrow" style="color:var(--red)">›</div></div>
     </div>
@@ -682,17 +1050,14 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <button class="tab-item active" onclick="showScreen('screen-dashboard')"><span class="tab-icon">⊙</span><span class="tab-label">Home</span></button>
     <button class="tab-item" onclick="showScreen('screen-assess')"><span class="tab-icon">◈</span><span class="tab-label">Assess</span></button>
     <button class="tab-item" onclick="showScreen('screen-chat')"><span class="tab-icon">◯</span><span class="tab-label">Talk</span></button>
+    <button class="tab-item" onclick="showScreen('screen-legal')"><span class="tab-icon">⚖</span><span class="tab-label">Rights</span></button>
     <button class="tab-item sos-tab" onclick="showScreen('screen-emergency')"><span class="tab-icon">⚑</span><span class="tab-label">SOS</span></button>
   </div>
 </div>
 
 <!-- ASSESSMENT -->
 <div class="screen" id="screen-assess">
-  <nav class="nav">
-    <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
-    <div class="nav-logo">Assessment</div>
-    <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
-  </nav>
+  <nav class="nav"><button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button><div class="nav-logo">Assessment</div><button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button></nav>
   <div class="assess-wrap">
     <p class="game-counter" id="game-counter">Game 1 of 3</p>
     <h2 class="game-title" id="game-title">Emotion recognition</h2>
@@ -704,20 +1069,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <!-- RESULTS -->
 <div class="screen" id="screen-results">
-  <nav class="nav">
-    <button class="nav-back" onclick="showScreen('screen-dashboard')">← Dashboard</button>
-    <div class="nav-logo">AI Report</div>
-    <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
-  </nav>
+  <nav class="nav"><button class="nav-back" onclick="showScreen('screen-dashboard')">← Dashboard</button><div class="nav-logo">AI Report</div><button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button></nav>
   <div class="result-wrap">
     <div class="result-hero">
-      <div class="result-ring">
-        <svg width="120" height="120" viewBox="0 0 96 96">
-          <circle cx="48" cy="48" r="40" fill="none" stroke="var(--border)" stroke-width="8"/>
-          <circle cx="48" cy="48" r="40" fill="none" stroke="var(--rose)" stroke-width="8" id="result-arc" stroke-dasharray="251" stroke-dashoffset="251" stroke-linecap="round"/>
-        </svg>
-        <div class="result-ring-val" id="result-ring-val">—</div>
-      </div>
+      <div class="result-ring"><svg width="120" height="120" viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="none" stroke="var(--border)" stroke-width="8"/><circle cx="48" cy="48" r="40" fill="none" stroke="var(--rose)" stroke-width="8" id="result-arc" stroke-dasharray="251" stroke-dashoffset="251" stroke-linecap="round"/></svg><div class="result-ring-val" id="result-ring-val">—</div></div>
       <h2 class="result-label" id="result-label">Computing…</h2>
       <p class="result-sub" id="result-sub">AI is analysing your responses.</p>
     </div>
@@ -731,19 +1086,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <p class="section-label">AI-recommended resources</p>
     <div class="resource-card" onclick="showScreen('screen-chat')"><h4>Talk to Aasha — AI companion</h4><p>Personalised conversation based on your scores · Available now</p></div>
+    <div class="resource-card" onclick="showScreen('screen-legal')"><h4>Know your legal rights ⚖️</h4><p>Indian women's rights laws explained in plain language · Tap to explore</p></div>
     <div class="resource-card" onclick="window.location='tel:9152987821'"><h4>iCall helpline — 9152987821</h4><p>Free psychological counselling · Mon–Sat 8am–10pm · Tap to call</p></div>
-    <div class="resource-card" onclick="window.location='tel:7827170170'"><h4>National Commission for Women</h4><p>Helpline: 7827170170 · 24/7 support · Tap to call</p></div>
     <button class="btn-primary" style="margin-top:16px" onclick="showScreen('screen-chat')">Talk to Aasha now →</button>
   </div>
 </div>
 
 <!-- CHAT -->
 <div class="screen" id="screen-chat">
-  <nav class="nav">
-    <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
-    <div class="nav-logo">Aashray</div>
-    <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
-  </nav>
+  <nav class="nav"><button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button><div class="nav-logo">Aashray</div><button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button></nav>
   <div class="chat-wrap">
     <div class="chat-header">
       <div class="chat-avatar">A</div>
@@ -754,10 +1105,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="dv-alert" id="dv-alert">
       <div class="dva-title">⚠️ AI concern detected</div>
       <div class="dva-text" id="dva-text">Your messages indicate you may be in distress. You are not alone.</div>
-      <div class="dva-btns">
-        <button class="dva-btn" onclick="showScreen('screen-emergency')">Get help now</button>
-        <button class="dva-btn soft" onclick="document.getElementById('dv-alert').classList.remove('show')">I'm okay</button>
-      </div>
+      <div class="dva-btns"><button class="dva-btn" onclick="showScreen('screen-emergency')">Get help now</button><button class="dva-btn soft" onclick="document.getElementById('dv-alert').classList.remove('show')">I'm okay</button></div>
     </div>
     <div class="chat-suggestions" id="chat-suggestions">
       <button class="suggestion" onclick="useSuggestion(this)">I don't feel safe</button>
@@ -767,8 +1115,712 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <div class="chat-input-row">
       <textarea class="chat-input" id="chat-input" placeholder="Say anything… it's safe here" rows="1" onkeydown="handleChatKey(event)"></textarea>
-      <button class="chat-send" id="chat-send-btn" onclick="sendChat()">Send</button>
+      <button class="chat-send" onclick="sendChat()">Send</button>
     </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LEGAL HELP SCREEN
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-legal">
+  <nav class="nav">
+    <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
+    <div class="nav-logo">Legal Rights</div>
+    <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
+  </nav>
+  <div class="legal-wrap">
+
+    <!-- Hero -->
+    <div class="legal-hero">
+      <div class="legal-hero-eyebrow">Know Your Rights</div>
+      <h2 class="legal-hero-title">The law is on<br/><em>your side.</em></h2>
+      <p class="legal-hero-sub">India has strong laws to protect you. This guide explains your rights in simple, clear language — no legal jargon, no judgment. You deserve to know what protection you can ask for.</p>
+      <div class="legal-disclaimer">
+        <div class="legal-disclaimer-icon">ℹ️</div>
+        <div>This is an educational guide, not legal advice. For your specific situation, please speak with a legal aid lawyer. Free legal aid is available at <strong>NALSA — 15100</strong> (National Legal Services Authority).</div>
+      </div>
+    </div>
+
+    <!-- Know Your Rights quick bar -->
+    <div class="kyr-bar">
+      <div class="kyr-icon">🏛️</div>
+      <div class="kyr-text">
+        <h4>Free Legal Aid — It's Your Right</h4>
+        <p>Every woman can access free legal help in India. Call NALSA or visit your District Legal Services Authority.</p>
+      </div>
+      <a class="kyr-badge" href="tel:15100">CALL 15100</a>
+    </div>
+
+    <!-- Module tabs -->
+    <div class="legal-tabs">
+      <button class="legal-tab active-dh" onclick="showModule('dh', this)">🏠 Domestic Harassment</button>
+      <button class="legal-tab" onclick="showModule('ps', this)">🛡️ Physical &amp; Sexual</button>
+      <button class="legal-tab" onclick="showModule('ec', this)">💰 Economic &amp; Living</button>
+      <button class="legal-tab" onclick="showModule('fd', this)">⚖️ Fundamental Dignity</button>
+    </div>
+
+    <div class="legal-modules">
+
+      <!-- ── MODULE 1: DOMESTIC HARASSMENT ── -->
+      <div class="legal-module mod-dh visible" id="mod-dh">
+        <div class="mod-header">
+          <div class="mod-header-label">Module 1 of 4</div>
+          <div class="mod-header-title">Domestic Harassment</div>
+          <div class="mod-header-sub">Laws that protect you from cruelty, abuse, and harassment within a marriage or household.</div>
+        </div>
+        <div class="law-cards">
+
+          <!-- IPC 498A -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">IPC 498A</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Protection from Cruelty by Husband</div>
+                <div class="law-card-tagline">Emotional abuse, harassment for dowry, humiliation</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">This law says that a husband or his family cannot treat a wife cruelly — whether through physical harm, emotional abuse, humiliation, or by demanding dowry (money/property). "Cruelty" includes name-calling, constant criticism, threats, isolating you from family, or any behaviour that damages your mental or physical health.</div>
+              </div>
+              <div class="law-reassurance">"You don't have to prove you were hit. Emotional pain and threats count under this law too."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File an FIR</strong> at your nearest police station — the police must register a case. This is a cognisable offence, meaning police can act without a court warrant.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Arrest of the abuser</strong> — the husband and/or his family can be arrested under this law. The punishment is up to 3 years imprisonment.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Protection from further contact</strong> — along with the FIR, you can apply for a Protection Order under the DV Act so the abuser stays away from you.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:181" onclick="event.stopPropagation()">📞 Women Helpline 181</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- DV Act 2005 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">DV Act 2005</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Protection of Women from Domestic Violence</div>
+                <div class="law-card-tagline">Comprehensive protection — home, money, children, safety</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">This is one of India's most powerful laws for women. It covers ALL forms of domestic violence — physical, emotional, sexual, verbal, and economic — committed by any household member (husband, in-laws, relatives). Importantly, this law applies to live-in relationships too, not just marriages.</div>
+              </div>
+              <div class="law-reassurance">"Even if you live with him, this law can make him the one who has to leave — you have the right to your home."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>Protection Order</strong> — the court orders the abuser to stop all violence and have no contact with you.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Residence Order</strong> — you have the right to stay in your shared home. The abuser can be ordered to leave, even if the home is in his name.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Monetary Relief</strong> — claim money for medical bills, loss of earnings, and any harm caused by the abuse.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">4</div><div><strong>Custody Order</strong> — temporary custody of your children can be granted immediately to keep them safe.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">5</div><div><strong>Contact a Protection Officer</strong> — every district has a free government-appointed Protection Officer who helps you file the application at no cost.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:181" onclick="event.stopPropagation()">📞 Women Helpline 181</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- IPC 306 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">IPC 306</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Abetment of Suicide</div>
+                <div class="law-card-tagline">When harassment drives a woman to harm herself</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">If a person's harassment, threats, or cruelty drove you to attempt suicide or caused a loved one to end their life, that person can be criminally charged. The law recognises that emotional and psychological torture is a form of violence with serious consequences.</div>
+              </div>
+              <div class="law-reassurance">"If someone's behaviour made you feel like there was no way out — they are responsible. This law holds them accountable."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File an FIR</strong> — the harassing person can be arrested and faces up to 10 years in prison.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Immediate safety</strong> — ask the magistrate for emergency protection if you fear further retaliation after speaking out.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:9152987821" onclick="event.stopPropagation()">📞 iCall Counselling</a>
+              </div>
+            </div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── MODULE 2: PHYSICAL / SEXUAL ASSAULT ── -->
+      <div class="legal-module mod-ps" id="mod-ps">
+        <div class="mod-header">
+          <div class="mod-header-label">Module 2 of 4</div>
+          <div class="mod-header-title">Physical &amp; Sexual Assault</div>
+          <div class="mod-header-sub">Laws that protect your body, your safety, and your dignity from physical harm and sexual violence.</div>
+        </div>
+        <div class="law-cards">
+
+          <!-- IPC 304B -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">IPC 304B</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Dowry Death</div>
+                <div class="law-card-tagline">When dowry demands lead to a woman's death</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">If a woman dies due to burns, injury, or suspicious circumstances within 7 years of marriage, and there is evidence of dowry-related harassment before her death, it is treated as Dowry Death — a murder-level crime. This law exists because the court recognises the pattern of escalating dowry violence.</div>
+              </div>
+              <div class="law-reassurance">"If you are facing escalating pressure for dowry, please reach out now — before a crisis. The law is on your side."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File an FIR immediately</strong> — family members of the accused can be arrested. The burden of proof shifts to them to prove innocence.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Magisterial inquiry</strong> — a special investigation is ordered for any suspicious death within 7 years of marriage.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>For yourself now</strong> — combine with IPC 498A + DV Act to stop escalating harassment before it becomes fatal.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:1091" onclick="event.stopPropagation()">📞 Women Helpline 1091</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- IPC 323 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">IPC 323</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Voluntarily Causing Hurt</div>
+                <div class="law-card-tagline">Being hit, slapped, pushed or physically harmed</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">If someone hits you, slaps you, pushes you, pulls your hair, or causes any physical pain intentionally — that is a criminal offence. You don't need to be severely injured for this law to apply. A slap is enough. It does not matter if the person is your husband, a family member, or a stranger.</div>
+              </div>
+              <div class="law-reassurance">"One slap is one assault. You do not have to wait until it gets worse. You have the right to report it now."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File a police complaint / FIR</strong> — the abuser can be arrested and punished with up to 1 year in jail or a fine.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Medical examination</strong> — go to a government hospital immediately and ask for a Medico-Legal Certificate (MLC). This is key evidence.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Combine with DV Act</strong> — file for a Protection Order simultaneously to prevent further attacks.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:112" onclick="event.stopPropagation()">📞 Call Police 112</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- IPC 354 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">IPC 354</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Assault on Woman's Modesty</div>
+                <div class="law-card-tagline">Unwanted touch, groping, forced contact</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">This law protects you from any unwanted physical contact of a sexual nature — groping, inappropriate touching, being forcefully grabbed or hugged, or any assault intended to violate your dignity. It also covers actions like stalking (354D) and voyeurism (354C). You do not need to have been physically hurt for this crime to apply.</div>
+              </div>
+              <div class="law-reassurance">"Your discomfort and violation are valid. You don't need to minimise what happened to you for it to be taken seriously."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File an FIR at the police station</strong> — police must register this case. The accused faces 1–5 years imprisonment.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Your identity is protected</strong> — under Indian law, your name cannot be published in media reports without your permission.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Report to a woman officer</strong> — you have the right to give your statement to a female police officer. You can insist on this.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:1091" onclick="event.stopPropagation()">📞 Women Helpline 1091</a>
+              </div>
+            </div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── MODULE 3: ECONOMIC & LIVING RIGHTS ── -->
+      <div class="legal-module mod-ec" id="mod-ec">
+        <div class="mod-header">
+          <div class="mod-header-label">Module 3 of 4</div>
+          <div class="mod-header-title">Economic &amp; Living Rights</div>
+          <div class="mod-header-sub">Laws that protect your right to financial support, a home, and a fair life.</div>
+        </div>
+        <div class="law-cards">
+
+          <!-- Sec 125 CrPC -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">Sec 125 CrPC</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Right to Maintenance</div>
+                <div class="law-card-tagline">Your right to financial support from your husband or family</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">If your husband has abandoned you, refuses to support you financially, or you are unable to support yourself, the law requires him to pay you maintenance (regular money). This applies to wives, divorced women, and even live-in partners who have been deserted. The court decides a fair amount based on both your needs and his income.</div>
+              </div>
+              <div class="law-reassurance">"Financial control is abuse. You have the legal right to money for your basic needs — no matter what he says."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>Apply to the Magistrate's Court</strong> — file an application under Sec 125 for monthly maintenance. Courts can order interim (immediate) maintenance within days.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Interim maintenance</strong> — while the case is ongoing, you can receive temporary payments to cover your daily needs.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Arrears (backdated payment)</strong> — you can claim unpaid maintenance going back up to 1 year.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">4</div><div><strong>For your children too</strong> — this law also covers maintenance for your children if they are in your care.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:15100" onclick="event.stopPropagation()">📞 Free Legal Aid 15100</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- Hindu Marriage Act -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">HMA</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Hindu Marriage Act — Divorce & Alimony</div>
+                <div class="law-card-tagline">Your right to leave and receive financial support after separation</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">Under the Hindu Marriage Act, you have the right to file for divorce on grounds including cruelty, desertion (being abandoned for 2+ years), and domestic violence. After divorce, you are entitled to permanent alimony — regular financial support to maintain a lifestyle comparable to what you had during marriage. You also have equal rights over the matrimonial home.</div>
+              </div>
+              <div class="law-reassurance">"Leaving does not make you homeless or penniless. The law protects your right to a fair share and financial support."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File for divorce</strong> in the Family Court on grounds of cruelty, desertion, or abuse — no mutual agreement needed.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Permanent alimony</strong> — ongoing monthly financial support after divorce based on his income and your needs.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Stridhan recovery</strong> — your jewellery, gifts, and personal property given before/during marriage are legally yours. You can sue to recover them.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">4</div><div><strong>Child custody and support</strong> — you can apply for sole or joint custody; the court will decide in the child's best interest.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:15100" onclick="event.stopPropagation()">📞 Free Legal Aid 15100</a>
+              </div>
+            </div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── MODULE 4: FUNDAMENTAL DIGNITY ── -->
+      <div class="legal-module mod-fd" id="mod-fd">
+        <div class="mod-header">
+          <div class="mod-header-label">Module 4 of 4</div>
+          <div class="mod-header-title">Fundamental Dignity</div>
+          <div class="mod-header-sub">Constitutional rights that are yours simply because you are a person. These cannot be taken away — ever.</div>
+        </div>
+        <div class="law-cards">
+
+          <!-- Article 14 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">Article 14</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Right to Equality</div>
+                <div class="law-card-tagline">You are equal under the law — no exceptions</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">The Constitution of India guarantees that every person — regardless of gender, religion, caste or background — is equal before the law and must be equally protected by the law. No institution, government official, or court can treat you as less deserving of justice because you are a woman.</div>
+              </div>
+              <div class="law-reassurance">"If any court, officer or institution treats you unfairly because you are a woman, they are violating the Constitution itself."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>File a Writ Petition</strong> in the High Court or Supreme Court if a law or official action discriminates against you based on gender.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Complain to the National Human Rights Commission (NHRC)</strong> if a government body denies you equal protection — call 14433.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Approach the National Commission for Women (NCW)</strong> — call 7827170170 to report gender-based discrimination by any authority.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:7827170170" onclick="event.stopPropagation()">📞 NCW Helpline</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- Article 15 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">Article 15</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Protection from Discrimination</div>
+                <div class="law-card-tagline">No one can deny you rights because of your gender</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">The State cannot discriminate against any citizen on grounds of religion, race, caste, sex, or place of birth. This means no government service — hospitals, courts, police stations, schools — can treat you differently or give you less access because you are a woman. Article 15(3) also allows the government to make special provisions specifically to help women, which is why women-specific laws and schemes exist.</div>
+              </div>
+              <div class="law-reassurance">"If a hospital refuses to treat you, a police officer refuses to file your complaint, or any official dismisses you — they may be violating your Constitutional right."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>Demand a Zero FIR</strong> — police cannot refuse to register an FIR for cognisable offences. If they refuse, file a complaint to the Superintendent of Police or the State Human Rights Commission.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Access to government schemes</strong> — you are entitled to all women welfare schemes, shelters (One Stop Centres — 181), and government legal aid.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:181" onclick="event.stopPropagation()">📞 One Stop Centre 181</a>
+              </div>
+            </div></div>
+          </div>
+
+          <!-- Article 21 -->
+          <div class="law-card" onclick="toggleLaw(this)">
+            <div class="law-card-header">
+              <div class="law-badge">Article 21</div>
+              <div class="law-card-meta">
+                <div class="law-card-name">Right to Life &amp; Personal Liberty</div>
+                <div class="law-card-tagline">Your right to live with dignity, freedom, and safety</div>
+              </div>
+              <div class="law-expand-icon">›</div>
+            </div>
+            <div class="law-card-body"><div class="law-card-inner">
+              <div class="law-what">
+                <div class="law-what-label">What this law means</div>
+                <div class="law-what-text">This is the most fundamental right in the Constitution. Article 21 says that no person shall be deprived of their life or personal liberty except by law. Courts have expanded this to mean the right to live with dignity — which includes the right to be free from violence, the right to a safe home, and the right to your own choices about your body and life. Domestic violence directly violates Article 21.</div>
+              </div>
+              <div class="law-reassurance">"Your right to a life of dignity is written into the Constitution. Anyone who takes that from you is violating India's highest law."</div>
+              <div class="law-action-box">
+                <div class="law-action-label">⚡ What you can ask for</div>
+                <div class="law-action-items">
+                  <div class="law-action-item"><div class="law-action-bullet">1</div><div><strong>Writ of Habeas Corpus</strong> — if you are being confined or held against your will in any home, a court can order your immediate release.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">2</div><div><strong>Public Interest Litigation (PIL)</strong> — if you or a group of women are systematically denied safety by any institution, you can file a PIL in the High Court.</div></div>
+                  <div class="law-action-item"><div class="law-action-bullet">3</div><div><strong>Right to dignity in all proceedings</strong> — courts cannot question you in a degrading manner about past relationships. Object if they do, and note it on record.</div></div>
+                </div>
+              </div>
+              <div class="mod-footer">
+                <button class="mod-cta-btn mod-cta-chat" onclick="event.stopPropagation();showScreen('screen-chat')">💬 Talk to Aasha about this</button>
+                <a class="mod-cta-btn mod-cta-helpline" href="tel:15100" onclick="event.stopPropagation()">📞 Free Legal Aid 15100</a>
+              </div>
+            </div></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /legal-modules -->
+
+    <!-- ══════════════════════════════════════════════════════
+         EMPOWERMENT & REDIRECTION SECTION
+    ══════════════════════════════════════════════════════ -->
+    <div class="empower-separator">
+      <div class="empower-sep-line"></div>
+      <span class="empower-sep-text">Your strength</span>
+      <div class="empower-sep-line"></div>
+    </div>
+
+    <div class="empower-section" id="empower-section">
+      <div class="empower-glass">
+        <div class="empower-inner">
+
+          <!-- Eyebrow label -->
+          <div class="empower-eyebrow">
+            <div class="empower-eyebrow-line"></div>
+            <span>शक्ति · Empowerment</span>
+            <div class="empower-eyebrow-line-r"></div>
+          </div>
+
+          <!-- Quote block -->
+          <div class="empower-quote-wrap" id="empower-quote-wrap">
+            <div class="empower-quote-mark">"</div>
+            <div class="empower-quote-text" id="empower-quote-text">
+              चुप रहना समाधान नहीं है, आपकी आवाज़ ही आपकी सबसे बड़ी ताकत है।
+            </div>
+          </div>
+
+          <!-- Speak aloud button + quote navigation -->
+          <div class="empower-quote-nav">
+            <button class="empower-speak-btn" id="empower-speak-btn" onclick="toggleSpeak()">
+              <span class="speak-icon" id="speak-icon">🔊</span>
+              <span id="speak-label">सुनें — Listen aloud</span>
+            </button>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="empower-nav-dots" id="empower-nav-dots">
+                <!-- rendered by JS -->
+              </div>
+              <button class="empower-refresh-btn" id="empower-refresh-btn" onclick="nextQuote()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M1 4v6h6M23 20v-6h-6"/>
+                  <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                </svg>
+                अगली
+              </button>
+            </div>
+          </div>
+
+          <!-- SVG Collage Artwork — "Speak Out, Seek Safety" -->
+          <div class="empower-collage">
+            <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="background:#0d0e14">
+              <defs>
+                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0B0C10"/>
+                  <stop offset="100%" stop-color="#16181F"/>
+                </linearGradient>
+                <linearGradient id="goldenRay" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#E8C547" stop-opacity="0.2"/>
+                </linearGradient>
+                <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#E63946"/>
+                  <stop offset="50%" stop-color="#F4A261"/>
+                  <stop offset="100%" stop-color="#E8C547"/>
+                </linearGradient>
+                <radialGradient id="glowCenter" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#E8C547" stop-opacity="0.35"/>
+                  <stop offset="60%" stop-color="#D4AF37" stop-opacity="0.1"/>
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="softBlur"><feGaussianBlur stdDeviation="2"/></filter>
+                <filter id="glowFilter">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+                <clipPath id="artClip"><rect width="480" height="220" rx="12"/></clipPath>
+              </defs>
+
+              <g clip-path="url(#artClip)">
+                <!-- Background -->
+                <rect width="480" height="220" fill="url(#skyGrad)"/>
+
+                <!-- Ambient glow center -->
+                <ellipse cx="240" cy="110" rx="200" ry="100" fill="url(#glowCenter)"/>
+
+                <!-- Radiating rays from center top (rising sun metaphor) -->
+                <g opacity="0.12">
+                  <line x1="240" y1="0" x2="50" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="100" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="160" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="220" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="280" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="340" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="390" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                  <line x1="240" y1="0" x2="430" y2="220" stroke="#D4AF37" stroke-width="1"/>
+                </g>
+
+                <!-- Moon / sun orb at top center -->
+                <circle cx="240" cy="38" r="22" fill="url(#sunGlow)"/>
+                <circle cx="240" cy="38" r="14" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity="0.6"/>
+                <circle cx="240" cy="38" r="8" fill="#E8C547" opacity="0.9"/>
+                <circle cx="240" cy="38" r="8" fill="#E8C547" filter="url(#softBlur)" opacity="0.6"/>
+
+                <!-- ── WOMAN SILHOUETTE (center, standing tall) ── -->
+                <!-- Body glow -->
+                <ellipse cx="240" cy="145" rx="28" ry="50" fill="rgba(212,175,55,0.06)"/>
+                <!-- Sari flow — sweeping fabric -->
+                <path d="M215 210 Q205 170 210 145 Q215 130 230 120 Q240 115 240 115 Q235 130 228 155 Q222 175 220 210 Z"
+                  fill="rgba(58,95,11,0.4)" stroke="rgba(58,95,11,0.6)" stroke-width="0.5"/>
+                <path d="M265 210 Q270 170 265 148 Q260 130 248 120 Q240 115 240 115 Q245 130 252 155 Q258 178 260 210 Z"
+                  fill="rgba(58,95,11,0.4)" stroke="rgba(58,95,11,0.6)" stroke-width="0.5"/>
+                <!-- Torso -->
+                <path d="M228 155 Q230 128 240 115 Q250 128 252 155 Q245 162 240 163 Q235 162 228 155Z"
+                  fill="rgba(200,160,100,0.35)" stroke="rgba(212,175,55,0.3)" stroke-width="0.5"/>
+                <!-- Head -->
+                <circle cx="240" cy="106" r="10" fill="rgba(200,160,100,0.6)" stroke="rgba(212,175,55,0.4)" stroke-width="1"/>
+                <!-- Hair (bun/plait) -->
+                <path d="M232 102 Q235 96 240 95 Q245 96 248 102" fill="rgba(80,50,20,0.8)" stroke="none"/>
+                <circle cx="240" cy="96" r="4" fill="rgba(80,50,20,0.9)"/>
+                <!-- Raised fist / arm -->
+                <path d="M250 120 Q258 110 265 95 Q270 85 268 78"
+                  fill="none" stroke="rgba(200,160,100,0.7)" stroke-width="3" stroke-linecap="round"/>
+                <!-- Fist -->
+                <rect x="262" y="72" width="10" height="9" rx="3" fill="rgba(200,160,100,0.85)" stroke="rgba(212,175,55,0.5)" stroke-width="0.5"/>
+                <!-- Glow around fist -->
+                <circle cx="267" cy="77" r="8" fill="rgba(212,175,55,0.15)" filter="url(#softBlur)"/>
+
+                <!-- ── FLAME on fist ── -->
+                <g transform="translate(262, 58)">
+                  <path d="M5 18 Q2 12 4 7 Q5 3 8 0 Q8 4 10 6 Q11 2 13 0 Q14 5 12 9 Q15 6 16 3 Q17 9 14 13 Q13 16 10 18 Z"
+                    fill="url(#flameGrad)" opacity="0.9"/>
+                  <path d="M7 18 Q5 14 6 10 Q7 7 9 5 Q9 8 11 10 Q12 7 13 5 Q14 9 12 12 Q10 15 8 18 Z"
+                    fill="#FBEE8A" opacity="0.7"/>
+                </g>
+
+                <!-- ── SOUND WAVES from mouth (speaking) ── -->
+                <g transform="translate(248, 110)" opacity="0.6">
+                  <path d="M0 0 Q8 -4 8 0 Q8 4 0 0" fill="none" stroke="#D4AF37" stroke-width="1.2"/>
+                  <path d="M0 0 Q14 -8 14 0 Q14 8 0 0" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.6"/>
+                  <path d="M0 0 Q20 -12 20 0 Q20 12 0 0" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.3"/>
+                </g>
+
+                <!-- ── LEFT: WOMAN 2 (seated, reaching forward) ── -->
+                <g opacity="0.75">
+                  <!-- Head -->
+                  <circle cx="90" cy="130" r="9" fill="rgba(180,140,90,0.6)" stroke="rgba(212,175,55,0.3)" stroke-width="0.8"/>
+                  <!-- Body seated -->
+                  <path d="M82 140 Q82 155 88 165 Q92 170 98 165 Q104 155 100 140 Q95 135 90 136 Q85 137 82 140Z"
+                    fill="rgba(42,157,143,0.3)" stroke="rgba(42,157,143,0.5)" stroke-width="0.5"/>
+                  <!-- Arm reaching forward -->
+                  <path d="M98 148 Q112 142 125 140" fill="none" stroke="rgba(180,140,90,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+                  <circle cx="126" cy="140" r="5" fill="rgba(180,140,90,0.7)" stroke="rgba(212,175,55,0.4)" stroke-width="0.5"/>
+                  <!-- Book in lap -->
+                  <rect x="80" y="165" width="22" height="14" rx="2" fill="rgba(212,175,55,0.25)" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+                  <line x1="91" y1="165" x2="91" y2="179" stroke="rgba(212,175,55,0.6)" stroke-width="0.8"/>
+                </g>
+
+                <!-- ── RIGHT: WOMAN 3 (standing, arms open — freedom) ── -->
+                <g opacity="0.75">
+                  <circle cx="390" cy="125" r="9" fill="rgba(180,140,90,0.6)" stroke="rgba(212,175,55,0.3)" stroke-width="0.8"/>
+                  <!-- Body -->
+                  <path d="M382 136 Q381 158 385 170 Q388 175 393 175 Q398 175 401 170 Q405 158 400 136 Q395 130 390 131 Q385 132 382 136Z"
+                    fill="rgba(192,57,43,0.25)" stroke="rgba(192,57,43,0.45)" stroke-width="0.5"/>
+                  <!-- Arms open wide -->
+                  <path d="M382 143 Q370 138 358 138" fill="none" stroke="rgba(180,140,90,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M400 143 Q412 138 424 138" fill="none" stroke="rgba(180,140,90,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+                  <!-- Joy particles around her -->
+                  <circle cx="360" cy="132" r="3" fill="rgba(212,175,55,0.5)"/>
+                  <circle cx="422" cy="132" r="3" fill="rgba(212,175,55,0.5)"/>
+                  <circle cx="390" cy="115" r="2" fill="rgba(212,175,55,0.4)"/>
+                  <circle cx="378" cy="118" r="2" fill="rgba(42,157,143,0.5)"/>
+                  <circle cx="402" cy="118" r="2" fill="rgba(42,157,143,0.5)"/>
+                </g>
+
+                <!-- ── SCALES OF JUSTICE (bottom left) ── -->
+                <g transform="translate(22, 148)" opacity="0.45">
+                  <line x1="18" y1="0" x2="18" y2="40" stroke="#D4AF37" stroke-width="1.5"/>
+                  <line x1="2" y1="12" x2="34" y2="12" stroke="#D4AF37" stroke-width="1.5"/>
+                  <!-- Left pan -->
+                  <path d="M2 12 Q4 22 8 22 Q12 22 14 12" fill="rgba(212,175,55,0.15)" stroke="#D4AF37" stroke-width="1"/>
+                  <!-- Right pan -->
+                  <path d="M22 12 Q24 22 28 22 Q32 22 34 12" fill="rgba(212,175,55,0.15)" stroke="#D4AF37" stroke-width="1"/>
+                  <!-- Base -->
+                  <path d="M12 40 L24 40 L21 44 L15 44 Z" fill="rgba(212,175,55,0.3)"/>
+                </g>
+
+                <!-- ── LOTUS (bottom right corner) ── -->
+                <g transform="translate(425, 170)" opacity="0.5">
+                  <ellipse cx="18" cy="28" rx="18" ry="5" fill="rgba(42,157,143,0.2)"/>
+                  <path d="M18 28 Q14 18 18 8 Q22 18 18 28" fill="rgba(230,57,70,0.5)"/>
+                  <path d="M18 28 Q10 16 12 4 Q17 14 18 28" fill="rgba(230,57,70,0.35)"/>
+                  <path d="M18 28 Q26 16 24 4 Q19 14 18 28" fill="rgba(230,57,70,0.35)"/>
+                  <path d="M18 28 Q6 20 6 10 Q13 18 18 28" fill="rgba(212,175,55,0.3)"/>
+                  <path d="M18 28 Q30 20 30 10 Q23 18 18 28" fill="rgba(212,175,55,0.3)"/>
+                </g>
+
+                <!-- ── HINDI TEXT OVERLAY ── -->
+                <text x="240" y="196" font-family="'Noto Serif Devanagari','DM Serif Display',serif"
+                  font-size="10" fill="rgba(212,175,55,0.7)" text-anchor="middle" letter-spacing="1">
+                  बोलो · उठो · जियो
+                </text>
+                <text x="240" y="210" font-family="'DM Sans',sans-serif"
+                  font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle" letter-spacing="2">
+                  SPEAK OUT · SEEK SAFETY
+                </text>
+
+                <!-- Horizontal divider line art -->
+                <line x1="80" y1="183" x2="155" y2="183" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <line x1="325" y1="183" x2="400" y2="183" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <circle cx="240" cy="183" r="3" fill="rgba(212,175,55,0.4)"/>
+                <circle cx="168" cy="183" r="1.5" fill="rgba(212,175,55,0.2)"/>
+                <circle cx="312" cy="183" r="1.5" fill="rgba(212,175,55,0.2)"/>
+
+                <!-- Top subtle border glow line -->
+                <line x1="0" y1="1" x2="480" y2="1" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Main CTA Button -->
+          <a class="empower-cta-btn" id="empower-cta-btn"
+             href="https://www.ncw.gov.in/" target="_blank" rel="noopener"
+             onclick="handleLegalAction(event)">
+            <div class="empower-cta-inner">
+              <div class="empower-cta-en">⚖ Take Legal Action</div>
+              <div class="empower-cta-hi">कानूनी सहायता लें</div>
+              <div class="empower-cta-sub">National Commission for Women · Free Help</div>
+            </div>
+          </a>
+
+          <!-- Quick helpline chips -->
+          <div class="empower-helplines">
+            <a class="empower-helpline-chip" href="tel:7827170170">
+              <span class="empower-hl-num">7827170170</span>
+              <span class="empower-hl-name">NCW</span>
+            </a>
+            <a class="empower-helpline-chip" href="tel:181">
+              <span class="empower-hl-num">181</span>
+              <span class="empower-hl-name">Women</span>
+            </a>
+            <a class="empower-helpline-chip" href="tel:15100">
+              <span class="empower-hl-num">15100</span>
+              <span class="empower-hl-name">Legal Aid</span>
+            </a>
+            <a class="empower-helpline-chip" href="tel:1091">
+              <span class="empower-hl-num">1091</span>
+              <span class="empower-hl-name">Helpline</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /empower-section -->
+
+  </div><!-- /legal-wrap -->
+
+  <div class="tab-bar">
+    <button class="tab-item" onclick="showScreen('screen-dashboard')"><span class="tab-icon">⊙</span><span class="tab-label">Home</span></button>
+    <button class="tab-item" onclick="showScreen('screen-assess')"><span class="tab-icon">◈</span><span class="tab-label">Assess</span></button>
+    <button class="tab-item" onclick="showScreen('screen-chat')"><span class="tab-icon">◯</span><span class="tab-label">Talk</span></button>
+    <button class="tab-item active" onclick="showScreen('screen-legal')"><span class="tab-icon">⚖</span><span class="tab-label">Rights</span></button>
+    <button class="tab-item sos-tab" onclick="showScreen('screen-emergency')"><span class="tab-icon">⚑</span><span class="tab-label">SOS</span></button>
   </div>
 </div>
 
@@ -783,7 +1835,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <h2 class="emg-title">You are not alone.</h2>
     <p class="emg-sub">Press SOS to immediately alert your trusted contacts and connect to emergency services.</p>
     <div class="emg-actions">
-      <!-- FIX: All buttons now do real actions -->
       <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">📍</span><span>Share my location with trusted contacts</span></button>
       <a class="emg-action" href="tel:112"><span class="ea-icon">📞</span><span>Call emergency services (112)</span></a>
       <button class="emg-action" onclick="triggerSOS()"><span class="ea-icon">🔒</span><span>Lock and secure evidence vault</span></button>
@@ -793,7 +1844,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="helpline-strip">
     <p>Tap any number to call</p>
     <div class="helpline-numbers">
-      <!-- FIX: All numbers are now tel: links -->
       <a class="hlnum" href="tel:112">112<span>Police</span></a>
       <a class="hlnum" href="tel:1091">1091<span>Women</span></a>
       <a class="hlnum" href="tel:7827170170">7827170170<span>NCW</span></a>
@@ -803,22 +1853,14 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <!-- TRUST -->
 <div class="screen" id="screen-trust">
-  <nav class="nav">
-    <button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button>
-    <div class="nav-logo">Trusted Network</div>
-    <button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button>
-  </nav>
+  <nav class="nav"><button class="nav-back" onclick="showScreen('screen-dashboard')">← Back</button><div class="nav-logo">Trusted Network</div><button class="nav-sos" onclick="showScreen('screen-emergency')">SOS</button></nav>
   <div class="trust-wrap">
     <div class="trust-header"><h2>Your safety network</h2><p>These people will be alerted in an emergency. Choose people you truly trust.</p></div>
     <p class="section-label">Trusted contacts</p>
-    <!-- FIX: Contact list is now fully dynamic — no hardcoded names -->
-    <div class="contact-list" id="contact-list">
-      <!-- Rendered by JS -->
-    </div>
+    <div class="contact-list" id="contact-list"></div>
     <button class="add-contact-btn" onclick="openAddContact()">+ Add trusted contact</button>
     <p class="section-label" style="margin-top:24px">NGO connections</p>
     <div class="ngo-grid">
-      <!-- FIX: All NGO numbers are now tappable tel: links -->
       <div class="ngo-item"><div><div class="ngo-name">iCall</div><div style="font-size:12px;color:var(--text3)">Psychological counselling</div></div><a class="ngo-num" href="tel:9152987821">9152987821</a></div>
       <div class="ngo-item"><div><div class="ngo-name">NCW Helpline</div><div style="font-size:12px;color:var(--text3)">National Commission for Women</div></div><a class="ngo-num" href="tel:7827170170">7827170170</a></div>
       <div class="ngo-item"><div><div class="ngo-name">Vandrevala Foundation</div><div style="font-size:12px;color:var(--text3)">24/7 mental health support</div></div><a class="ngo-num" href="tel:18602662345">1860-2662-345</a></div>
@@ -827,811 +1869,587 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
 </div>
 
-</div><!-- end #app -->
+</div><!-- #app -->
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════
-var S = {
-  apiKey: null, demoMode: false,
-  cohort: null, mood: null, reason: null,
-  currentOnboardStep: 1,
-  assessGame: 0,
-  assessData: { reactionTime: null, stressSlider: 50, safetySlider: 55, detectedEmotion: null },
-  scores: {},
-  chatHistory: [],
-  chatInitialized: false,
-  faceInterval: null,
-  faceStream: null,
-  modelsLoaded: false
-};
-
-// ── FIX: Trusted contacts stored in memory (no hardcoding) ──
+var S = { apiKey:null, demoMode:false, cohort:null, mood:null, reason:null, currentOnboardStep:1, assessGame:0, assessData:{reactionTime:null,stressSlider:50,safetySlider:55,detectedEmotion:null}, scores:{}, chatHistory:[], chatInitialized:false, faceInterval:null, faceStream:null, modelsLoaded:false };
 var trustedContacts = [];
-
 var BACKEND_BASE_URL = 'https://eitbackend-flxp.onrender.com';
 
-// ═══════════════════════════════════════════════════════════
-// CURTAIN
-// ═══════════════════════════════════════════════════════════
 function openCurtains() {
-  var overlay = document.getElementById('curtain-overlay');
-  overlay.classList.add('opening');
-  setTimeout(function() {
-    overlay.classList.add('hidden');
-    setTimeout(function() { overlay.style.display = 'none'; }, 1000);
-  }, 1500);
+  var o=document.getElementById('curtain-overlay');
+  o.classList.add('opening');
+  setTimeout(function(){ o.classList.add('hidden'); setTimeout(function(){ o.style.display='none'; },1000); },1500);
 }
 
-// ═══════════════════════════════════════════════════════════
-// SCREEN NAV
-// ═══════════════════════════════════════════════════════════
 function showScreen(id) {
   stopCamera();
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  var target = document.getElementById(id);
-  if (target) { target.classList.add('active'); target.scrollTop = 0; }
-  if (id === 'screen-dashboard') initDash();
-  if (id === 'screen-assess')    startAssess();
-  if (id === 'screen-chat')      initChat();
-  if (id === 'screen-trust')     renderContactList();
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var t=document.getElementById(id);
+  if(t){ t.classList.add('active'); t.scrollTop=0; }
+  if(id==='screen-dashboard') initDash();
+  if(id==='screen-assess') startAssess();
+  if(id==='screen-chat') initChat();
+  if(id==='screen-trust') renderContactList();
 }
 
 function stopCamera() {
-  if (S.faceInterval) { clearInterval(S.faceInterval); S.faceInterval = null; }
-  if (S.faceStream) { S.faceStream.getTracks().forEach(function(t) { t.stop(); }); S.faceStream = null; }
-  var video = document.getElementById('webcam-video');
-  if (video) { video.srcObject = null; }
+  if(S.faceInterval){ clearInterval(S.faceInterval); S.faceInterval=null; }
+  if(S.faceStream){ S.faceStream.getTracks().forEach(function(t){ t.stop(); }); S.faceStream=null; }
+  var v=document.getElementById('webcam-video'); if(v) v.srcObject=null;
 }
 
-// ═══════════════════════════════════════════════════════════
 // ONBOARDING
-// ═══════════════════════════════════════════════════════════
-function startWithBackend() { S.demoMode = false; goToOnboard(); }
-function skipToDemo()       { S.demoMode = true;  goToOnboard(); }
-
-function goToOnboard() {
-  S.currentOnboardStep = 1;
-  for (var i = 1; i <= 4; i++) {
-    var step = document.getElementById('os' + i);
-    if (step) { step.style.display = (i === 1) ? 'block' : 'none'; step.querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); }); }
-    var nb = document.getElementById('on' + i);
-    if (nb) nb.classList.remove('ready');
+function startWithBackend(){ S.demoMode=false; goToOnboard(); }
+function skipToDemo(){ S.demoMode=true; goToOnboard(); }
+function goToOnboard(){
+  S.currentOnboardStep=1;
+  for(var i=1;i<=4;i++){
+    var s=document.getElementById('os'+i); if(s){ s.style.display=(i===1)?'block':'none'; s.querySelectorAll('.choice-btn').forEach(function(b){b.classList.remove('selected');}); }
+    var n=document.getElementById('on'+i); if(n) n.classList.remove('ready');
   }
-  updateStepDots(1);
-  showScreen('screen-onboard');
+  updateStepDots(1); showScreen('screen-onboard');
 }
-
-function pick(btn, type, val) {
-  S[type] = val;
-  btn.closest('.choice-grid').querySelectorAll('.choice-btn').forEach(function(b) { b.classList.remove('selected'); });
+function pick(btn,type,val){
+  S[type]=val;
+  btn.closest('.choice-grid').querySelectorAll('.choice-btn').forEach(function(b){b.classList.remove('selected');});
   btn.classList.add('selected');
-  var nb = btn.closest('[id^="os"]').querySelector('.onboard-next');
-  if (nb) nb.classList.add('ready');
+  var n=btn.closest('[id^="os"]').querySelector('.onboard-next'); if(n) n.classList.add('ready');
 }
-
-function nextStep(toStep) {
-  for (var i = 1; i <= 4; i++) {
-    var el = document.getElementById('os' + i);
-    if (el) el.style.display = (i === toStep) ? 'block' : 'none';
-  }
-  S.currentOnboardStep = toStep;
-  updateStepDots(toStep);
+function nextStep(toStep){
+  for(var i=1;i<=4;i++){ var e=document.getElementById('os'+i); if(e) e.style.display=(i===toStep)?'block':'none'; }
+  S.currentOnboardStep=toStep; updateStepDots(toStep);
 }
-
-function updateStepDots(active) {
-  for (var i = 1; i <= 4; i++) {
-    var dot = document.getElementById('sd' + i);
-    if (!dot) continue;
-    dot.classList.remove('active', 'done');
-    if (i < active) dot.classList.add('done');
-    else if (i === active) dot.classList.add('active');
-  }
+function updateStepDots(active){
+  for(var i=1;i<=4;i++){ var d=document.getElementById('sd'+i); if(!d) continue; d.classList.remove('active','done'); if(i<active) d.classList.add('done'); else if(i===active) d.classList.add('active'); }
 }
+function onboardBack(){ if(S.currentOnboardStep<=1) showScreen('screen-landing'); else nextStep(S.currentOnboardStep-1); }
+function completeOnboard(){ showScreen('screen-dashboard'); }
 
-function onboardBack() {
-  if (S.currentOnboardStep <= 1) showScreen('screen-landing');
-  else nextStep(S.currentOnboardStep - 1);
-}
-
-function completeOnboard() { showScreen('screen-dashboard'); }
-
-// ═══════════════════════════════════════════════════════════
 // DASHBOARD
-// ═══════════════════════════════════════════════════════════
-function initDash() {
-  var d = new Date(), h = d.getHours();
-  document.getElementById('dash-greeting').textContent = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
-  document.getElementById('dash-date-str').textContent = d.toDateString();
-  // Update trusted contact count label
-  var lbl = document.getElementById('trust-count-label');
-  if (lbl) lbl.textContent = trustedContacts.length > 0 ? trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active' : 'Add trusted contacts';
-  if (S.scores.composite != null) updateDashScores();
+function initDash(){
+  var d=new Date(),h=d.getHours();
+  document.getElementById('dash-greeting').textContent=h<12?'Good morning.':h<17?'Good afternoon.':'Good evening.';
+  document.getElementById('dash-date-str').textContent=d.toDateString();
+  var lbl=document.getElementById('trust-count-label');
+  if(lbl) lbl.textContent=trustedContacts.length>0?trustedContacts.length+' contact'+(trustedContacts.length>1?'s':'')+' active':'Add trusted contacts';
+  if(S.scores.composite!=null) updateDashScores();
 }
-
-function updateDashScores() {
-  var sc = S.scores;
-  ['stress','anxiety','stability','isolation'].forEach(function(k) {
-    var el = document.getElementById('sc-' + k);
-    var bar = document.getElementById('sb-' + k);
-    if (el) el.textContent = sc[k];
-    if (bar) bar.style.width = sc[k] + '%';
+function updateDashScores(){
+  var sc=S.scores;
+  ['stress','anxiety','stability','isolation'].forEach(function(k){
+    var e=document.getElementById('sc-'+k); var b=document.getElementById('sb-'+k);
+    if(e) e.textContent=sc[k]; if(b) b.style.width=sc[k]+'%';
   });
-  var ri = document.getElementById('risk-indicator');
-  if (ri) { ri.className = 'risk-indicator risk-' + (sc.risk === 'LOW' ? 'low' : sc.risk === 'MEDIUM' ? 'med' : 'high'); ri.textContent = sc.risk === 'MEDIUM' ? 'MED' : (sc.risk || 'MED'); }
-  if (sc.insight) document.getElementById('ai-insight-text').textContent = sc.insight;
+  var ri=document.getElementById('risk-indicator');
+  if(ri){ ri.className='risk-indicator risk-'+(sc.risk==='LOW'?'low':sc.risk==='MEDIUM'?'med':'high'); ri.textContent=sc.risk==='MEDIUM'?'MED':(sc.risk||'MED'); }
+  if(sc.insight) document.getElementById('ai-insight-text').textContent=sc.insight;
 }
 
-// ═══════════════════════════════════════════════════════════
-// TRUSTED CONTACTS — FIX: fully dynamic, no hardcoding
-// ═══════════════════════════════════════════════════════════
-function renderContactList() {
-  var list = document.getElementById('contact-list');
-  if (!list) return;
-  if (trustedContacts.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text3);font-size:14px;">No trusted contacts yet.<br/>Add someone you trust below.</div>';
-    return;
-  }
-  list.innerHTML = trustedContacts.map(function(c, idx) {
-    var initial = c.name ? c.name.charAt(0).toUpperCase() : '?';
-    // Clean phone for tel: link (remove spaces, dashes)
-    var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
-    return '<div class="contact-card">'
-      + '<div class="contact-avatar">' + initial + '</div>'
-      + '<div style="flex:1">'
-      + '<div class="contact-name">' + escHtml(c.name) + '</div>'
-      + '<div class="contact-rel">' + escHtml(c.rel || 'Contact') + ' · ' + escHtml(c.phone) + '</div>'
-      + '</div>'
-      + '<div class="contact-actions">'
-      + '<a class="contact-call-btn" href="tel:' + cleanPhone + '">📞 Call</a>'
-      + '<button class="contact-del-btn" onclick="deleteContact(' + idx + ')" title="Remove">✕</button>'
-      + '</div>'
-      + '</div>';
+// LEGAL HELP
+function showModule(mod, tabEl) {
+  // Hide all modules
+  ['dh','ps','ec','fd'].forEach(function(m){
+    var el=document.getElementById('mod-'+m); if(el) el.classList.remove('visible');
+  });
+  // Remove all active classes from tabs
+  document.querySelectorAll('.legal-tab').forEach(function(t){
+    t.className='legal-tab';
+  });
+  // Show target module
+  var target=document.getElementById('mod-'+mod); if(target) target.classList.add('visible');
+  // Activate tab
+  if(tabEl){ tabEl.className='legal-tab active-'+mod; }
+}
+
+function toggleLaw(card) {
+  var isOpen = card.classList.contains('open');
+  // Close all in this module
+  card.closest('.law-cards').querySelectorAll('.law-card').forEach(function(c){ c.classList.remove('open'); });
+  // Toggle clicked
+  if(!isOpen) card.classList.add('open');
+}
+
+// CONTACTS
+function renderContactList(){
+  var list=document.getElementById('contact-list'); if(!list) return;
+  if(trustedContacts.length===0){ list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:14px;">No trusted contacts yet.<br/>Add someone you trust below.</div>'; return; }
+  list.innerHTML=trustedContacts.map(function(c,idx){
+    var init=c.name?c.name.charAt(0).toUpperCase():'?';
+    var cp=c.phone.replace(/[\s\-\(\)]/g,'');
+    return '<div class="contact-card"><div class="contact-avatar">'+init+'</div><div style="flex:1"><div class="contact-name">'+escHtml(c.name)+'</div><div class="contact-rel">'+escHtml(c.rel||'Contact')+' · '+escHtml(c.phone)+'</div></div><div class="contact-actions"><a class="contact-call-btn" href="tel:'+cp+'">📞 Call</a><button class="contact-del-btn" onclick="deleteContact('+idx+')">✕</button></div></div>';
   }).join('');
 }
-
-function openAddContact() {
-  document.getElementById('modal-name').value = '';
-  document.getElementById('modal-phone').value = '';
-  document.getElementById('modal-rel').value = '';
-  document.getElementById('add-contact-modal').classList.add('show');
-  setTimeout(function() { document.getElementById('modal-name').focus(); }, 100);
+function openAddContact(){ document.getElementById('modal-name').value=''; document.getElementById('modal-phone').value=''; document.getElementById('modal-rel').value=''; document.getElementById('add-contact-modal').classList.add('show'); setTimeout(function(){ document.getElementById('modal-name').focus(); },100); }
+function closeAddContact(){ document.getElementById('add-contact-modal').classList.remove('show'); }
+function saveContact(){
+  var name=document.getElementById('modal-name').value.trim(), phone=document.getElementById('modal-phone').value.trim(), rel=document.getElementById('modal-rel').value.trim();
+  if(!name){ shakeInput('modal-name','Name is required'); return; }
+  if(!phone){ shakeInput('modal-phone','Phone number required'); return; }
+  var stripped=phone.replace(/[\s\-\+\(\)]/g,'');
+  if(stripped.length<7||!/^\d+$/.test(stripped)){ shakeInput('modal-phone','Enter a valid phone number'); return; }
+  trustedContacts.push({name:name,phone:phone,rel:rel||'Contact'});
+  closeAddContact(); renderContactList();
+  var lbl=document.getElementById('trust-count-label'); if(lbl) lbl.textContent=trustedContacts.length+' contact'+(trustedContacts.length>1?'s':'')+' active';
+  showToast('✓ '+name+' added to your trusted network');
 }
+function deleteContact(idx){ var c=trustedContacts[idx]; if(!c) return; if(confirm('Remove '+c.name+' from your trusted network?')){ trustedContacts.splice(idx,1); renderContactList(); var lbl=document.getElementById('trust-count-label'); if(lbl) lbl.textContent=trustedContacts.length>0?trustedContacts.length+' contact'+(trustedContacts.length>1?'s':'')+' active':'Add trusted contacts'; } }
+function shakeInput(id,msg){ var e=document.getElementById(id); if(!e) return; e.style.borderColor='var(--red)'; e.placeholder=msg; setTimeout(function(){ e.style.borderColor=''; },2000); }
+function escHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg){ var t=document.createElement('div'); t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--green);color:var(--green);padding:12px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9000;animation:fadeIn .3s ease;white-space:nowrap;'; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){ t.remove(); },2800); }
 
-function closeAddContact() {
-  document.getElementById('add-contact-modal').classList.remove('show');
-}
-
-function saveContact() {
-  var name  = document.getElementById('modal-name').value.trim();
-  var phone = document.getElementById('modal-phone').value.trim();
-  var rel   = document.getElementById('modal-rel').value.trim();
-
-  if (!name) { shakeInput('modal-name', 'Name is required'); return; }
-  if (!phone) { shakeInput('modal-phone', 'Phone number is required'); return; }
-  // Basic phone validation
-  var stripped = phone.replace(/[\s\-\+\(\)]/g, '');
-  if (stripped.length < 7 || !/^\d+$/.test(stripped)) {
-    shakeInput('modal-phone', 'Enter a valid phone number'); return;
-  }
-
-  trustedContacts.push({ name: name, phone: phone, rel: rel || 'Contact' });
-  closeAddContact();
-  renderContactList();
-  // Update dashboard label
-  var lbl = document.getElementById('trust-count-label');
-  if (lbl) lbl.textContent = trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active';
-  showToast('✓ ' + name + ' added to your trusted network');
-}
-
-function deleteContact(idx) {
-  var c = trustedContacts[idx];
-  if (!c) return;
-  if (confirm('Remove ' + c.name + ' from your trusted network?')) {
-    trustedContacts.splice(idx, 1);
-    renderContactList();
-    var lbl = document.getElementById('trust-count-label');
-    if (lbl) lbl.textContent = trustedContacts.length > 0 ? trustedContacts.length + ' contact' + (trustedContacts.length > 1 ? 's' : '') + ' active' : 'Add trusted contacts';
-  }
-}
-
-function shakeInput(id, msg) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.style.borderColor = 'var(--red)';
-  el.placeholder = msg;
-  el.style.animation = 'none';
-  setTimeout(function() { el.style.borderColor = ''; }, 2000);
-}
-
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function showToast(msg) {
-  var t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--green);color:var(--green);padding:12px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9000;animation:fadeIn .3s ease;white-space:nowrap;';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function() { t.remove(); }, 2800);
-}
-
-// ═══════════════════════════════════════════════════════════
-// SOS — FIX: Real location + contact list + tel: links
-// ═══════════════════════════════════════════════════════════
-function triggerSOS() {
-  var modal = document.getElementById('sos-modal');
-  var locText = document.getElementById('sos-location-text');
-  var contactList = document.getElementById('sos-contact-list');
+// SOS
+function triggerSOS(){
+  var modal=document.getElementById('sos-modal'), locText=document.getElementById('sos-location-text'), contactList=document.getElementById('sos-contact-list');
   modal.classList.add('show');
+  if(trustedContacts.length===0){ contactList.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:12px;">No trusted contacts saved yet.<br/><a style="color:var(--rose);cursor:pointer" onclick="closeSosModal();showScreen(\'screen-trust\')">Add contacts →</a></div>'; }
+  else { contactList.innerHTML=trustedContacts.map(function(c){ var cp=c.phone.replace(/[\s\-\(\)]/g,''),init=c.name.charAt(0).toUpperCase(); return '<div class="sos-contact-item"><div class="sos-contact-avatar">'+escHtml(init)+'</div><div class="sos-contact-info"><div class="sos-contact-name">'+escHtml(c.name)+'</div><div class="sos-contact-num">'+escHtml(c.rel)+' · '+escHtml(c.phone)+'</div></div><a class="sos-call-btn" href="tel:'+cp+'">📞 Call</a><a class="sos-sms-btn" href="'+buildSmsLink(cp,null)+'">💬 SMS</a></div>'; }).join(''); }
+  locText.textContent='📍 Getting your location…';
+  if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(function(pos){ var lat=pos.coords.latitude.toFixed(5),lng=pos.coords.longitude.toFixed(5),url='https://maps.google.com/?q='+lat+','+lng; locText.innerHTML='📍 <strong>Location:</strong> '+lat+', '+lng+'<br/><a href="'+url+'" target="_blank" style="color:var(--rose);font-size:12px;">Open in Google Maps ↗</a>'; contactList.querySelectorAll('.sos-sms-btn').forEach(function(btn,idx){ var c=trustedContacts[idx]; if(!c) return; var cp=c.phone.replace(/[\s\-\(\)]/g,''); btn.href=buildSmsLink(cp,url); }); },function(){ locText.textContent='📍 Location unavailable — share manually.'; },{timeout:8000,maximumAge:0}); }
+  else locText.textContent='📍 Location not supported on this browser.';
+}
+function buildSmsLink(phone,locationUrl){ var msg='🆘 EMERGENCY: I need help. I am using the Aashray safety app.'+(locationUrl?' My location: '+locationUrl:''); var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent); return isIOS?'sms:'+phone+'&body='+encodeURIComponent(msg):'sms:'+phone+'?body='+encodeURIComponent(msg); }
+function closeSosModal(){ document.getElementById('sos-modal').classList.remove('show'); }
 
-  // Build contact list in modal
-  if (trustedContacts.length === 0) {
-    contactList.innerHTML = '<div style="color:var(--text3);font-size:13px;text-align:center;padding:12px;">No trusted contacts saved yet.<br/><a style="color:var(--rose);cursor:pointer" onclick="closeSosModal();showScreen(\'screen-trust\')">Add contacts →</a></div>';
-  } else {
-    contactList.innerHTML = trustedContacts.map(function(c) {
-      var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
-      var initial = c.name.charAt(0).toUpperCase();
-      return '<div class="sos-contact-item">'
-        + '<div class="sos-contact-avatar">' + escHtml(initial) + '</div>'
-        + '<div class="sos-contact-info">'
-        + '<div class="sos-contact-name">' + escHtml(c.name) + '</div>'
-        + '<div class="sos-contact-num">' + escHtml(c.rel) + ' · ' + escHtml(c.phone) + '</div>'
-        + '</div>'
-        // FIX: Real tel: link to open dialpad
-        + '<a class="sos-call-btn" href="tel:' + cleanPhone + '">📞 Call</a>'
-        + '<a class="sos-sms-btn" href="' + buildSmsLink(cleanPhone, null) + '">💬 SMS</a>'
-        + '</div>';
-    }).join('');
-  }
-
-  // FIX: Get real GPS location
-  locText.textContent = '📍 Getting your location…';
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function(pos) {
-        var lat = pos.coords.latitude.toFixed(5);
-        var lng = pos.coords.longitude.toFixed(5);
-        var mapsUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
-        locText.innerHTML = '📍 <strong>Location:</strong> ' + lat + ', ' + lng
-          + '<br/><a href="' + mapsUrl + '" target="_blank" style="color:var(--rose);font-size:12px;">Open in Google Maps ↗</a>';
-
-        // FIX: Update SMS links with real location once we have it
-        if (trustedContacts.length > 0) {
-          contactList.querySelectorAll('.sos-sms-btn').forEach(function(btn, idx) {
-            var c = trustedContacts[idx];
-            if (!c) return;
-            var cleanPhone = c.phone.replace(/[\s\-\(\)]/g, '');
-            btn.href = buildSmsLink(cleanPhone, mapsUrl);
-          });
-        }
-      },
-      function(err) {
-        locText.textContent = '📍 Location unavailable — share manually.';
-      },
-      { timeout: 8000, maximumAge: 0 }
-    );
-  } else {
-    locText.textContent = '📍 Location not supported on this browser.';
-  }
+// ASSESSMENT
+var aGames=[{title:'Emotion recognition',desc:"We'll use your camera to detect your current emotional state. Allow access when prompted.",type:'emotion'},{title:'Stress response',desc:'Wait for the circle to turn red, then tap it as fast as you can.',type:'reaction'},{title:'How do you feel?',desc:'Rate your levels honestly. There are no right or wrong answers.',type:'slider'}];
+function startAssess(){ S.assessGame=0; S.assessData={reactionTime:null,stressSlider:50,safetySlider:55,detectedEmotion:null}; renderGame(0); }
+function renderGame(idx){
+  if(idx>=aGames.length){ doAIScoring(); return; }
+  var g=aGames[idx]; var nb=document.getElementById('assess-next-btn');
+  nb.style.opacity='0.4'; nb.style.pointerEvents='none';
+  document.getElementById('game-counter').textContent='Game '+(idx+1)+' of 3';
+  document.getElementById('game-title').textContent=g.title;
+  document.getElementById('game-desc').textContent=g.desc;
+  var card=document.getElementById('game-card');
+  if(g.type==='emotion') renderEmotionGame(card);
+  else if(g.type==='reaction'){ card.innerHTML='<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)">●</button><p id="react-status" style="color:var(--text2);text-align:center">Wait for red…</p></div>'; scheduleReaction(); }
+  else{ card.innerHTML='<div class="slider-wrap"><p class="slider-q">Right now, my stress level is:</p><input type="range" min="0" max="100" value="50" oninput="slideChg(\'stress\',this.value)"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span>None</span><span>Extreme</span></div></div><div class="slider-wrap"><p class="slider-q">I feel safe in my current environment:</p><input type="range" min="0" max="100" value="55" oninput="slideChg(\'safety\',this.value)"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span>Unsafe</span><span>Very safe</span></div></div>'; setTimeout(function(){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; },800); }
 }
 
-function buildSmsLink(phone, locationUrl) {
-  var msg = '🆘 EMERGENCY: I need help. I am using the Aashray safety app.';
-  if (locationUrl) msg += ' My location: ' + locationUrl;
-  // iOS uses &body=, Android uses ?body=
-  var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  return isIOS
-    ? 'sms:' + phone + '&body=' + encodeURIComponent(msg)
-    : 'sms:' + phone + '?body=' + encodeURIComponent(msg);
-}
-
-function closeSosModal() {
-  document.getElementById('sos-modal').classList.remove('show');
-}
-
-// ═══════════════════════════════════════════════════════════
-// ASSESSMENT GAMES
-// ═══════════════════════════════════════════════════════════
-var aGames = [
-  { title: 'Emotion recognition', desc: 'We\'ll use your camera to detect your current emotional state. Allow access when prompted.', type: 'emotion' },
-  { title: 'Stress response',      desc: 'Wait for the circle to turn red, then tap it as fast as you can.', type: 'reaction' },
-  { title: 'How do you feel?',     desc: 'Rate your levels honestly. There are no right or wrong answers.', type: 'slider' }
-];
-
-function startAssess() {
-  S.assessGame = 0;
-  S.assessData = { reactionTime: null, stressSlider: 50, safetySlider: 55, detectedEmotion: null };
-  renderGame(0);
-}
-
-function renderGame(idx) {
-  if (idx >= aGames.length) { doAIScoring(); return; }
-  var g = aGames[idx];
-  var nb = document.getElementById('assess-next-btn');
-  nb.style.opacity = '0.4'; nb.style.pointerEvents = 'none';
-  document.getElementById('game-counter').textContent = 'Game ' + (idx + 1) + ' of 3';
-  document.getElementById('game-title').textContent = g.title;
-  document.getElementById('game-desc').textContent = g.desc;
-  var card = document.getElementById('game-card');
-  if (g.type === 'emotion') {
-    renderEmotionGame(card);
-  } else if (g.type === 'reaction') {
-    card.innerHTML = '<div style="text-align:center"><button class="react-btn" id="react-target" onclick="hitTarget(this)">●</button><p id="react-status" style="color:var(--text2);text-align:center">Wait for red…</p></div>';
-    scheduleReaction();
-  } else {
-    card.innerHTML = '<div class="slider-wrap"><p class="slider-q">Right now, my stress level is:</p>'
-      + '<input type="range" min="0" max="100" value="50" oninput="slideChg(\'stress\',this.value)">'
-      + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span>None</span><span>Extreme</span></div></div>'
-      + '<div class="slider-wrap"><p class="slider-q">I feel safe in my current environment:</p>'
-      + '<input type="range" min="0" max="100" value="55" oninput="slideChg(\'safety\',this.value)">'
-      + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span>Unsafe</span><span>Very safe</span></div></div>';
-    setTimeout(function() { nb.style.opacity = '1'; nb.style.pointerEvents = 'auto'; }, 800);
-  }
-}
-
-function renderEmotionGame(card) {
-  var EMO_COLORS = {
-    happy:'#2A9D8F', sad:'#6C8EBF', angry:'#E63946', fearful:'#9B59B6',
-    disgusted:'#F4A261', surprised:'#D4AF37', neutral:'#757A8A'
-  };
-  var emotions = ['happy','sad','angry','fearful','disgusted','surprised','neutral'];
-  var trackerRows = emotions.map(function(e){
-    return '<div class="emo-row" id="erow-'+e+'">'
-      +'<span class="emo-label">'+e+'</span>'
-      +'<div class="emo-bar-wrap"><div class="emo-bar-fill" id="ebar-'+e+'" style="background:'+EMO_COLORS[e]+'"></div></div>'
-      +'<span class="emo-time" id="etime-'+e+'">0.0s</span>'
-      +'</div>';
-  }).join('');
-
-  card.innerHTML =
-    '<div class="face-container">'
-      +'<div class="face-video-wrap">'
-        +'<video id="webcam-video" autoplay muted playsinline></video>'
-        +'<canvas id="face-canvas"></canvas>'
-        +'<div class="scan-line"></div>'
-        +'<div class="face-corner face-corner-tl"></div>'
-        +'<div class="face-corner face-corner-tr"></div>'
-        +'<div class="face-corner face-corner-bl"></div>'
-        +'<div class="face-corner face-corner-br"></div>'
-        +'<div class="face-data-overlay">'
-          +'<div class="fdo-row" id="fdo-fps">FPS: --</div>'
-          +'<div class="fdo-row" id="fdo-conf">CONF: --</div>'
-          +'<div class="fdo-row" id="fdo-pts">PTS: --</div>'
-        +'</div>'
-      +'</div>'
-      +'<div class="scan-phase-label"><span class="scan-phase-dot"></span><span id="scan-phase-text">INITIALISING</span></div>'
-      +'<div class="face-status-badge" id="face-status-badge">⏳ Starting camera…</div>'
-      +'<div class="nn-readout" id="nn-readout">Awaiting face detection…</div>'
-      +'<div class="emotion-tracker">'+trackerRows+'</div>'
-      +'<div class="dominant-result" id="dominant-result">'
-        +'<div class="dr-label">Dominant Emotion Detected</div>'
-        +'<div class="dr-emotion" id="dr-emotion-text">—</div>'
-        +'<div class="dr-sub" id="dr-sub-text">—</div>'
-      +'</div>'
-    +'</div>';
-
-  S.emotionTimings = { happy:0, sad:0, angry:0, fearful:0, disgusted:0, surprised:0, neutral:0 };
-  S.emotionLastSeen = null;
-  S.emotionLastTime = null;
+function renderEmotionGame(card){
+  var EMO_COLORS={happy:'#2A9D8F',sad:'#6C8EBF',angry:'#E63946',fearful:'#9B59B6',disgusted:'#F4A261',surprised:'#D4AF37',neutral:'#757A8A'};
+  var emotions=['happy','sad','angry','fearful','disgusted','surprised','neutral'];
+  var trackerRows=emotions.map(function(e){ return '<div class="emo-row" id="erow-'+e+'"><span class="emo-label">'+e+'</span><div class="emo-bar-wrap"><div class="emo-bar-fill" id="ebar-'+e+'" style="background:'+EMO_COLORS[e]+'"></div></div><span class="emo-time" id="etime-'+e+'">0.0s</span></div>'; }).join('');
+  card.innerHTML='<div class="face-container"><div class="face-video-wrap"><video id="webcam-video" autoplay muted playsinline></video><canvas id="face-canvas"></canvas><div class="scan-line"></div><div class="face-corner face-corner-tl"></div><div class="face-corner face-corner-tr"></div><div class="face-corner face-corner-bl"></div><div class="face-corner face-corner-br"></div><div class="face-data-overlay"><div class="fdo-row" id="fdo-fps">FPS: --</div><div class="fdo-row" id="fdo-conf">CONF: --</div><div class="fdo-row" id="fdo-pts">PTS: --</div></div></div><div class="scan-phase-label"><span class="scan-phase-dot"></span><span id="scan-phase-text">INITIALISING</span></div><div class="face-status-badge" id="face-status-badge">⏳ Starting camera…</div><div class="nn-readout" id="nn-readout">Awaiting face detection…</div><div class="emotion-tracker">'+trackerRows+'</div><div class="dominant-result" id="dominant-result"><div class="dr-label">Dominant Emotion Detected</div><div class="dr-emotion" id="dr-emotion-text">—</div><div class="dr-sub" id="dr-sub-text">—</div></div></div>';
+  S.emotionTimings={happy:0,sad:0,angry:0,fearful:0,disgusted:0,surprised:0,neutral:0};
+  S.emotionLastSeen=null; S.emotionLastTime=null;
   startFacialRecognition();
 }
 
 function fmtSec(ms){ return (ms/1000).toFixed(1)+'s'; }
 
-async function startFacialRecognition() {
-  function setPhase(p){ var el=document.getElementById('scan-phase-text'); if(el) el.textContent=p; }
-  if (typeof faceapi === 'undefined') { setFaceStatus('error','⚠️ face-api.js not loaded.'); renderManualEmotionPicker(); return; }
-  if (!S.modelsLoaded) {
-    setFaceStatus('loading','⏳ Loading neural network…');
-    setPhase('LOADING MODEL');
-    try {
-      var CDN = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
-      await faceapi.nets.tinyFaceDetector.loadFromUri(CDN);
-      await faceapi.nets.faceExpressionNet.loadFromUri(CDN);
-      S.modelsLoaded = true;
-    } catch(e) {
-      try {
-        var FB = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
-        await faceapi.nets.tinyFaceDetector.loadFromUri(FB);
-        await faceapi.nets.faceExpressionNet.loadFromUri(FB);
-        S.modelsLoaded = true;
-      } catch(e2) { setFaceStatus('error','⚠️ Model load failed.'); renderManualEmotionPicker(); return; }
+async function startFacialRecognition(){
+  function setPhase(p){ var e=document.getElementById('scan-phase-text'); if(e) e.textContent=p; }
+  if(typeof faceapi==='undefined'){ setFaceStatus('error','⚠️ face-api.js not loaded.'); renderManualEmotionPicker(); return; }
+  if(!S.modelsLoaded){
+    setFaceStatus('loading','⏳ Loading neural network…'); setPhase('LOADING MODEL');
+    try{
+      await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model');
+      await faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model');
+      S.modelsLoaded=true;
+    }catch(e){
+      try{
+        await faceapi.nets.tinyFaceDetector.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+        await faceapi.nets.faceExpressionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+        S.modelsLoaded=true;
+      }catch(e2){ setFaceStatus('error','⚠️ Model load failed.'); renderManualEmotionPicker(); return; }
     }
   }
-  setFaceStatus('loading','📷 Requesting camera…');
-  setPhase('CALIBRATING');
-  try {
-    var stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} } });
-    S.faceStream = stream;
-    var video = document.getElementById('webcam-video');
-    if (!video) { stopCamera(); return; }
-    video.srcObject = stream;
+  setFaceStatus('loading','📷 Requesting camera…'); setPhase('CALIBRATING');
+  try{
+    var stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}});
+    S.faceStream=stream;
+    var video=document.getElementById('webcam-video'); if(!video){ stopCamera(); return; }
+    video.srcObject=stream;
     await waitForVideoReady(video);
-    var canvas = document.getElementById('face-canvas');
-    if (canvas) { canvas.width=video.videoWidth||640; canvas.height=video.videoHeight||480; canvas.style.width='100%'; canvas.style.height='100%'; }
-    setFaceStatus('active','🔍 Scanning for face…');
-    setPhase('SCANNING');
-    runFaceDetection(video, canvas);
-  } catch(camErr) {
-    var msg = camErr.name==='NotAllowedError' ? '🚫 Camera permission denied.' : '📷 Camera unavailable.';
-    setFaceStatus('error', msg);
-    renderManualEmotionPicker();
-  }
+    var canvas=document.getElementById('face-canvas'); if(canvas){ canvas.width=video.videoWidth||640; canvas.height=video.videoHeight||480; canvas.style.width='100%'; canvas.style.height='100%'; }
+    setFaceStatus('active','🔍 Scanning for face…'); setPhase('SCANNING');
+    runFaceDetection(video,canvas);
+  }catch(camErr){ setFaceStatus('error',camErr.name==='NotAllowedError'?'🚫 Camera permission denied.':'📷 Camera unavailable.'); renderManualEmotionPicker(); }
 }
 
-async function waitForVideoReady(video) {
-  return new Promise(function(resolve) {
-    if (video.readyState >= 2) { resolve(); return; }
+async function waitForVideoReady(video){
+  return new Promise(function(resolve){
+    if(video.readyState>=2){ resolve(); return; }
     function onReady(){ video.removeEventListener('loadeddata',onReady); video.removeEventListener('canplay',onReady); resolve(); }
-    video.addEventListener('loadeddata', onReady);
-    video.addEventListener('canplay', onReady);
-    var polls=0, poller=setInterval(function(){
-      polls++;
-      if(video.readyState>=2||!document.getElementById('webcam-video')){ clearInterval(poller); resolve(); }
-      if(polls>50){ clearInterval(poller); resolve(); }
-    },100);
+    video.addEventListener('loadeddata',onReady); video.addEventListener('canplay',onReady);
+    var polls=0,poller=setInterval(function(){ polls++; if(video.readyState>=2||!document.getElementById('webcam-video')){ clearInterval(poller); resolve(); } if(polls>50){ clearInterval(poller); resolve(); } },100);
   });
 }
 
-var NN_MESSAGES = [
-  'Extracting facial action units…','Running micro-expression analysis…',
-  'Mapping 68 facial landmarks…','Classifying orbital region…',
-  'Analysing zygomatic muscle activity…','Computing valence vector…',
-  'Cross-referencing arousal state…','Triangulating brow tension index…',
-  'Sampling periocular region…','Mapping corrugator muscle signal…',
-  'Detecting lip corner displacement…','Updating temporal emotion graph…',
-  'Verifying FACS coding…','Recalibrating baseline neutral…'
-];
-var nnMsgIdx = 0;
+var NN_MESSAGES=['Extracting facial action units…','Running micro-expression analysis…','Mapping 68 facial landmarks…','Classifying orbital region…','Analysing zygomatic muscle activity…','Computing valence vector…','Cross-referencing arousal state…','Triangulating brow tension index…','Sampling periocular region…','Mapping corrugator muscle signal…','Detecting lip corner displacement…','Updating temporal emotion graph…'];
+var nnMsgIdx=0;
 
-function getDominantEmotion() {
-  if (!S.emotionTimings) return 'neutral';
-  return Object.keys(S.emotionTimings).reduce(function(a,b){ return S.emotionTimings[a]>S.emotionTimings[b]?a:b; });
+function getDominantEmotion(){ if(!S.emotionTimings) return 'neutral'; return Object.keys(S.emotionTimings).reduce(function(a,b){ return S.emotionTimings[a]>S.emotionTimings[b]?a:b; }); }
+
+function updateEmotionBars(){
+  if(!S.emotionTimings) return;
+  var total=Object.keys(S.emotionTimings).reduce(function(s,k){ return s+S.emotionTimings[k]; },0); if(total===0) return;
+  var dom=getDominantEmotion();
+  Object.keys(S.emotionTimings).forEach(function(e){ var pct=(S.emotionTimings[e]/total)*100; var bar=document.getElementById('ebar-'+e),timeEl=document.getElementById('etime-'+e),row=document.getElementById('erow-'+e); if(bar) bar.style.width=pct.toFixed(1)+'%'; if(timeEl) timeEl.textContent=fmtSec(S.emotionTimings[e]); if(row) row.classList.toggle('dominant',e===dom); });
 }
 
-function updateEmotionBars(currentEmo) {
-  if (!S.emotionTimings) return;
-  var total = Object.keys(S.emotionTimings).reduce(function(s,k){ return s+S.emotionTimings[k]; },0);
-  if (total===0) return;
-  var dom = getDominantEmotion();
-  Object.keys(S.emotionTimings).forEach(function(e){
-    var pct = (S.emotionTimings[e]/total)*100;
-    var bar=document.getElementById('ebar-'+e), timeEl=document.getElementById('etime-'+e), row=document.getElementById('erow-'+e);
-    if(bar) bar.style.width=pct.toFixed(1)+'%';
-    if(timeEl) timeEl.textContent=fmtSec(S.emotionTimings[e]);
-    if(row) row.classList.toggle('dominant', e===dom);
-  });
-}
-
-function showDominantResult(emo) {
-  var card=document.getElementById('dominant-result'), emoEl=document.getElementById('dr-emotion-text'), subEl=document.getElementById('dr-sub-text');
-  if(!card) return;
-  card.classList.add('show');
-  if(emoEl) emoEl.textContent = emo;
+function showDominantResult(emo){
+  var card=document.getElementById('dominant-result'),emoEl=document.getElementById('dr-emotion-text'),subEl=document.getElementById('dr-sub-text'); if(!card) return;
+  card.classList.add('show'); if(emoEl) emoEl.textContent=emo;
   var total=Object.keys(S.emotionTimings).reduce(function(s,k){return s+S.emotionTimings[k];},0);
-  var pct = total>0?Math.round(S.emotionTimings[emo]/total*100):0;
-  if(subEl) subEl.textContent = pct+'% of scan time · '+fmtSec(S.emotionTimings[emo])+' duration';
+  var pct=total>0?Math.round(S.emotionTimings[emo]/total*100):0;
+  if(subEl) subEl.textContent=pct+'% of scan time · '+fmtSec(S.emotionTimings[emo])+' duration';
 }
 
 function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); }
 
-function runFaceDetection(video, canvas) {
-  var detectionCount=0, frameCount=0, fpsTimer=Date.now(), lastFrameTime=Date.now(), noFaceFrames=0;
-
-  // Cycle neural net readout text
-  var nnInterval = setInterval(function(){
+function runFaceDetection(video,canvas){
+  var detectionCount=0,frameCount=0,fpsTimer=Date.now(),lastFrameTime=Date.now(),noFaceFrames=0;
+  var nnInterval=setInterval(function(){
     var el=document.getElementById('nn-readout'); if(!el){ clearInterval(nnInterval); return; }
-    nnMsgIdx = (nnMsgIdx+1)%NN_MESSAGES.length;
-    var dom = getDominantEmotion();
-    var topLine = S.emotionTimings ? Object.keys(S.emotionTimings).sort(function(a,b){return S.emotionTimings[b]-S.emotionTimings[a];}).slice(0,3).map(function(e){return e+'('+fmtSec(S.emotionTimings[e])+')';}).join(' | ') : '';
-    el.textContent = '> '+NN_MESSAGES[nnMsgIdx]+(topLine?'\nTop: '+topLine:'');
+    nnMsgIdx=(nnMsgIdx+1)%NN_MESSAGES.length;
+    var topLine=S.emotionTimings?Object.keys(S.emotionTimings).sort(function(a,b){return S.emotionTimings[b]-S.emotionTimings[a];}).slice(0,3).map(function(e){return e+'('+fmtSec(S.emotionTimings[e])+')';}).join(' | '):'';
+    el.textContent='> '+NN_MESSAGES[nnMsgIdx]+(topLine?'\nTop: '+topLine:'');
   },1100);
 
-  S.faceInterval = setInterval(async function() {
-    var vidEl=document.getElementById('webcam-video');
-    if(!vidEl||!S.faceStream){ clearInterval(S.faceInterval); clearInterval(nnInterval); return; }
-    var now=Date.now(), elapsed=now-lastFrameTime; lastFrameTime=now;
+  S.faceInterval=setInterval(async function(){
+    var vidEl=document.getElementById('webcam-video'); if(!vidEl||!S.faceStream){ clearInterval(S.faceInterval); clearInterval(nnInterval); return; }
+    var now=Date.now(),elapsed=now-lastFrameTime; lastFrameTime=now;
     frameCount++;
-    if(now-fpsTimer>1000){
-      var fps=Math.round(frameCount*1000/(now-fpsTimer));
-      var fpsEl=document.getElementById('fdo-fps'); if(fpsEl) fpsEl.textContent='FPS: '+fps;
-      frameCount=0; fpsTimer=now;
-    }
-    try {
+    if(now-fpsTimer>1000){ var fps=Math.round(frameCount*1000/(now-fpsTimer)); var fpsEl=document.getElementById('fdo-fps'); if(fpsEl) fpsEl.textContent='FPS: '+fps; frameCount=0; fpsTimer=now; }
+    try{
       var opts=new faceapi.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:0.35});
       var result=await faceapi.detectSingleFace(vidEl,opts).withFaceExpressions();
       var cvs=document.getElementById('face-canvas'); if(!cvs){ clearInterval(S.faceInterval); clearInterval(nnInterval); return; }
       var ctx=cvs.getContext('2d');
       cvs.width=vidEl.videoWidth||300; cvs.height=vidEl.videoHeight||300;
       ctx.clearRect(0,0,cvs.width,cvs.height);
-
       if(result&&result.expressions){
         noFaceFrames=0; detectionCount++;
-        var box=result.detection.box, exps=result.expressions;
+        var box=result.detection.box,exps=result.expressions;
         var topEmo=Object.keys(exps).reduce(function(a,b){return exps[a]>exps[b]?a:b;});
         var conf=Math.round(exps[topEmo]*100);
-        var t=Date.now()/1000, pulse=0.65+0.35*Math.sin(t*3);
-
-        // ── Timed emotion accumulation ──
+        var t=Date.now()/1000,pulse=0.65+0.35*Math.sin(t*3);
         if(S.emotionTimings) S.emotionTimings[topEmo]=(S.emotionTimings[topEmo]||0)+elapsed;
-
-        // ── Face box glow fill ──
-        ctx.fillStyle='rgba(42,157,143,'+(0.04*pulse)+')';
-        ctx.fillRect(box.x,box.y,box.width,box.height);
-
-        // ── Main box ──
-        ctx.strokeStyle='rgba(42,157,143,'+pulse+')';
-        ctx.lineWidth=1.5;
-        ctx.strokeRect(box.x,box.y,box.width,box.height);
-
-        // ── Gold corner L-brackets ──
+        ctx.fillStyle='rgba(42,157,143,'+(0.04*pulse)+')'; ctx.fillRect(box.x,box.y,box.width,box.height);
+        ctx.strokeStyle='rgba(42,157,143,'+pulse+')'; ctx.lineWidth=1.5; ctx.strokeRect(box.x,box.y,box.width,box.height);
         var cLen=Math.min(box.width,box.height)*0.18;
         ctx.strokeStyle='#D4AF37'; ctx.lineWidth=2.5;
-        [[box.x,box.y,1,1],[box.x+box.width,box.y,-1,1],[box.x,box.y+box.height,1,-1],[box.x+box.width,box.y+box.height,-1,-1]].forEach(function(c){
-          ctx.beginPath(); ctx.moveTo(c[0]+c[2]*cLen,c[1]); ctx.lineTo(c[0],c[1]); ctx.lineTo(c[0],c[1]+c[3]*cLen); ctx.stroke();
-        });
-
-        // ── Animated landmark dots (18 anatomically plausible points) ──
-        var cx=box.x+box.width/2, cy=box.y+box.height/2, w=box.width, h=box.height;
-        var lm=[
-          [cx-w*.22,cy-h*.1],[cx+w*.22,cy-h*.1],[cx-w*.15,cy-h*.1],[cx+w*.15,cy-h*.1],
-          [cx-w*.24,cy-h*.22],[cx+w*.24,cy-h*.22],[cx-w*.12,cy-h*.24],[cx+w*.12,cy-h*.24],
-          [cx,cy],[cx-w*.07,cy+h*.08],[cx+w*.07,cy+h*.08],
-          [cx-w*.18,cy+h*.2],[cx,cy+h*.18],[cx+w*.18,cy+h*.2],[cx,cy+h*.28],
-          [cx-w*.32,cy+h*.28],[cx+w*.32,cy+h*.28],[cx,cy+h*.44]
-        ];
-        lm.forEach(function(p,i){
-          var alpha=0.4+0.6*Math.abs(Math.sin(t*2.5+i*0.6));
-          ctx.beginPath(); ctx.arc(p[0],p[1],2,0,Math.PI*2);
-          ctx.fillStyle='rgba(42,157,143,'+alpha+')'; ctx.fill();
-        });
-
-        // ── Connection lines (eyes, mouth) ──
+        [[box.x,box.y,1,1],[box.x+box.width,box.y,-1,1],[box.x,box.y+box.height,1,-1],[box.x+box.width,box.y+box.height,-1,-1]].forEach(function(c){ ctx.beginPath(); ctx.moveTo(c[0]+c[2]*cLen,c[1]); ctx.lineTo(c[0],c[1]); ctx.lineTo(c[0],c[1]+c[3]*cLen); ctx.stroke(); });
+        var cx=box.x+box.width/2,cy=box.y+box.height/2,w=box.width,h=box.height;
+        var lm=[[cx-w*.22,cy-h*.1],[cx+w*.22,cy-h*.1],[cx-w*.15,cy-h*.1],[cx+w*.15,cy-h*.1],[cx-w*.24,cy-h*.22],[cx+w*.24,cy-h*.22],[cx-w*.12,cy-h*.24],[cx+w*.12,cy-h*.24],[cx,cy],[cx-w*.07,cy+h*.08],[cx+w*.07,cy+h*.08],[cx-w*.18,cy+h*.2],[cx,cy+h*.18],[cx+w*.18,cy+h*.2],[cx,cy+h*.28],[cx-w*.32,cy+h*.28],[cx+w*.32,cy+h*.28],[cx,cy+h*.44]];
+        lm.forEach(function(p,i){ var alpha=0.4+0.6*Math.abs(Math.sin(t*2.5+i*0.6)); ctx.beginPath(); ctx.arc(p[0],p[1],2,0,Math.PI*2); ctx.fillStyle='rgba(42,157,143,'+alpha+')'; ctx.fill(); });
         ctx.strokeStyle='rgba(42,157,143,0.22)'; ctx.lineWidth=0.8;
-        [[0,2],[1,3],[11,12],[12,13]].forEach(function(pair){
-          ctx.beginPath(); ctx.moveTo(lm[pair[0]][0],lm[pair[0]][1]); ctx.lineTo(lm[pair[1]][0],lm[pair[1]][1]); ctx.stroke();
-        });
-
-        // ── Confidence arc (top-right of face box) ──
-        var arcX=box.x+box.width-16, arcY=box.y+16, arcR=12;
+        [[0,2],[1,3],[11,12],[12,13]].forEach(function(pair){ ctx.beginPath(); ctx.moveTo(lm[pair[0]][0],lm[pair[0]][1]); ctx.lineTo(lm[pair[1]][0],lm[pair[1]][1]); ctx.stroke(); });
+        var arcX=box.x+box.width-16,arcY=box.y+16,arcR=12;
         ctx.beginPath(); ctx.arc(arcX,arcY,arcR,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=2; ctx.stroke();
-        ctx.beginPath(); ctx.arc(arcX,arcY,arcR,-Math.PI/2,-Math.PI/2+(conf/100)*Math.PI*2,false);
-        ctx.strokeStyle=conf>80?'#2A9D8F':conf>50?'#D4AF37':'#E63946'; ctx.lineWidth=2.5; ctx.stroke();
-        ctx.fillStyle='rgba(42,157,143,0.95)'; ctx.font='bold 8px Courier New'; ctx.textAlign='center';
-        ctx.fillText(conf+'%',arcX,arcY+3); ctx.textAlign='left';
-
-        // ── Emotion label tag ──
+        ctx.beginPath(); ctx.arc(arcX,arcY,arcR,-Math.PI/2,-Math.PI/2+(conf/100)*Math.PI*2,false); ctx.strokeStyle=conf>80?'#2A9D8F':conf>50?'#D4AF37':'#E63946'; ctx.lineWidth=2.5; ctx.stroke();
+        ctx.fillStyle='rgba(42,157,143,0.95)'; ctx.font='bold 8px Courier New'; ctx.textAlign='center'; ctx.fillText(conf+'%',arcX,arcY+3); ctx.textAlign='left';
         var tagY=box.y+box.height+20;
-        ctx.fillStyle='rgba(0,0,0,0.7)';
-        roundRect(ctx,cx-48,tagY-14,96,16,4); ctx.fill();
-        ctx.fillStyle='#2A9D8F'; ctx.font='bold 10px Courier New'; ctx.textAlign='center';
-        ctx.fillText(topEmo.toUpperCase(),cx,tagY); ctx.textAlign='left';
-
-        // ── HUD update ──
+        ctx.fillStyle='rgba(0,0,0,0.7)'; roundRect(ctx,cx-48,tagY-14,96,16,4); ctx.fill();
+        ctx.fillStyle='#2A9D8F'; ctx.font='bold 10px Courier New'; ctx.textAlign='center'; ctx.fillText(topEmo.toUpperCase(),cx,tagY); ctx.textAlign='left';
         var cEl=document.getElementById('fdo-conf'); if(cEl) cEl.textContent='CONF: '+conf+'%';
         var pEl=document.getElementById('fdo-pts'); if(pEl) pEl.textContent='PTS: '+lm.length;
         setFaceStatus('detected','✓ '+topEmo.toUpperCase()+' · '+conf+'% confidence');
-        updateEmotionBars(topEmo);
-        S.assessData.detectedEmotion = getDominantEmotion();
-
-        if(detectionCount>=3){
-          var dom=getDominantEmotion();
-          var nb=document.getElementById('assess-next-btn');
-          if(nb){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Confirm — '+dom.toUpperCase()+' →'; }
-          showDominantResult(dom);
-        }
-      } else {
+        updateEmotionBars(); S.assessData.detectedEmotion=getDominantEmotion();
+        if(detectionCount>=3){ var dom=getDominantEmotion(); var nb=document.getElementById('assess-next-btn'); if(nb){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Confirm — '+dom.toUpperCase()+' →'; } showDominantResult(dom); }
+      }else{
         noFaceFrames++;
         if(noFaceFrames>5) setFaceStatus('active','👀 Position face in frame…');
         var cEl2=document.getElementById('fdo-conf'); if(cEl2) cEl2.textContent='CONF: --';
       }
-    } catch(e){ console.warn('Detection err:',e); }
-  }, 350);
+    }catch(e){ console.warn('Detection err:',e); }
+  },350);
 }
 
-function renderManualEmotionPicker() {
-  var card = document.getElementById('game-card');
-  if (!card) return;
-  card.innerHTML = '<div style="text-align:center;padding:8px">'
-    + '<p style="font-size:15px;font-weight:600;margin-bottom:16px">How are you feeling right now?</p>'
-    + '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">'
-    + ['😊 Happy','😢 Sad','😰 Anxious','😠 Angry','😮 Surprised','😐 Neutral','😨 Fearful'].map(function(e){
-        var p=e.split(' '), emoji=p[0], label=p[1].toLowerCase();
-        return '<button onclick="selectManualEmotion(\''+label+'\',this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;cursor:pointer;color:var(--text);font-size:18px;transition:all .2s;font-family:DM Sans,sans-serif">'+emoji+'<br><span style="font-size:11px;color:var(--text3)">'+p[1]+'</span></button>';
-      }).join('')
-    + '</div></div>';
+function renderManualEmotionPicker(){
+  var card=document.getElementById('game-card'); if(!card) return;
+  card.innerHTML='<div style="text-align:center;padding:8px"><p style="font-size:15px;font-weight:600;margin-bottom:16px">How are you feeling right now?</p><div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">'+['😊 Happy','😢 Sad','😰 Anxious','😠 Angry','😮 Surprised','😐 Neutral','😨 Fearful'].map(function(e){ var p=e.split(' '),emoji=p[0],label=p[1].toLowerCase(); return '<button onclick="selectManualEmotion(\''+label+'\',this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;cursor:pointer;color:var(--text);font-size:18px;transition:all .2s;font-family:DM Sans,sans-serif">'+emoji+'<br><span style="font-size:11px;color:var(--text3)">'+p[1]+'</span></button>'; }).join('')+'</div></div>';
 }
+function selectManualEmotion(emotion,btn){ S.assessData.detectedEmotion=emotion; document.querySelectorAll('#game-card button').forEach(function(b){ b.style.borderColor='var(--border2)'; b.style.background='var(--surface2)'; }); btn.style.borderColor='var(--rose)'; btn.style.background='var(--rose-bg)'; var nb=document.getElementById('assess-next-btn'); if(nb){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Continue →'; } }
+function setFaceStatus(type,text){ var b=document.getElementById('face-status-badge'); if(!b) return; b.textContent=text; b.className='face-status-badge'+(type==='detected'?' detected':type==='error'?' error':''); }
+function hitTarget(btn){ S.assessData.reactionTime=Date.now()-S.assessStart; btn.style.background='var(--green)'; btn.style.borderColor='var(--green)'; var st=document.getElementById('react-status'); if(st) st.textContent='✓ Recorded! '+S.assessData.reactionTime+'ms'; var nb=document.getElementById('assess-next-btn'); if(nb){ nb.style.opacity='1'; nb.style.pointerEvents='auto'; } }
+function scheduleReaction(){ var delay=1500+Math.random()*2500; S.assessStart=Date.now()+delay; setTimeout(function(){ var t=document.getElementById('react-target'); if(t){ t.style.background='var(--red)'; t.style.borderColor='var(--red)'; t.style.color='#fff'; S.assessStart=Date.now(); } },delay); }
+function slideChg(type,val){ S.assessData[type+'Slider']=parseInt(val); }
+function nextAssessGame(){ stopCamera(); S.assessGame++; renderGame(S.assessGame); }
 
-function selectManualEmotion(emotion, btn) {
-  S.assessData.detectedEmotion = emotion;
-  document.querySelectorAll('#game-card button').forEach(function(b){ b.style.borderColor='var(--border2)'; b.style.background='var(--surface2)'; });
-  btn.style.borderColor='var(--rose)'; btn.style.background='var(--rose-bg)';
-  var nb = document.getElementById('assess-next-btn');
-  if (nb) { nb.style.opacity='1'; nb.style.pointerEvents='auto'; nb.textContent='Continue →'; }
-}
-
-function setFaceStatus(type, text) {
-  var badge = document.getElementById('face-status-badge');
-  if (!badge) return;
-  badge.textContent = text;
-  badge.className = 'face-status-badge' + (type==='detected'?' detected':type==='error'?' error':'');
-}
-
-function enableNextBtn() {
-  var nb = document.getElementById('assess-next-btn');
-  if (nb) { nb.style.opacity='1'; nb.style.pointerEvents='auto'; }
-}
-
-function hitTarget(btn) {
-  S.assessData.reactionTime = Date.now() - S.assessStart;
-  btn.style.background='var(--green)'; btn.style.borderColor='var(--green)';
-  var st = document.getElementById('react-status');
-  if (st) st.textContent = '✓ Recorded! ' + S.assessData.reactionTime + 'ms';
-  enableNextBtn();
-}
-
-function scheduleReaction() {
-  var delay = 1500 + Math.random() * 2500;
-  S.assessStart = Date.now() + delay;
-  setTimeout(function() {
-    var t = document.getElementById('react-target');
-    if (t) { t.style.background='var(--red)'; t.style.borderColor='var(--red)'; t.style.color='#fff'; S.assessStart=Date.now(); }
-  }, delay);
-}
-
-function slideChg(type, val) { S.assessData[type+'Slider'] = parseInt(val); }
-function nextAssessGame() { stopCamera(); S.assessGame++; renderGame(S.assessGame); }
-
-// ═══════════════════════════════════════════════════════════
 // AI SCORING
-// ═══════════════════════════════════════════════════════════
-async function doAIScoring() {
-  var ov = document.getElementById('scoring-overlay');
-  ov.classList.add('show');
-  var steps = ['ss1','ss2','ss3','ss4'];
-  steps.forEach(function(id){ var el=document.getElementById(id); if(el) el.className='scoring-step'; });
-  var stepIdx=0;
-  var stepTimer = setInterval(function(){
-    if(stepIdx>0){ var prev=document.getElementById(steps[stepIdx-1]); if(prev) prev.className='scoring-step done'; }
-    if(stepIdx<steps.length){ var cur=document.getElementById(steps[stepIdx]); if(cur) cur.className='scoring-step active'; }
-    stepIdx++;
-    if(stepIdx>steps.length) clearInterval(stepTimer);
-  },500);
-
-  var scored = null;
-  if (!S.demoMode) {
-    try {
-      var payload = JSON.stringify({ stress:S.assessData.stressSlider, safety:S.assessData.safetySlider, cohort:S.cohort, mood:S.mood, reason:S.reason, rt:S.assessData.reactionTime, emotion:S.assessData.detectedEmotion });
-      var raw = await askGemini([{role:'user',content:payload}], SCORING_SYS, 400);
-      if (raw) {
-        var start=raw.indexOf('{'), end=raw.lastIndexOf('}');
-        if(start!==-1&&end!==-1) scored=JSON.parse(raw.substring(start,end+1));
-      }
-    } catch(err) { console.warn('AI scoring failed, using heuristic:', err); }
-  }
-
-  if (!scored) {
-    var sv = S.assessData.stressSlider||50;
-    var em = {fearful:1.3,angry:1.2,sad:1.15,disgusted:1.1,surprised:1.0,neutral:0.9,happy:0.75}[S.assessData.detectedEmotion]||1.0;
-    var adj = Math.min(100,Math.round(sv*em));
-    scored = { stress:adj, anxiety:Math.round(adj*0.9), stability:Math.max(10,100-adj), isolation:Math.round(adj*0.7), composite:Math.round(adj*0.85), risk:adj>70?'HIGH':adj>40?'MEDIUM':'LOW', dvRisk:adj>70?'high':adj>40?'medium':'low', summary:'Analysis complete. Results weighted by your inputs and emotional indicators.', insight:'Your wellness profile is ready. Aasha is available in chat to discuss these findings.' };
-  }
-
-  S.scores = scored;
-  if (!S.demoMode) saveAssessmentToDB(scored).catch(function(){});
-
-  setTimeout(function(){
-    clearInterval(stepTimer);
-    ov.classList.remove('show');
-    renderResults(scored);
-    showScreen('screen-results');
-  }, 2400);
+async function doAIScoring(){
+  var ov=document.getElementById('scoring-overlay'); ov.classList.add('show');
+  var steps=['ss1','ss2','ss3','ss4']; steps.forEach(function(id){ var e=document.getElementById(id); if(e) e.className='scoring-step'; });
+  var si=0; var st=setInterval(function(){ if(si>0){ var p=document.getElementById(steps[si-1]); if(p) p.className='scoring-step done'; } if(si<steps.length){ var c=document.getElementById(steps[si]); if(c) c.className='scoring-step active'; } si++; if(si>steps.length) clearInterval(st); },500);
+  var scored=null;
+  if(!S.demoMode){ try{ var raw=await askGemini([{role:'user',content:JSON.stringify({stress:S.assessData.stressSlider,safety:S.assessData.safetySlider,cohort:S.cohort,mood:S.mood,reason:S.reason,rt:S.assessData.reactionTime,emotion:S.assessData.detectedEmotion})}],SCORING_SYS,400); if(raw){ var s=raw.indexOf('{'),e=raw.lastIndexOf('}'); if(s!==-1&&e!==-1) scored=JSON.parse(raw.substring(s,e+1)); } }catch(err){} }
+  if(!scored){ var sv=S.assessData.stressSlider||50; var em={fearful:1.3,angry:1.2,sad:1.15,disgusted:1.1,surprised:1.0,neutral:0.9,happy:0.75}[S.assessData.detectedEmotion]||1.0; var adj=Math.min(100,Math.round(sv*em)); scored={stress:adj,anxiety:Math.round(adj*0.9),stability:Math.max(10,100-adj),isolation:Math.round(adj*0.7),composite:Math.round(adj*0.85),risk:adj>70?'HIGH':adj>40?'MEDIUM':'LOW',dvRisk:adj>70?'high':adj>40?'medium':'low',summary:'Analysis complete. Results weighted by your inputs and emotional indicators.',insight:'Your wellness profile is ready. Aasha is available in chat to discuss these findings.'}; }
+  S.scores=scored; if(!S.demoMode) saveAssessmentToDB(scored).catch(function(){});
+  setTimeout(function(){ clearInterval(st); ov.classList.remove('show'); renderResults(scored); showScreen('screen-results'); },2400);
 }
 
-function renderResults(sc) {
-  var pct = sc.composite/100;
-  var arc = document.getElementById('result-arc');
-  if (arc) arc.style.strokeDashoffset = 251-(251*pct);
-  var rv = document.getElementById('result-ring-val');
-  if (rv) rv.textContent = sc.composite;
-  document.getElementById('result-label').textContent = sc.risk==='LOW'?'Low overall risk':sc.risk==='MEDIUM'?'Moderate risk detected':'Elevated risk — seek support';
-  document.getElementById('result-sub').textContent = sc.summary||'';
-  document.getElementById('ai-analysis-text').textContent = sc.insight||sc.summary||'';
-  ['stress','anxiety','stability','isolation'].forEach(function(k){
-    var rv2=document.getElementById('r-'+k); var bar=document.getElementById('rb-'+k);
-    if(rv2) rv2.textContent=sc[k]+'%';
-    if(bar) bar.style.width=sc[k]+'%';
-  });
-  var dvBox=document.getElementById('dv-risk-box');
-  if(dvBox){
-    dvBox.className='dv-risk-box '+(sc.dvRisk==='high'?'dvrhigh':sc.dvRisk==='medium'?'dvrmed':'dvrlow');
-    document.getElementById('dvr-title').textContent='DV Risk: '+(sc.dvRisk||'low').toUpperCase();
-    document.getElementById('dvr-text').textContent=sc.dvRisk==='high'?'Elevated signals detected. Please reach out to a trusted contact or helpline.':sc.dvRisk==='medium'?'Some signals present. Speaking with a counsellor may help.':'No significant DV risk signals detected at this time.';
-  }
+function renderResults(sc){
+  var pct=sc.composite/100; var arc=document.getElementById('result-arc'); if(arc) arc.style.strokeDashoffset=251-(251*pct);
+  var rv=document.getElementById('result-ring-val'); if(rv) rv.textContent=sc.composite;
+  document.getElementById('result-label').textContent=sc.risk==='LOW'?'Low overall risk':sc.risk==='MEDIUM'?'Moderate risk detected':'Elevated risk — seek support';
+  document.getElementById('result-sub').textContent=sc.summary||'';
+  document.getElementById('ai-analysis-text').textContent=sc.insight||sc.summary||'';
+  ['stress','anxiety','stability','isolation'].forEach(function(k){ var rv2=document.getElementById('r-'+k); var bar=document.getElementById('rb-'+k); if(rv2) rv2.textContent=sc[k]+'%'; if(bar) bar.style.width=sc[k]+'%'; });
+  var dvBox=document.getElementById('dv-risk-box'); if(dvBox){ dvBox.className='dv-risk-box '+(sc.dvRisk==='high'?'dvrhigh':sc.dvRisk==='medium'?'dvrmed':'dvrlow'); document.getElementById('dvr-title').textContent='DV Risk: '+(sc.dvRisk||'low').toUpperCase(); document.getElementById('dvr-text').textContent=sc.dvRisk==='high'?'Elevated signals detected. Please reach out to a trusted contact or helpline.':sc.dvRisk==='medium'?'Some signals present. Speaking with a counsellor may help.':'No significant DV risk signals detected at this time.'; }
   updateDashScores();
 }
 
-// ═══════════════════════════════════════════════════════════
-// BACKEND
-// ═══════════════════════════════════════════════════════════
-async function askGemini(messages, system, maxTok) {
-  if (S.demoMode) return null;
-  try {
-    var r = await fetch(BACKEND_BASE_URL+'/api/gemini', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:messages,system:system||'',max_tokens:maxTok||500}) });
-    if (!r.ok) return null;
-    var d = await r.json();
-    return d.reply||null;
-  } catch(e) { return null; }
-}
+async function askGemini(messages,system,maxTok){ if(S.demoMode) return null; try{ var r=await fetch(BACKEND_BASE_URL+'/api/gemini',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:messages,system:system||'',max_tokens:maxTok||500})}); if(!r.ok) return null; var d=await r.json(); return d.reply||null; }catch(e){ return null; } }
+async function saveAssessmentToDB(scores){ try{ await fetch(BACKEND_BASE_URL+'/api/save_assessment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(scores)}); }catch(e){} }
+var AASHA_SYS='You are Aasha, a trauma-informed AI companion on Aashray. Speak warmly, concisely (2-4 sentences), validate feelings without giving medical advice.';
+var SCORING_SYS='You are a clinical scoring engine. Return ONLY valid JSON (no markdown): {"stress":int,"anxiety":int,"stability":int,"isolation":int,"composite":int,"risk":"LOW"|"MEDIUM"|"HIGH","dvRisk":"low"|"medium"|"high","summary":"string","insight":"string"}';
 
-async function saveAssessmentToDB(scores) {
-  try { await fetch(BACKEND_BASE_URL+'/api/save_assessment', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(scores)}); } catch(e){}
-}
-
-var AASHA_SYS = 'You are Aasha, a trauma-informed AI companion on Aashray. Speak warmly, concisely (2-4 sentences), validate feelings without giving medical advice.';
-var SCORING_SYS = 'You are a clinical scoring engine. Return ONLY valid JSON (no markdown): {"stress":int,"anxiety":int,"stability":int,"isolation":int,"composite":int,"risk":"LOW"|"MEDIUM"|"HIGH","dvRisk":"low"|"medium"|"high","summary":"string","insight":"string"}';
-
-// ═══════════════════════════════════════════════════════════
 // CHAT
+function initChat(){ if(S.chatInitialized) return; S.chatInitialized=true; addMsg("Hello, I'm Aasha. I'm here to listen without judgment. How are you feeling today?",'bot'); }
+async function sendChat(){ var inp=document.getElementById('chat-input'); var txt=inp.value.trim(); if(!txt) return; inp.value=''; inp.style.height='auto'; addMsg(txt,'user'); S.chatHistory.push({role:'user',content:txt}); var typing=addTyping(); var reply=null; if(!S.demoMode) reply=await askGemini(S.chatHistory,AASHA_SYS,300); typing.remove(); var response=reply||getDemoReply(txt); addMsg(response,'bot'); S.chatHistory.push({role:'assistant',content:response}); var distressWords=['hurt','unsafe','scared','afraid','hit','abuse','kill','danger','help me','trapped']; if(distressWords.some(function(w){ return txt.toLowerCase().includes(w); })) document.getElementById('dv-alert').classList.add('show'); }
+function getDemoReply(txt){ var l=txt.toLowerCase(); if(l.includes('safe')||l.includes('afraid')||l.includes('scared')) return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?"; if(l.includes('stress')||l.includes('anxious')) return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?"; if(l.includes('alone')||l.includes('lonely')) return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening."; return "Thank you for sharing that with me. Your feelings are valid. Can you tell me a little more about what's been going on?"; }
+function addMsg(text,cls){ var el=document.createElement('div'); el.className='msg '+cls; el.textContent=text; var box=document.getElementById('chat-messages'); box.appendChild(el); box.scrollTop=box.scrollHeight; return el; }
+function addTyping(){ var el=document.createElement('div'); el.className='msg bot thinking'; el.innerHTML='<div class="tdots"><span></span><span></span><span></span></div> Aasha is thinking…'; var box=document.getElementById('chat-messages'); box.appendChild(el); box.scrollTop=box.scrollHeight; return el; }
+function handleChatKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendChat(); } }
+function useSuggestion(btn){ document.getElementById('chat-input').value=btn.textContent; sendChat(); }
+
+document.getElementById('add-contact-modal').addEventListener('click',function(e){ if(e.target===this) closeAddContact(); });
+
 // ═══════════════════════════════════════════════════════════
-function initChat() {
-  if (S.chatInitialized) return;
-  S.chatInitialized = true;
-  addMsg("Hello, I'm Aasha. I'm here to listen without judgment. How are you feeling today?", 'bot');
+// EMPOWERMENT SECTION — Quotes, Speech Synthesis, Animations
+// ═══════════════════════════════════════════════════════════
+
+var EMPOWER_QUOTES = [
+  'चुप रहना समाधान नहीं है, आपकी आवाज़ ही आपकी सबसे बड़ी ताकत है।',
+  'डर कर जीना भी एक तरह की कैद है, अपनी आवाज़ उठाओ और आज़ाद हो जाओ।',
+  'तुम कमजोर नहीं हो, तुम बस उस दर्द को सह रही हो जो तुम्हें सहना ही नहीं चाहिए।',
+  'जो हाथ तुम्हें चोट पहुँचाते हैं, वे प्यार के लायक नहीं हैं।',
+  'तुम्हारी चुप्पी अत्याचार को बढ़ाती है, तुम्हारी आवाज़ उसे खत्म कर सकती है।',
+  'सम्मान हर महिला का अधिकार है, सहना उसकी मजबूरी नहीं।'
+];
+
+var EMP = {
+  currentIdx: 0,
+  isSpeaking: false,
+  hasAutoPlayed: false,
+  utterance: null
+};
+
+// Initialise on first load — pick random quote
+function initEmpowerSection() {
+  EMP.currentIdx = Math.floor(Math.random() * EMPOWER_QUOTES.length);
+  renderEmpowerQuote(EMP.currentIdx, false); // false = no speech on init
+  renderNavDots();
+  setupEmpowerObserver();
 }
 
-async function sendChat() {
-  var inp = document.getElementById('chat-input');
-  var txt = inp.value.trim();
-  if (!txt) return;
-  inp.value=''; inp.style.height='auto';
-  addMsg(txt,'user');
-  S.chatHistory.push({role:'user',content:txt});
-  var typing = addTyping();
-  var reply = null;
-  if (!S.demoMode) reply = await askGemini(S.chatHistory, AASHA_SYS, 300);
-  typing.remove();
-  var response = reply||getDemoReply(txt);
-  addMsg(response,'bot');
-  S.chatHistory.push({role:'assistant',content:response});
-  var distressWords = ['hurt','unsafe','scared','afraid','hit','abuse','kill','danger','help me','trapped'];
-  if (distressWords.some(function(w){ return txt.toLowerCase().includes(w); })) document.getElementById('dv-alert').classList.add('show');
+function renderEmpowerQuote(idx, speak) {
+  var textEl = document.getElementById('empower-quote-text');
+  if (!textEl) return;
+
+  // Animate out
+  textEl.style.animation = 'none';
+  textEl.offsetHeight; // reflow
+  textEl.style.animation = 'quoteReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+  textEl.textContent = EMPOWER_QUOTES[idx];
+
+  // Update dots
+  renderNavDots();
+
+  if (speak) {
+    speakQuote(EMPOWER_QUOTES[idx]);
+  }
 }
 
-function getDemoReply(txt) {
-  var l = txt.toLowerCase();
-  if (l.includes('safe')||l.includes('afraid')||l.includes('scared')) return "Your safety is the most important thing right now. I'm here with you. Can you tell me more about what's happening?";
-  if (l.includes('stress')||l.includes('anxious')) return "It sounds like you're carrying a lot right now. That's completely understandable. Let's take it one step at a time — what's weighing on you most?";
-  if (l.includes('alone')||l.includes('lonely')) return "You're not alone — I'm right here with you. Many people feel this way, and it takes courage to reach out. I'm listening.";
-  return "Thank you for sharing that with me. Your feelings are valid. Can you tell me a little more about what's been going on?";
+function renderNavDots() {
+  var dotsEl = document.getElementById('empower-nav-dots');
+  if (!dotsEl) return;
+  dotsEl.innerHTML = EMPOWER_QUOTES.map(function(_, i) {
+    return '<div class="empower-nav-dot' + (i === EMP.currentIdx ? ' active' : '') + '" onclick="goToQuote(' + i + ')"></div>';
+  }).join('');
 }
 
-function addMsg(text, cls) {
-  var el = document.createElement('div');
-  el.className='msg '+cls; el.textContent=text;
-  var box=document.getElementById('chat-messages');
-  box.appendChild(el); box.scrollTop=box.scrollHeight;
-  return el;
+function goToQuote(idx) {
+  stopSpeak();
+  EMP.currentIdx = idx;
+  renderEmpowerQuote(idx, false);
 }
 
-function addTyping() {
-  var el = document.createElement('div');
-  el.className='msg bot thinking';
-  el.innerHTML='<div class="tdots"><span></span><span></span><span></span></div> Aasha is thinking…';
-  var box=document.getElementById('chat-messages');
-  box.appendChild(el); box.scrollTop=box.scrollHeight;
-  return el;
+function nextQuote() {
+  stopSpeak();
+  var btn = document.getElementById('empower-refresh-btn');
+  if (btn) { btn.classList.add('spinning'); setTimeout(function(){ btn.classList.remove('spinning'); }, 600); }
+  EMP.currentIdx = (EMP.currentIdx + 1) % EMPOWER_QUOTES.length;
+  renderEmpowerQuote(EMP.currentIdx, false);
 }
 
-function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
-function useSuggestion(btn) { document.getElementById('chat-input').value=btn.textContent; sendChat(); }
+// ── SPEECH SYNTHESIS ──
+function speakQuote(text) {
+  if (!window.speechSynthesis) return;
+  stopSpeak();
 
-// Close modal on overlay click
-document.getElementById('add-contact-modal').addEventListener('click', function(e){
-  if (e.target === this) closeAddContact();
-});
+  var utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'hi-IN';
+  utterance.rate = 0.82;   // calm, measured pace
+  utterance.pitch = 1.05;  // slightly warm
+  utterance.volume = 1;
+
+  // Try to find a female Indian Hindi voice
+  var voices = window.speechSynthesis.getVoices();
+  var hindiVoice = null;
+
+  // Priority order: female hi-IN → hi-IN → hi → any Indian English female
+  var preferredNames = ['Google हिन्दी', 'Microsoft Swara', 'Lekha', 'Rishi', 'hi-IN'];
+  voices.forEach(function(v) {
+    if (!hindiVoice && v.lang === 'hi-IN') hindiVoice = v;
+    preferredNames.forEach(function(name) {
+      if (v.name.includes(name) && v.lang.startsWith('hi')) hindiVoice = v;
+    });
+    // Prefer female voice if available
+    if (v.lang === 'hi-IN' && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman') || v.name.includes('Swara') || v.name.includes('Lekha'))) {
+      hindiVoice = v;
+    }
+  });
+
+  if (hindiVoice) utterance.voice = hindiVoice;
+
+  EMP.utterance = utterance;
+  EMP.isSpeaking = true;
+  setSpeakUIState(true);
+
+  utterance.onend = function() {
+    EMP.isSpeaking = false;
+    setSpeakUIState(false);
+  };
+  utterance.onerror = function() {
+    EMP.isSpeaking = false;
+    setSpeakUIState(false);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function stopSpeak() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  EMP.isSpeaking = false;
+  setSpeakUIState(false);
+}
+
+function toggleSpeak() {
+  if (EMP.isSpeaking) {
+    stopSpeak();
+  } else {
+    speakQuote(EMPOWER_QUOTES[EMP.currentIdx]);
+  }
+}
+
+function setSpeakUIState(speaking) {
+  var btn = document.getElementById('empower-speak-btn');
+  var icon = document.getElementById('speak-icon');
+  var label = document.getElementById('speak-label');
+  if (!btn) return;
+
+  if (speaking) {
+    btn.classList.add('speaking');
+    if (icon) icon.textContent = '🔉';
+    if (label) label.textContent = 'पढ़ रही हूँ… — Speaking…';
+  } else {
+    btn.classList.remove('speaking');
+    if (icon) icon.textContent = '🔊';
+    if (label) label.textContent = 'सुनें — Listen aloud';
+  }
+}
+
+// ── triggerActionScreen() — the main function ──
+// Called when section becomes visible OR navigated to via tab
+function triggerActionScreen() {
+  // Pick a fresh random quote each time the screen is opened
+  EMP.currentIdx = Math.floor(Math.random() * EMPOWER_QUOTES.length);
+  renderEmpowerQuote(EMP.currentIdx, false);
+
+  // Brief delay for screen-render then auto-speak
+  setTimeout(function() {
+    // Only auto-speak if speech is available and user has interacted
+    if (window.speechSynthesis) {
+      // Voices may not be loaded yet; wait for them
+      var voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        speakQuote(EMPOWER_QUOTES[EMP.currentIdx]);
+      } else {
+        window.speechSynthesis.onvoiceschanged = function() {
+          speakQuote(EMPOWER_QUOTES[EMP.currentIdx]);
+          window.speechSynthesis.onvoiceschanged = null;
+        };
+      }
+    }
+  }, 600);
+}
+
+// ── IntersectionObserver: auto-trigger when section scrolls into view ──
+function setupEmpowerObserver() {
+  var section = document.getElementById('empower-section');
+  if (!section || !window.IntersectionObserver) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !EMP.hasAutoPlayed) {
+        EMP.hasAutoPlayed = true;
+        // Only auto-play if speech synthesis available and screen is legal
+        setTimeout(function() {
+          var legalScreen = document.getElementById('screen-legal');
+          if (legalScreen && legalScreen.classList.contains('active')) {
+            if (window.speechSynthesis) {
+              var voices = window.speechSynthesis.getVoices();
+              if (voices.length > 0) {
+                speakQuote(EMPOWER_QUOTES[EMP.currentIdx]);
+              } else {
+                window.speechSynthesis.onvoiceschanged = function() {
+                  speakQuote(EMPOWER_QUOTES[EMP.currentIdx]);
+                  window.speechSynthesis.onvoiceschanged = null;
+                };
+              }
+            }
+          }
+        }, 400);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(section);
+}
+
+// ── Stop speech when leaving the legal screen ──
+var _originalShowScreen = showScreen;
+showScreen = function(id) {
+  if (id !== 'screen-legal') {
+    stopSpeak();
+    EMP.hasAutoPlayed = false; // reset so it re-triggers on next visit
+  }
+  if (id === 'screen-legal') {
+    // Trigger fresh quote + speech when navigating to legal screen
+    setTimeout(triggerActionScreen, 300);
+  }
+  _originalShowScreen(id);
+};
+
+// ── Handle CTA button: show SOS contacts if available, else go to NCW ──
+function handleLegalAction(e) {
+  // If user has trusted contacts, offer to call them instead
+  if (trustedContacts.length > 0) {
+    e.preventDefault();
+    stopSpeak();
+    // Show SOS modal with contacts as the legal action route
+    triggerSOS();
+  }
+  // Otherwise the href="https://ncw.nic.in/" opens normally
+}
+
+// Initialise empowerment section on DOM ready
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEmpowerSection);
+  } else {
+    initEmpowerSection();
+  }
+  // Pre-load voices on mobile browsers
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+  }
+})();
 </script>
 </body>
 </html>
